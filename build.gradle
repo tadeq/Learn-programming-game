@@ -1,0 +1,28 @@
+apply plugin: 'java'
+apply plugin: 'application'
+
+
+description = """
+Example project for a TO2 course.
+
+Project name: ${project.name}
+
+Authors:
+Jan Kowalski <jkowalski@student.agh.edu.pl>
+Maria Nowak <mnowak@student.agh.edu.pl> """
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+version = '0.1'
+
+mainClassName = 'pl.edu.agh.to2.example.Main'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.+'
+}
+
+
