@@ -1,4 +1,4 @@
-package pl.edu.agh.to2.example;
+package pl.edu.agh.to2.sorryimchillin;
 
 import static org.junit.Assert.assertTrue;
 
