@@ -9,7 +9,7 @@ public enum ButtonType {
 
     private final String path;
 
-    private ButtonType(String path){
+    private ButtonType(String path) {
         this.path = path;
     }
 

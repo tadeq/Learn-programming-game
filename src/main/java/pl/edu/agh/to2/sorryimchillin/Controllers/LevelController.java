@@ -44,7 +44,7 @@ public class LevelController {
     public void initialize() {
     }
 
-    public void initializeLevel(){
+    public void initializeLevel() {
         board.setStyle("-fx-background-color: skyblue; -fx-border-color: blue");
         Level level = mainScreenController.getCurrentLevel();
         for (Point p : level.getCoordinates()) {
