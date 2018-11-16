@@ -62,7 +62,7 @@ public class LevelController {
 
     @FXML
     public void forwardClicked(ActionEvent actionEvent) {
-        mainScreenController.addButton((Button)actionEvent.getSource());
+        mainScreenController.addButton(ButtonType.FORWARD);
     }
 
     @FXML

@@ -5,6 +5,8 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SplitPane;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import pl.edu.agh.to2.sorryimchillin.Model.ButtonType;
@@ -16,8 +18,6 @@ import java.util.List;
 
 public class MainScreenController {
     @FXML
-    private SplitPane level;
-    @FXML
     private BorderPane mainBorderPane;
     @FXML
     private Button playButton;
@@ -28,7 +28,7 @@ public class MainScreenController {
 
     private Level currentLevel;
 
-    private HBox buttons;
+    private HBox moves;
 
     @FXML
     void initialize() {
@@ -38,18 +38,25 @@ public class MainScreenController {
         currentLevel = new Level(buttonTypes,squares,turtlePosition);
         levelController.setMainScreenController(this);
         levelController.initializeLevel();
-        buttons = new HBox();
-        buttons.setSpacing(10);
-        buttons.setPadding(new Insets(10));
+        moves = new HBox();
+        moves.setSpacing(10);
     }
 
     public Level getCurrentLevel() {
         return currentLevel;
     }
 
-    public void addButton(Button button){
-        buttons.getChildren().add(button);
-        this.selectedButtonsPane.setContent(buttons);
+    public void addButton(ButtonType type){
+        ImageView img = new ImageView(type.getPath());
+        img.setFitHeight(40);
+        img.setFitWidth(40);
+        img.setOnMouseClicked(this::removeSelectedMove);
+        moves.getChildren().add(img);
+        this.selectedButtonsPane.setContent(moves);
+    }
+
+    public void removeSelectedMove(MouseEvent mouseEvent){
+        this.moves.getChildren().remove(mouseEvent.getSource());
     }
 
 }
