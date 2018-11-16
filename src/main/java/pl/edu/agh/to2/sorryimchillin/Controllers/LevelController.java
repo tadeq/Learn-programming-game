@@ -2,11 +2,14 @@ package pl.edu.agh.to2.sorryimchillin.Controllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
+import pl.edu.agh.to2.sorryimchillin.Model.ButtonType;
+import pl.edu.agh.to2.sorryimchillin.Model.Level;
+
+import java.awt.*;
 
 
 public class LevelController {
@@ -26,25 +29,56 @@ public class LevelController {
     private Button leftButton;
 
     @FXML
-    private Button backwardButton;
-
-    @FXML
     private Button startLoopButton;
 
     @FXML
     private Button endLoopButton;
 
-    MainScreenController mainScreenController;
+    private MainScreenController mainScreenController;
+
+    public void setMainScreenController(MainScreenController mainScreenController) {
+        this.mainScreenController = mainScreenController;
+    }
 
     @FXML
     public void initialize() {
-        for (Node square : board.getChildren()){
-            square.setStyle("-fx-background-color: skyblue; -fx-border-color: blue");
+    }
+
+    public void initializeLevel(){
+        board.setStyle("-fx-background-color: skyblue; -fx-border-color: blue");
+        Level level = mainScreenController.getCurrentLevel();
+        for (Point p : level.getCoordinates()) {
+            Pane pane = new Pane();
+            pane.setStyle("-fx-background-color: darkolivegreen; -fx-border-color: darkgreen");
+            board.add(pane, p.x, p.y);
         }
+        turtle.toFront();
+        forwardButton.setVisible(level.getButtonTypes().contains(ButtonType.FORWARD));
+        rightButton.setVisible(level.getButtonTypes().contains(ButtonType.RIGHT));
+        leftButton.setVisible(level.getButtonTypes().contains(ButtonType.LEFT));
+        startLoopButton.setVisible(level.getButtonTypes().contains(ButtonType.STARTLOOP));
+        endLoopButton.setVisible(level.getButtonTypes().contains(ButtonType.ENDLOOP));
     }
 
     @FXML
     public void forwardClicked(ActionEvent actionEvent) {
-        
+        mainScreenController.addButton((Button)actionEvent.getSource());
     }
+
+    @FXML
+    public void rightClicked(ActionEvent actionEvent) {
+    }
+
+    @FXML
+    public void leftClicked(ActionEvent actionEvent) {
+    }
+
+    @FXML
+    public void startLoopClicked(ActionEvent actionEvent) {
+    }
+
+    @FXML
+    public void endLoopClicked(ActionEvent actionEvent) {
+    }
+
 }
