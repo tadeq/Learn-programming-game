@@ -1,10 +1,12 @@
 package pl.edu.agh.to2.sorryimchillin.Controllers;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.shape.Rectangle;
 
 
 public class LevelController {
@@ -15,10 +17,34 @@ public class LevelController {
     private GridPane board;
 
     @FXML
-    public void initialize(){
-//        int x = board.impl_getColumnCount();
-//        int y = board.impl_getColumnCount();
-//        Rectangle rectangle = board.getChildren().get(6);
-//        node.setFill()
+    private Button forwardButton;
+
+    @FXML
+    private Button rightButton;
+
+    @FXML
+    private Button leftButton;
+
+    @FXML
+    private Button backwardButton;
+
+    @FXML
+    private Button startLoopButton;
+
+    @FXML
+    private Button endLoopButton;
+
+    MainScreenController mainScreenController;
+
+    @FXML
+    public void initialize() {
+        for (Node square : board.getChildren()){
+            square.setStyle("-fx-background-color: skyblue; -fx-border-color: blue");
+        }
+    }
+
+    @FXML
+    public void forwardClicked(ActionEvent actionEvent) {
+        
     }
 }

@@ -14,15 +14,14 @@ public class Main extends Application {
 
     public static void main(String[] args) {
         launch(args);
-
     }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
         FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/views/MainScreen.fxml"));
-		BorderPane pane = new BorderPane(loader.load());
-		Scene scene = new Scene (pane);
-		primaryStage.setScene(scene);
-		primaryStage.show();
+        BorderPane pane = new BorderPane(loader.load());
+        Scene scene = new Scene(pane);
+        primaryStage.setScene(scene);
+        primaryStage.show();
     }
 }
