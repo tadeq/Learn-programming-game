@@ -20,7 +20,7 @@
                </padding></ScrollPane>
             <Pane>
                <children>
-                  <Button fx:id="playButton" maxHeight="78.0" maxWidth="76.0" mnemonicParsing="false" prefHeight="78.0" prefWidth="76.0">
+                  <Button fx:id="playButton" maxHeight="78.0" maxWidth="76.0" mnemonicParsing="false" prefHeight="78.0" prefWidth="76.0" onAction="#playButtonClicked">
                      <graphic>
                         <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" scaleZ="0.0">
                            <image>

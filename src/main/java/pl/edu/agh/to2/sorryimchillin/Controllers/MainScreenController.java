@@ -1,6 +1,7 @@
 package pl.edu.agh.to2.sorryimchillin.Controllers;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.ImageView;
@@ -9,6 +10,9 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import pl.edu.agh.to2.sorryimchillin.Model.ButtonType;
 import pl.edu.agh.to2.sorryimchillin.Model.Level;
+import pl.edu.agh.to2.sorryimchillin.Model.Turtle;
+import pl.edu.agh.to2.sorryimchillin.Model.TurtleDirection;
+import pl.edu.agh.to2.sorryimchillin.Utilities.LevelPoint;
 
 import java.awt.*;
 import java.util.Arrays;
@@ -34,9 +38,9 @@ public class MainScreenController {
     @FXML
     void initialize() {
         movesToExecute = new LinkedList<>();
-        List<ButtonType> buttonTypes = Arrays.asList(ButtonType.FORWARD);
-        List<Point> squares = Arrays.asList(new Point(2, 2), new Point(0, 1), new Point(1, 1));
-        Point turtlePosition = new Point(1, 1);
+        List<ButtonType> buttonTypes = Arrays.asList(ButtonType.FORWARD, ButtonType.RIGHT);
+        List<LevelPoint> squares = Arrays.asList(new LevelPoint(2, 2), new LevelPoint(0, 1), new LevelPoint(1, 1), new LevelPoint(2,1));
+        Turtle turtlePosition = new Turtle(0, 1, TurtleDirection.E);
         currentLevel = new Level(buttonTypes, squares, turtlePosition);
         levelController.setMainScreenController(this);
         levelController.initializeLevel();
@@ -61,7 +65,22 @@ public class MainScreenController {
     public void removeSelectedMove(MouseEvent mouseEvent) {
         int index = this.moves.getChildren().indexOf(mouseEvent.getSource());
         this.movesToExecute.remove(index);
+        System.out.println(index);
         this.moves.getChildren().remove(mouseEvent.getSource());
+    }
+
+    @FXML
+    public void playButtonClicked(){
+        if(this.currentLevel.executeMoves(movesToExecute)){
+            Turtle turtle = this.currentLevel.getTurtle();
+            levelController.setTurtlePosition(turtle.getCoordinates());
+        } else {
+            Alert a = new Alert(Alert.AlertType.ERROR);
+            a.show();
+        }
+        this.moves.getChildren().clear();
+        this.movesToExecute.clear();
+
     }
 
 }

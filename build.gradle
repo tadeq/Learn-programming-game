@@ -11,8 +11,8 @@ Authors:
 Jan Kowalski <jkowalski@student.agh.edu.pl>
 Maria Nowak <mnowak@student.agh.edu.pl> """
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+sourceCompatibility = 1.9
+targetCompatibility = 1.9
 version = '0.1'
 
 mainClassName = 'pl.edu.agh.to2.example.Main'
