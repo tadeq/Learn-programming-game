@@ -1,11 +1,11 @@
 package pl.edu.agh.to2.sorryimchillin.Model;
 
 public enum ButtonType {
-    FORWARD("/../resources/images/forward.png"),
-    RIGHT("/../resources/images/right.png"),
-    LEFT("/../resources/images/left.png"),
-    STARTLOOP("/../resources/images/startloop.png"),
-    ENDLOOP("/../resources/images/endloop.png");
+    FORWARD("/images/forward.png"),
+    RIGHT("/images/right.png"),
+    LEFT("/images/left.png"),
+    STARTLOOP("/images/startloop.png"),
+    ENDLOOP("/images/endloop.png");
 
     private final String path;
 

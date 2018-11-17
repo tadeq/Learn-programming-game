@@ -8,7 +8,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import pl.edu.agh.to2.sorryimchillin.Model.ButtonType;
 import pl.edu.agh.to2.sorryimchillin.Model.Level;
-import pl.edu.agh.to2.sorryimchillin.Model.Turtle;
+import pl.edu.agh.to2.sorryimchillin.Model.TurtleDirection;
 
 import java.awt.*;
 
@@ -63,9 +63,10 @@ public class LevelController {
         endLoopButton.setVisible(level.getButtonTypes().contains(ButtonType.ENDLOOP));
     }
 
-    public void setTurtlePosition(Point turtleCords){
+    public void setTurtlePosition(Point turtleCords, TurtleDirection direction){
         GridPane.setColumnIndex(turtle, turtleCords.x);
         GridPane.setRowIndex(turtle, turtleCords.y);
+        turtle.setRotate(direction.getRotation());
     }
 
     @FXML

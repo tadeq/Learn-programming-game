@@ -39,7 +39,7 @@ public class MainScreenController {
     void initialize() {
         movesToExecute = new LinkedList<>();
         List<ButtonType> buttonTypes = Arrays.asList(ButtonType.FORWARD, ButtonType.RIGHT, ButtonType.LEFT);
-        List<LevelPoint> squares = Arrays.asList(new LevelPoint(2, 2), new LevelPoint(0, 1), new LevelPoint(1, 1), new LevelPoint(2,1));
+        List<LevelPoint> squares = Arrays.asList(new LevelPoint(2, 2), new LevelPoint(0, 1), new LevelPoint(1, 1), new LevelPoint(2, 1));
         Turtle turtlePosition = new Turtle(0, 1, TurtleDirection.E);
         currentLevel = new Level(buttonTypes, squares, turtlePosition);
         levelController.setMainScreenController(this);
@@ -70,10 +70,10 @@ public class MainScreenController {
     }
 
     @FXML
-    public void playButtonClicked(){
-        if(this.currentLevel.executeMoves(movesToExecute)){
+    public void playButtonClicked() {
+        if (this.currentLevel.executeMoves(movesToExecute)) {
             Turtle turtle = this.currentLevel.getTurtle();
-            levelController.setTurtlePosition(turtle.getCoordinates());
+            levelController.setTurtlePosition(turtle.getCoordinates(), turtle.getTurtleDirection());
         } else {
             Alert a = new Alert(Alert.AlertType.ERROR);
             a.show();

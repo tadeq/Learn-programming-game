@@ -84,4 +84,7 @@ public class Turtle {
         return this.coordinates;
     }
 
+    public TurtleDirection getTurtleDirection() {
+        return turtleDirection;
+    }
 }
