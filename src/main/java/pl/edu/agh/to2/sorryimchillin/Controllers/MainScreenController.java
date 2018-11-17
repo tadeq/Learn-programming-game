@@ -38,7 +38,7 @@ public class MainScreenController {
     @FXML
     void initialize() {
         movesToExecute = new LinkedList<>();
-        List<ButtonType> buttonTypes = Arrays.asList(ButtonType.FORWARD, ButtonType.RIGHT);
+        List<ButtonType> buttonTypes = Arrays.asList(ButtonType.FORWARD, ButtonType.RIGHT, ButtonType.LEFT);
         List<LevelPoint> squares = Arrays.asList(new LevelPoint(2, 2), new LevelPoint(0, 1), new LevelPoint(1, 1), new LevelPoint(2,1));
         Turtle turtlePosition = new Turtle(0, 1, TurtleDirection.E);
         currentLevel = new Level(buttonTypes, squares, turtlePosition);

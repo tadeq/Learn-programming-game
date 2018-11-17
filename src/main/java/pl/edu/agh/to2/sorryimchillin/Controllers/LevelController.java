@@ -64,7 +64,8 @@ public class LevelController {
     }
 
     public void setTurtlePosition(Point turtleCords){
-//        this.board.add(turtle, turtleCords.x, turtleCords.y);
+        GridPane.setColumnIndex(turtle, turtleCords.x);
+        GridPane.setRowIndex(turtle, turtleCords.y);
     }
 
     @FXML
