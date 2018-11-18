@@ -11,6 +11,7 @@ import pl.edu.agh.to2.sorryimchillin.Model.Level;
 import pl.edu.agh.to2.sorryimchillin.Model.TurtleDirection;
 
 import java.awt.*;
+import java.util.List;
 
 
 public class LevelController {
@@ -37,6 +38,8 @@ public class LevelController {
 
     private MainScreenController mainScreenController;
 
+    private Level level;
+
     public void setMainScreenController(MainScreenController mainScreenController) {
         this.mainScreenController = mainScreenController;
     }
@@ -47,14 +50,14 @@ public class LevelController {
 
     public void initializeLevel() {
         board.setStyle("-fx-background-color: skyblue; -fx-border-color: blue");
-        Level level = mainScreenController.getCurrentLevel();
+        level = mainScreenController.getCurrentLevel();
         for (Point p : level.getCoordinates()) {
             Pane pane = new Pane();
             pane.setStyle("-fx-background-color: darkolivegreen; -fx-border-color: darkgreen");
             board.add(pane, p.x, p.y);
 
         }
-        //board.add(turtle, level.getTurtle().getCoordinates().x, level.getTurtle().getCoordinates().y);
+
         turtle.toFront();
         forwardButton.setVisible(level.getButtonTypes().contains(ButtonType.FORWARD));
         rightButton.setVisible(level.getButtonTypes().contains(ButtonType.RIGHT));
@@ -68,6 +71,16 @@ public class LevelController {
         GridPane.setRowIndex(turtle, turtleCords.y);
         turtle.setRotate(direction.getRotation());
     }
+
+    public boolean executeMoves(List<ButtonType> movesToExecute) {
+        if(this.level.executeMoves(movesToExecute)){
+            setTurtlePosition(this.level.getTurtle().getCoordinates(), this.level.getTurtle().getTurtleDirection());
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 
     @FXML
     public void forwardClicked(ActionEvent actionEvent) {

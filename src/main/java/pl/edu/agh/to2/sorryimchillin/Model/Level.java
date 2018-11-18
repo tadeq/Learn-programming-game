@@ -29,7 +29,65 @@ public class Level {
     }
 
     public boolean executeMoves(List<ButtonType> movesToExecute) {
-        return turtle.makeMoves(movesToExecute, this.Coordinates);
+        int tmpX = this.turtle.getCoordinates().x;
+        int tmpY = this.turtle.getCoordinates().y;
+        TurtleDirection tmpTurtleDirection = this.turtle.getTurtleDirection();
+        Turtle tmpTurtle = new Turtle(tmpX, tmpY, tmpTurtleDirection);
+
+        for(int i = 0; i < movesToExecute.size(); i++){
+            switch (movesToExecute.get(i)){
+                case LEFT:{
+                    tmpTurtleDirection = tmpTurtleDirection.turnLeft();
+                    break;
+                }
+                case RIGHT:{
+                    tmpTurtleDirection = tmpTurtleDirection.turnRight();
+                    break;
+                }
+                case FORWARD:{
+                    switch (tmpTurtleDirection){
+                        case N:{
+                            tmpY--;
+                            break;
+                        }
+                        case E:{
+                            tmpX++;
+                            break;
+
+                        }
+                        case S:{
+                            tmpY++;
+                            break;
+
+                        }
+                        case W: {
+                            tmpX--;
+                            break;
+                        }
+                    }
+
+                }
+
+                // TODO
+                //case STARTLOOP:
+                //case ENDLOOP:
+            }
+
+            boolean isSuchAPoint = false;
+            for (LevelPoint levelPoint : this.Coordinates){
+                if(levelPoint.x == tmpX && levelPoint.y == tmpY){
+                    isSuchAPoint = true;
+                    levelPoint.setIsVisited();
+                }
+            }
+
+            if(!isSuchAPoint) {
+                return false;
+            }
+        }
+
+        this.turtle.setTurtlePosition(tmpX, tmpY, tmpTurtleDirection);
+        return true;
     }
 
 

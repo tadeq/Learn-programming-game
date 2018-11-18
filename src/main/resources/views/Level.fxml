@@ -31,7 +31,7 @@
             <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
             <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-            <ImageView fx:id="turtle" fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" GridPane.halignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+            <ImageView fx:id="turtle" fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                <image>
                   <Image url="@../images/turtle.png" />
                </image>
