@@ -1,4 +1,4 @@
-package pl.edu.agh.to2.sorryimchillin.Controllers;
+package pl.edu.agh.to2.learnProgramming.Controllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -6,11 +6,11 @@ import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
-import pl.edu.agh.to2.sorryimchillin.Model.ButtonType;
-import pl.edu.agh.to2.sorryimchillin.Model.Level;
-import pl.edu.agh.to2.sorryimchillin.Model.Turtle;
-import pl.edu.agh.to2.sorryimchillin.Model.TurtleDirection;
-import pl.edu.agh.to2.sorryimchillin.Utilities.LevelPoint;
+import pl.edu.agh.to2.learnProgramming.Model.ButtonType;
+import pl.edu.agh.to2.learnProgramming.Model.Level;
+import pl.edu.agh.to2.learnProgramming.Model.Turtle;
+import pl.edu.agh.to2.learnProgramming.Model.TurtleDirection;
+import pl.edu.agh.to2.learnProgramming.Utilities.LevelPoint;
 
 import java.awt.*;
 import java.util.Arrays;
@@ -82,8 +82,11 @@ public class LevelController {
         turtleImage.setRotate(direction.getRotation());
     }
 
-    public boolean executeMoves(List<ButtonType> movesToExecute) {
+    public boolean checkAndexecuteMoves(List<ButtonType> movesToExecute) {
         return this.level.executeMoves(movesToExecute) && this.level.allVisited();
+        // TODO
+        // turtleImage będzie poruszał się po jednym polu tak, aby można było zobaczyć poszczególne kroki
+        // kolor odwiedzanych pól będzie zmieniany
     }
 
 

@@ -1,4 +1,4 @@
-package pl.edu.agh.to2.sorryimchillin.Utilities;
+package pl.edu.agh.to2.learnProgramming.Utilities;
 
 import java.awt.*;
 

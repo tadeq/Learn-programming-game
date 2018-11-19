@@ -1,7 +1,7 @@
-package pl.edu.agh.to2.sorryimchillin.Model;
+package pl.edu.agh.to2.learnProgramming.Model;
 
-import pl.edu.agh.to2.sorryimchillin.Controllers.LevelController;
-import pl.edu.agh.to2.sorryimchillin.Utilities.LevelPoint;
+import pl.edu.agh.to2.learnProgramming.Controllers.LevelController;
+import pl.edu.agh.to2.learnProgramming.Utilities.LevelPoint;
 
 import java.awt.*;
 import java.util.List;
@@ -98,13 +98,6 @@ public class Level {
             }
             this.turtle.setTurtlePosition(tmpX, tmpY, tmpTurtleDirection);
             this.levelController.setTurtleImagePosition(new Point(tmpX, tmpY), tmpTurtleDirection);
-
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                System.out.println(e.getMessage());
-                e.printStackTrace();
-            }
         }
         return true;
     }

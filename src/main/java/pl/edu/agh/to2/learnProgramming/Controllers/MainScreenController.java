@@ -1,4 +1,4 @@
-package pl.edu.agh.to2.sorryimchillin.Controllers;
+package pl.edu.agh.to2.learnProgramming.Controllers;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -8,7 +8,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import pl.edu.agh.to2.sorryimchillin.Model.ButtonType;
+import pl.edu.agh.to2.learnProgramming.Model.ButtonType;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -61,7 +61,7 @@ public class MainScreenController {
     @FXML
     public void playButtonClicked() {
         Alert alert;
-        if (this.levelController.executeMoves(movesToExecute)) {
+        if (this.levelController.checkAndexecuteMoves(movesToExecute)) {
             alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setHeaderText("Level passed");
             alert.show();
@@ -76,5 +76,4 @@ public class MainScreenController {
         this.moves.getChildren().clear();
         this.movesToExecute.clear();
     }
-
 }

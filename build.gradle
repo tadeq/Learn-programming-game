@@ -12,11 +12,11 @@ Maciej Moskal
 Jakub Pajor
 Michał Zadora """
 
-sourceCompatibility = 1.9
-targetCompatibility = 1.9
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
 version = '0.1'
 
-mainClassName = 'pl.edu.agh.to2.sorryimchillin.Main'
+mainClassName = 'pl.edu.agh.to2.learnProgramming.Main'
 
 repositories {
     mavenCentral()
