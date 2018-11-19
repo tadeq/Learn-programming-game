@@ -65,6 +65,8 @@ public class MainScreenController {
             alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setHeaderText("Level passed");
             alert.show();
+            // TODO
+            // zakończenie poziomu i przejście do kolejnego
         } else {
             this.moves.getChildren().clear();
             this.movesToExecute.clear();

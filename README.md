@@ -5,6 +5,6 @@ Póki co poziomy generowane są ręcznie w projekcie, lecz w najbliższym czasie
 
 ### Grupa osób tworzących projekt:
 
-Maciej Moskal
-Jakub Pajor
+Maciej Moskal  
+Jakub Pajor  
 Michał Zadora
