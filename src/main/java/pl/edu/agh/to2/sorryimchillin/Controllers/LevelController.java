@@ -8,15 +8,18 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import pl.edu.agh.to2.sorryimchillin.Model.ButtonType;
 import pl.edu.agh.to2.sorryimchillin.Model.Level;
+import pl.edu.agh.to2.sorryimchillin.Model.Turtle;
 import pl.edu.agh.to2.sorryimchillin.Model.TurtleDirection;
+import pl.edu.agh.to2.sorryimchillin.Utilities.LevelPoint;
 
 import java.awt.*;
+import java.util.Arrays;
 import java.util.List;
 
 
 public class LevelController {
     @FXML
-    private ImageView turtle;
+    private ImageView turtleImage;
 
     @FXML
     private GridPane board;
@@ -50,15 +53,22 @@ public class LevelController {
 
     public void initializeLevel() {
         board.setStyle("-fx-background-color: skyblue; -fx-border-color: blue");
-        level = mainScreenController.getCurrentLevel();
-        for (Point p : level.getCoordinates()) {
+
+        // tu level będzie odczytywał currentLevel z mainScreenControllera i przekazywał go LevelGeneratorowi
+        List<ButtonType> buttonTypes = Arrays.asList(ButtonType.FORWARD, ButtonType.RIGHT, ButtonType.LEFT);
+        List<LevelPoint> squares = Arrays.asList(new LevelPoint(2, 2), new LevelPoint(0, 1), new LevelPoint(1, 1), new LevelPoint(2, 1));
+        Turtle turtlePosition = new Turtle(0, 1, TurtleDirection.E);
+        setTurtleImagePosition(turtlePosition.getCoordinates(), turtlePosition.getTurtleDirection());
+        level = new Level(buttonTypes, squares, turtlePosition);
+
+        level.setLevelController(this);
+        for (Point p : level.getFieldCoordinates()) {
             Pane pane = new Pane();
             pane.setStyle("-fx-background-color: darkolivegreen; -fx-border-color: darkgreen");
             board.add(pane, p.x, p.y);
 
         }
-
-        turtle.toFront();
+        turtleImage.toFront();
         forwardButton.setVisible(level.getButtonTypes().contains(ButtonType.FORWARD));
         rightButton.setVisible(level.getButtonTypes().contains(ButtonType.RIGHT));
         leftButton.setVisible(level.getButtonTypes().contains(ButtonType.LEFT));
@@ -66,19 +76,14 @@ public class LevelController {
         endLoopButton.setVisible(level.getButtonTypes().contains(ButtonType.ENDLOOP));
     }
 
-    public void setTurtlePosition(Point turtleCords, TurtleDirection direction){
-        GridPane.setColumnIndex(turtle, turtleCords.x);
-        GridPane.setRowIndex(turtle, turtleCords.y);
-        turtle.setRotate(direction.getRotation());
+    public void setTurtleImagePosition(Point turtleCoords, TurtleDirection direction) {
+        GridPane.setColumnIndex(turtleImage, turtleCoords.x);
+        GridPane.setRowIndex(turtleImage, turtleCoords.y);
+        turtleImage.setRotate(direction.getRotation());
     }
 
     public boolean executeMoves(List<ButtonType> movesToExecute) {
-        if(this.level.executeMoves(movesToExecute)){
-            setTurtlePosition(this.level.getTurtle().getCoordinates(), this.level.getTurtle().getTurtleDirection());
-            return true;
-        } else {
-            return false;
-        }
+        return this.level.executeMoves(movesToExecute) && this.level.allVisited();
     }
 
 

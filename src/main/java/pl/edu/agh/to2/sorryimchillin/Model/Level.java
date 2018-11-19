@@ -1,5 +1,6 @@
 package pl.edu.agh.to2.sorryimchillin.Model;
 
+import pl.edu.agh.to2.sorryimchillin.Controllers.LevelController;
 import pl.edu.agh.to2.sorryimchillin.Utilities.LevelPoint;
 
 import java.awt.*;
@@ -7,12 +8,13 @@ import java.util.List;
 
 public class Level {
     private List<ButtonType> buttonTypes;
-    private List<LevelPoint> Coordinates;
+    private List<LevelPoint> fieldCoordinates;
     private Turtle turtle;
+    private LevelController levelController;
 
-    public Level(List<ButtonType> buttonTypes, List<LevelPoint> coordinates, Turtle turtle) {
+    public Level(List<ButtonType> buttonTypes, List<LevelPoint> fieldCoordinates, Turtle turtle) {
         this.buttonTypes = buttonTypes;
-        Coordinates = coordinates;
+        this.fieldCoordinates = fieldCoordinates;
         this.turtle = turtle;
     }
 
@@ -20,42 +22,61 @@ public class Level {
         return buttonTypes;
     }
 
-    public List<LevelPoint> getCoordinates() {
-        return Coordinates;
+    public List<LevelPoint> getFieldCoordinates() {
+        return fieldCoordinates;
     }
 
     public Turtle getTurtle() {
         return turtle;
     }
 
+    public void setLevelController(LevelController levelController) {
+        this.levelController = levelController;
+    }
+
+    public boolean allVisited() {
+        return this.fieldCoordinates.stream().allMatch(LevelPoint::isVisited);
+    }
+
+    public boolean canMoveTo(int x, int y) {
+        return this.fieldCoordinates.stream().anyMatch(levelPoint -> levelPoint.x == x && levelPoint.y == y);
+    }
+
+    public void visitPoint(int x, int y) {
+        for (LevelPoint field : fieldCoordinates) {
+            if (field.x == x && field.y == y)
+                field.setVisited();
+        }
+    }
+
     public boolean executeMoves(List<ButtonType> movesToExecute) {
         int tmpX = this.turtle.getCoordinates().x;
         int tmpY = this.turtle.getCoordinates().y;
+        visitPoint(tmpX, tmpY);
         TurtleDirection tmpTurtleDirection = this.turtle.getTurtleDirection();
-        Turtle tmpTurtle = new Turtle(tmpX, tmpY, tmpTurtleDirection);
 
-        for(int i = 0; i < movesToExecute.size(); i++){
-            switch (movesToExecute.get(i)){
-                case LEFT:{
+        for (ButtonType moveToExecute : movesToExecute) {
+            switch (moveToExecute) {
+                case LEFT: {
                     tmpTurtleDirection = tmpTurtleDirection.turnLeft();
                     break;
                 }
-                case RIGHT:{
+                case RIGHT: {
                     tmpTurtleDirection = tmpTurtleDirection.turnRight();
                     break;
                 }
-                case FORWARD:{
-                    switch (tmpTurtleDirection){
-                        case N:{
+                case FORWARD: {
+                    switch (tmpTurtleDirection) {
+                        case N: {
                             tmpY--;
                             break;
                         }
-                        case E:{
+                        case E: {
                             tmpX++;
                             break;
 
                         }
-                        case S:{
+                        case S: {
                             tmpY++;
                             break;
 
@@ -65,30 +86,26 @@ public class Level {
                             break;
                         }
                     }
-
+                    if (!canMoveTo(tmpX, tmpY))
+                        return false;
+                    else
+                        visitPoint(tmpX, tmpY);
+                    break;
                 }
-
                 // TODO
                 //case STARTLOOP:
                 //case ENDLOOP:
             }
+            this.turtle.setTurtlePosition(tmpX, tmpY, tmpTurtleDirection);
+            this.levelController.setTurtleImagePosition(new Point(tmpX, tmpY), tmpTurtleDirection);
 
-            boolean isSuchAPoint = false;
-            for (LevelPoint levelPoint : this.Coordinates){
-                if(levelPoint.x == tmpX && levelPoint.y == tmpY){
-                    isSuchAPoint = true;
-                    levelPoint.setIsVisited();
-                }
-            }
-
-            if(!isSuchAPoint) {
-                return false;
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                System.out.println(e.getMessage());
+                e.printStackTrace();
             }
         }
-
-        this.turtle.setTurtlePosition(tmpX, tmpY, tmpTurtleDirection);
         return true;
     }
-
-
 }

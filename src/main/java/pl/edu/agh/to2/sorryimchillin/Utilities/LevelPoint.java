@@ -3,22 +3,23 @@ package pl.edu.agh.to2.sorryimchillin.Utilities;
 import java.awt.*;
 
 public class LevelPoint extends Point {
-    private boolean isVisited;
-    public LevelPoint(int x, int y){
+    private boolean visited;
+
+    public LevelPoint(int x, int y) {
         super(x, y);
-        this.isVisited = false;
+        this.visited = false;
     }
 
-    public boolean getIsVisited(){
-        return this.isVisited;
+    public boolean isVisited() {
+        return this.visited;
     }
 
-    public void setIsVisited(){
-        this.isVisited = true;
+    public void setVisited() {
+        this.visited = true;
     }
 
     /* Method not really necessary */
-    public void setIsNotVisited(){
-        this.isVisited = false;
+    public void setNotVisited() {
+        this.visited = false;
     }
 }

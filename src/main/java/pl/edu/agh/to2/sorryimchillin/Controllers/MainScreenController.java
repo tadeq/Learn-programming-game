@@ -9,13 +9,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import pl.edu.agh.to2.sorryimchillin.Model.ButtonType;
-import pl.edu.agh.to2.sorryimchillin.Model.Level;
-import pl.edu.agh.to2.sorryimchillin.Model.Turtle;
-import pl.edu.agh.to2.sorryimchillin.Model.TurtleDirection;
-import pl.edu.agh.to2.sorryimchillin.Utilities.LevelPoint;
 
-import java.awt.*;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -29,7 +23,7 @@ public class MainScreenController {
     @FXML
     private ScrollPane selectedMovesPane;
 
-    private Level currentLevel;
+    private int currentLevel;
 
     private HBox moves;
 
@@ -38,18 +32,13 @@ public class MainScreenController {
     @FXML
     void initialize() {
         movesToExecute = new LinkedList<>();
-        List<ButtonType> buttonTypes = Arrays.asList(ButtonType.FORWARD, ButtonType.RIGHT, ButtonType.LEFT);
-        List<LevelPoint> squares = Arrays.asList(new LevelPoint(2, 2), new LevelPoint(0, 1), new LevelPoint(1, 1), new LevelPoint(2, 1));
-        Turtle turtlePosition = new Turtle(0, 1, TurtleDirection.E);
-        levelController.setTurtlePosition(turtlePosition.getCoordinates(), turtlePosition.getTurtleDirection());
-        currentLevel = new Level(buttonTypes, squares, turtlePosition);
-        levelController.setMainScreenController(this);
-        levelController.initializeLevel();
         moves = new HBox();
         moves.setSpacing(10);
+        levelController.setMainScreenController(this);
+        levelController.initializeLevel();
     }
 
-    public Level getCurrentLevel() {
+    public int getCurrentLevel() {
         return currentLevel;
     }
 
@@ -66,19 +55,22 @@ public class MainScreenController {
     public void removeSelectedMove(MouseEvent mouseEvent) {
         int index = this.moves.getChildren().indexOf(mouseEvent.getSource());
         this.movesToExecute.remove(index);
-        System.out.println(index);
         this.moves.getChildren().remove(mouseEvent.getSource());
     }
 
     @FXML
     public void playButtonClicked() {
+        Alert alert;
         if (this.levelController.executeMoves(movesToExecute)) {
-            //TODO // zrobienie alertu pomyslnego ukonczenia
+            alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setHeaderText("Level passed");
+            alert.show();
         } else {
             this.moves.getChildren().clear();
             this.movesToExecute.clear();
-            Alert a = new Alert(Alert.AlertType.ERROR);
-            a.show();
+            alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeaderText("Try again");
+            alert.show();
             initialize();
         }
         this.moves.getChildren().clear();
