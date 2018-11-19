@@ -3,19 +3,20 @@ apply plugin: 'application'
 
 
 description = """
-Example project for a TO2 course.
+Project for a TO2 course.
 
 Project name: ${project.name}
 
 Authors:
-Jan Kowalski <jkowalski@student.agh.edu.pl>
-Maria Nowak <mnowak@student.agh.edu.pl> """
+Maciej Moskal
+Jakub Pajor
+Michał Zadora """
 
 sourceCompatibility = 1.9
 targetCompatibility = 1.9
 version = '0.1'
 
-mainClassName = 'pl.edu.agh.to2.example.Main'
+mainClassName = 'pl.edu.agh.to2.sorryimchillin.Main'
 
 repositories {
     mavenCentral()
