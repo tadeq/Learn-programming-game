@@ -1,4 +1,4 @@
-package pl.edu.agh.to2.learnProgramming.Controllers;
+package pl.edu.agh.to2.learnprogramming.Controllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -6,13 +6,8 @@ import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
-import pl.edu.agh.to2.learnProgramming.Model.ButtonType;
-import pl.edu.agh.to2.learnProgramming.Model.Level;
-import pl.edu.agh.to2.learnProgramming.Model.Turtle;
-import pl.edu.agh.to2.learnProgramming.Model.TurtleDirection;
-import pl.edu.agh.to2.learnProgramming.Utilities.LevelPoint;
+import pl.edu.agh.to2.learnprogramming.Model.*;
 
-import java.awt.*;
 import java.util.Arrays;
 import java.util.List;
 

@@ -1,6 +1,5 @@
-package pl.edu.agh.to2.learnProgramming.Model;
+package pl.edu.agh.to2.learnprogramming.Model;
 
-import java.awt.*;
 
 public class Turtle {
     private Point coordinates;

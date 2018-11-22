@@ -1,6 +1,5 @@
-package pl.edu.agh.to2.learnProgramming.Utilities;
+package pl.edu.agh.to2.learnprogramming.Model;
 
-import java.awt.*;
 
 public class LevelPoint extends Point {
     private boolean visited;

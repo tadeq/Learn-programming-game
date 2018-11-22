@@ -1,4 +1,4 @@
-package pl.edu.agh.to2.learnProgramming.Controllers;
+package pl.edu.agh.to2.learnprogramming.Controllers;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -8,7 +8,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import pl.edu.agh.to2.learnProgramming.Model.ButtonType;
+import pl.edu.agh.to2.learnprogramming.Model.ButtonType;
 
 import java.util.LinkedList;
 import java.util.List;

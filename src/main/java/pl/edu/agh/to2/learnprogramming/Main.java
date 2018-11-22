@@ -1,4 +1,4 @@
-package pl.edu.agh.to2.learnProgramming;
+package pl.edu.agh.to2.learnprogramming;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

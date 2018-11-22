@@ -1,4 +1,4 @@
-package pl.edu.agh.to2.learnProgramming.Model;
+package pl.edu.agh.to2.learnprogramming.Model;
 
 public enum ButtonType {
     FORWARD("/images/forward.png"),

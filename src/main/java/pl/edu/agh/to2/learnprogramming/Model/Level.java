@@ -1,9 +1,7 @@
-package pl.edu.agh.to2.learnProgramming.Model;
+package pl.edu.agh.to2.learnprogramming.Model;
 
-import pl.edu.agh.to2.learnProgramming.Controllers.LevelController;
-import pl.edu.agh.to2.learnProgramming.Utilities.LevelPoint;
+import pl.edu.agh.to2.learnprogramming.Controllers.LevelController;
 
-import java.awt.*;
 import java.util.List;
 
 public class Level {
@@ -97,7 +95,7 @@ public class Level {
                 //case ENDLOOP:
             }
             this.turtle.setTurtlePosition(tmpX, tmpY, tmpTurtleDirection);
-            this.levelController.setTurtleImagePosition(new Point(tmpX, tmpY), tmpTurtleDirection);
+            this.levelController.setTurtleImagePosition( new Point(tmpX, tmpY), tmpTurtleDirection);
         }
         return true;
     }
