@@ -23,4 +23,42 @@ public class Turtle {
         return turtleDirection;
     }
 
+    public void move(MoveType moveToExecute){
+        switch (moveToExecute) {
+            case LEFT: {
+                turtleDirection = turtleDirection.turnLeft();
+                break;
+            }
+            case RIGHT: {
+                turtleDirection = turtleDirection.turnRight();
+                break;
+            }
+            case FORWARD: {
+                switch (turtleDirection) {
+                    case N: {
+                        getCoordinates().y--;
+                        break;
+                    }
+                    case E: {
+                        getCoordinates().x++;
+                        break;
+
+                    }
+                    case S: {
+                        getCoordinates().y++;
+                        break;
+
+                    }
+                    case W: {
+                        getCoordinates().x--;
+                        break;
+                    }
+                }
+            }
+            // TODO
+            //case STARTLOOP:
+            //case ENDLOOP:
+        }
+    }
+
 }

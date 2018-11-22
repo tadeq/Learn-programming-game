@@ -5,19 +5,19 @@ import pl.edu.agh.to2.learnProgramming.controllers.LevelController;
 import java.util.List;
 
 public class Level {
-    private List<ButtonType> buttonTypes;
+    private List<MoveType> moveTypes;
     private List<LevelPoint> fieldCoordinates;
     private Turtle turtle;
     private LevelController levelController;
 
-    public Level(List<ButtonType> buttonTypes, List<LevelPoint> fieldCoordinates, Turtle turtle) {
-        this.buttonTypes = buttonTypes;
+    public Level(List<MoveType> moveTypes, List<LevelPoint> fieldCoordinates, Turtle turtle) {
+        this.moveTypes = moveTypes;
         this.fieldCoordinates = fieldCoordinates;
         this.turtle = turtle;
     }
 
-    public List<ButtonType> getButtonTypes() {
-        return buttonTypes;
+    public List<MoveType> getMoveTypes() {
+        return moveTypes;
     }
 
     public List<LevelPoint> getFieldCoordinates() {
@@ -36,8 +36,9 @@ public class Level {
         return this.fieldCoordinates.stream().allMatch(LevelPoint::isVisited);
     }
 
-    public boolean canMoveTo(int x, int y) {
-        return this.fieldCoordinates.stream().anyMatch(levelPoint -> levelPoint.x == x && levelPoint.y == y);
+    public boolean isMoveCorrect() {
+        return this.fieldCoordinates.stream()
+                .anyMatch(field -> field.x == turtle.getCoordinates().x && field.y == turtle.getCoordinates().y);
     }
 
     public void visitPoint(int x, int y) {
@@ -47,55 +48,15 @@ public class Level {
         }
     }
 
-    public boolean executeMoves(List<ButtonType> movesToExecute) {
-        int tmpX = this.turtle.getCoordinates().x;
-        int tmpY = this.turtle.getCoordinates().y;
-        visitPoint(tmpX, tmpY);
-        TurtleDirection tmpTurtleDirection = this.turtle.getTurtleDirection();
-
-        for (ButtonType moveToExecute : movesToExecute) {
-            switch (moveToExecute) {
-                case LEFT: {
-                    tmpTurtleDirection = tmpTurtleDirection.turnLeft();
-                    break;
-                }
-                case RIGHT: {
-                    tmpTurtleDirection = tmpTurtleDirection.turnRight();
-                    break;
-                }
-                case FORWARD: {
-                    switch (tmpTurtleDirection) {
-                        case N: {
-                            tmpY--;
-                            break;
-                        }
-                        case E: {
-                            tmpX++;
-                            break;
-
-                        }
-                        case S: {
-                            tmpY++;
-                            break;
-
-                        }
-                        case W: {
-                            tmpX--;
-                            break;
-                        }
-                    }
-                    if (!canMoveTo(tmpX, tmpY))
-                        return false;
-                    else
-                        visitPoint(tmpX, tmpY);
-                    break;
-                }
-                // TODO
-                //case STARTLOOP:
-                //case ENDLOOP:
-            }
-            this.turtle.setTurtlePosition(tmpX, tmpY, tmpTurtleDirection);
-            this.levelController.setTurtleImagePosition( new Point(tmpX, tmpY), tmpTurtleDirection);
+    public boolean executeMoves(List<MoveType> movesToExecute) {
+        visitPoint(turtle.getCoordinates().x,turtle.getCoordinates().y);
+        for (MoveType moveToExecute : movesToExecute) {
+            turtle.move(moveToExecute);
+            if (isMoveCorrect())
+                visitPoint(turtle.getCoordinates().x, turtle.getCoordinates().y);
+            else
+                return false;
+            this.levelController.setTurtleImagePosition(new Point(turtle.getCoordinates().x, turtle.getCoordinates().y), turtle.getTurtleDirection());
         }
         return true;
     }

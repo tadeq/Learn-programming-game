@@ -1,6 +1,6 @@
 package pl.edu.agh.to2.learnProgramming.model;
 
-public enum ButtonType {
+public enum MoveType {
     FORWARD("/images/forward.png"),
     RIGHT("/images/right.png"),
     LEFT("/images/left.png"),
@@ -9,7 +9,7 @@ public enum ButtonType {
 
     private final String path;
 
-    private ButtonType(String path) {
+    private MoveType(String path) {
         this.path = path;
     }
 

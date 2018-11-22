@@ -50,11 +50,11 @@ public class LevelController {
         board.setStyle("-fx-background-color: skyblue; -fx-border-color: blue");
 
         // tu level będzie odczytywał currentLevel z mainScreenControllera i przekazywał go LevelGeneratorowi
-        List<ButtonType> buttonTypes = Arrays.asList(ButtonType.FORWARD, ButtonType.RIGHT, ButtonType.LEFT);
+        List<MoveType> moveTypes = Arrays.asList(MoveType.FORWARD, MoveType.RIGHT, MoveType.LEFT);
         List<LevelPoint> squares = Arrays.asList(new LevelPoint(2, 2), new LevelPoint(0, 1), new LevelPoint(1, 1), new LevelPoint(2, 1));
         Turtle turtlePosition = new Turtle(0, 1, TurtleDirection.E);
         setTurtleImagePosition(turtlePosition.getCoordinates(), turtlePosition.getTurtleDirection());
-        level = new Level(buttonTypes, squares, turtlePosition);
+        level = new Level(moveTypes, squares, turtlePosition);
 
         level.setLevelController(this);
         for (Point p : level.getFieldCoordinates()) {
@@ -64,11 +64,11 @@ public class LevelController {
 
         }
         turtleImage.toFront();
-        forwardButton.setVisible(level.getButtonTypes().contains(ButtonType.FORWARD));
-        rightButton.setVisible(level.getButtonTypes().contains(ButtonType.RIGHT));
-        leftButton.setVisible(level.getButtonTypes().contains(ButtonType.LEFT));
-        startLoopButton.setVisible(level.getButtonTypes().contains(ButtonType.STARTLOOP));
-        endLoopButton.setVisible(level.getButtonTypes().contains(ButtonType.ENDLOOP));
+        forwardButton.setVisible(level.getMoveTypes().contains(MoveType.FORWARD));
+        rightButton.setVisible(level.getMoveTypes().contains(MoveType.RIGHT));
+        leftButton.setVisible(level.getMoveTypes().contains(MoveType.LEFT));
+        startLoopButton.setVisible(level.getMoveTypes().contains(MoveType.STARTLOOP));
+        endLoopButton.setVisible(level.getMoveTypes().contains(MoveType.ENDLOOP));
     }
 
     public void setTurtleImagePosition(Point turtleCoords, TurtleDirection direction) {
@@ -77,7 +77,7 @@ public class LevelController {
         turtleImage.setRotate(direction.getRotation());
     }
 
-    public boolean checkAndexecuteMoves(List<ButtonType> movesToExecute) {
+    public boolean checkAndexecuteMoves(List<MoveType> movesToExecute) {
         return this.level.executeMoves(movesToExecute) && this.level.allVisited();
         // TODO
         // turtleImage będzie poruszał się po jednym polu tak, aby można było zobaczyć poszczególne kroki
@@ -87,27 +87,27 @@ public class LevelController {
 
     @FXML
     public void forwardClicked(ActionEvent actionEvent) {
-        mainScreenController.addButton(ButtonType.FORWARD);
+        mainScreenController.addButton(MoveType.FORWARD);
     }
 
     @FXML
     public void rightClicked(ActionEvent actionEvent) {
-        mainScreenController.addButton(ButtonType.RIGHT);
+        mainScreenController.addButton(MoveType.RIGHT);
     }
 
     @FXML
     public void leftClicked(ActionEvent actionEvent) {
-        mainScreenController.addButton(ButtonType.LEFT);
+        mainScreenController.addButton(MoveType.LEFT);
     }
 
     @FXML
     public void startLoopClicked(ActionEvent actionEvent) {
-        mainScreenController.addButton(ButtonType.STARTLOOP);
+        mainScreenController.addButton(MoveType.STARTLOOP);
     }
 
     @FXML
     public void endLoopClicked(ActionEvent actionEvent) {
-        mainScreenController.addButton(ButtonType.ENDLOOP);
+        mainScreenController.addButton(MoveType.ENDLOOP);
     }
 
 }
