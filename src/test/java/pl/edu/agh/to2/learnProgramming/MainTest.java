@@ -1,4 +1,4 @@
-package pl.edu.agh.to2.learnprogramming;
+package pl.edu.agh.to2.learnProgramming;
 
 import static org.junit.Assert.assertTrue;
 

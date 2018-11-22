@@ -1,6 +1,6 @@
-package pl.edu.agh.to2.learnprogramming.Model;
+package pl.edu.agh.to2.learnProgramming.model;
 
-import pl.edu.agh.to2.learnprogramming.Controllers.LevelController;
+import pl.edu.agh.to2.learnProgramming.controllers.LevelController;
 
 import java.util.List;
 

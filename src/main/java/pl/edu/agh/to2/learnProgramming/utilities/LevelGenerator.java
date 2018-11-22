@@ -1,4 +1,4 @@
-package pl.edu.agh.to2.learnprogramming.Utilities;
+package pl.edu.agh.to2.learnProgramming.utilities;
 
 public class LevelGenerator {
     // TODO

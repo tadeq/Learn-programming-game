@@ -1,4 +1,4 @@
-package pl.edu.agh.to2.learnprogramming.Model;
+package pl.edu.agh.to2.learnProgramming.model;
 
 public enum TurtleDirection {
     N(-90),

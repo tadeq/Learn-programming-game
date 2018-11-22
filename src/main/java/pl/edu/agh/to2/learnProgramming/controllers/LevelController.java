@@ -1,4 +1,4 @@
-package pl.edu.agh.to2.learnprogramming.Controllers;
+package pl.edu.agh.to2.learnProgramming.controllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -6,7 +6,7 @@ import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
-import pl.edu.agh.to2.learnprogramming.Model.*;
+import pl.edu.agh.to2.learnProgramming.model.*;
 
 import java.util.Arrays;
 import java.util.List;
