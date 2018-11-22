@@ -1,18 +1,31 @@
 package pl.edu.agh.to2.learnProgramming.model;
 
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+
 public class Point {
 
-    public int x;
-    public int y;
+    private IntegerProperty x;
+    private IntegerProperty y;
 
     public Point(int x, int y) {
-        this.x = x;
-        this.y = y;
+        this.x = new SimpleIntegerProperty(x);
+        this.y = new SimpleIntegerProperty(y);
     }
 
-    public void setLocation(int x, int y){
-        this.x = x;
-        this.y = y;
+    public int getX() {
+        return x.get();
     }
 
+    public IntegerProperty xProperty() {
+        return x;
+    }
+
+    public int getY() {
+        return y.get();
+    }
+
+    public IntegerProperty yProperty() {
+        return y;
+    }
 }

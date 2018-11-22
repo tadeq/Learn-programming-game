@@ -44,9 +44,6 @@ public class LevelController {
 
     @FXML
     public void initialize() {
-    }
-
-    public void initializeLevel() {
         board.setStyle("-fx-background-color: skyblue; -fx-border-color: blue");
 
         // tu level będzie odczytywał currentLevel z mainScreenControllera i przekazywał go LevelGeneratorowi
@@ -55,12 +52,10 @@ public class LevelController {
         Turtle turtlePosition = new Turtle(0, 1, TurtleDirection.E);
         setTurtleImagePosition(turtlePosition.getCoordinates(), turtlePosition.getTurtleDirection());
         level = new Level(moveTypes, squares, turtlePosition);
-
-        level.setLevelController(this);
         for (Point p : level.getFieldCoordinates()) {
             Pane pane = new Pane();
             pane.setStyle("-fx-background-color: darkolivegreen; -fx-border-color: darkgreen");
-            board.add(pane, p.x, p.y);
+            board.add(pane, p.getX(), p.getY());
 
         }
         turtleImage.toFront();
@@ -69,11 +64,26 @@ public class LevelController {
         leftButton.setVisible(level.getMoveTypes().contains(MoveType.LEFT));
         startLoopButton.setVisible(level.getMoveTypes().contains(MoveType.STARTLOOP));
         endLoopButton.setVisible(level.getMoveTypes().contains(MoveType.ENDLOOP));
+        level.getTurtle().getCoordinates().yProperty().addListener((observable, oldValue, newValue) -> {
+            try {
+                GridPane.setColumnIndex(turtleImage, (int) newValue);
+            } catch (IllegalArgumentException e){
+            }
+        });
+        level.getTurtle().getCoordinates().xProperty().addListener((observable, oldValue, newValue) -> {
+            try {
+                GridPane.setRowIndex(turtleImage, (int) newValue);
+            }catch (IllegalArgumentException e){
+            }
+        });
+        level.getTurtle().turtleDirectionProperty().addListener(((observable, oldValue, newValue) -> {
+            turtleImage.setRotate(newValue.getRotation());
+        }));
     }
 
     public void setTurtleImagePosition(Point turtleCoords, TurtleDirection direction) {
-        GridPane.setColumnIndex(turtleImage, turtleCoords.x);
-        GridPane.setRowIndex(turtleImage, turtleCoords.y);
+        GridPane.setColumnIndex(turtleImage, turtleCoords.getX());
+        GridPane.setRowIndex(turtleImage, turtleCoords.getY());
         turtleImage.setRotate(direction.getRotation());
     }
 

@@ -1,18 +1,15 @@
 package pl.edu.agh.to2.learnProgramming.model;
 
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 
 public class Turtle {
     private Point coordinates;
-    private TurtleDirection turtleDirection;
+    private ObjectProperty<TurtleDirection> turtleDirection;
 
     public Turtle(int x, int y, TurtleDirection turtleDirection) {
         this.coordinates = new Point(x, y);
-        this.turtleDirection = turtleDirection;
-    }
-
-    public void setTurtlePosition(int x, int y, TurtleDirection turtleDirection) {
-        this.coordinates.setLocation(x, y);
-        this.turtleDirection = turtleDirection;
+        this.turtleDirection = new SimpleObjectProperty<>(turtleDirection);
     }
 
     public Point getCoordinates() {
@@ -20,37 +17,41 @@ public class Turtle {
     }
 
     public TurtleDirection getTurtleDirection() {
+        return turtleDirection.get();
+    }
+
+    public ObjectProperty<TurtleDirection> turtleDirectionProperty() {
         return turtleDirection;
     }
 
-    public void move(MoveType moveToExecute){
+    public void move(MoveType moveToExecute) {
         switch (moveToExecute) {
             case LEFT: {
-                turtleDirection = turtleDirection.turnLeft();
+                turtleDirection.setValue(turtleDirection.get().turnLeft());
                 break;
             }
             case RIGHT: {
-                turtleDirection = turtleDirection.turnRight();
+                turtleDirection.setValue(turtleDirection.get().turnRight());
                 break;
             }
             case FORWARD: {
-                switch (turtleDirection) {
+                switch (turtleDirection.getValue()) {
                     case N: {
-                        getCoordinates().y--;
+                        getCoordinates().yProperty().setValue(getCoordinates().getY() - 1);
                         break;
                     }
                     case E: {
-                        getCoordinates().x++;
+                        getCoordinates().xProperty().setValue(getCoordinates().getX() + 1);
                         break;
 
                     }
                     case S: {
-                        getCoordinates().y++;
+                        getCoordinates().yProperty().setValue(getCoordinates().getY() + 1);
                         break;
 
                     }
                     case W: {
-                        getCoordinates().x--;
+                        getCoordinates().xProperty().setValue(getCoordinates().getX() - 1);
                         break;
                     }
                 }

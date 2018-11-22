@@ -35,7 +35,6 @@ public class MainScreenController {
         moves = new HBox();
         moves.setSpacing(10);
         levelController.setMainScreenController(this);
-        levelController.initializeLevel();
     }
 
     public int getCurrentLevel() {
@@ -74,6 +73,7 @@ public class MainScreenController {
             alert.setHeaderText("Try again");
             alert.show();
             initialize();
+            levelController.initialize();
         }
         this.moves.getChildren().clear();
         this.movesToExecute.clear();
