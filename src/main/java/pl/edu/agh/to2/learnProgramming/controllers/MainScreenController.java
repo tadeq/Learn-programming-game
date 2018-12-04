@@ -31,10 +31,12 @@ public class MainScreenController {
 
     @FXML
     void initialize() {
+        currentLevel = 1;
         movesToExecute = new LinkedList<>();
         moves = new HBox();
         moves.setSpacing(10);
         levelController.setMainScreenController(this);
+        levelController.initializeLevel();
     }
 
     public int getCurrentLevel() {
@@ -60,10 +62,12 @@ public class MainScreenController {
     @FXML
     public void playButtonClicked() {
         Alert alert;
-        if (this.levelController.checkAndexecuteMoves(movesToExecute)) {
+        if (this.levelController.checkAndExecuteMoves(movesToExecute)) {
             alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setHeaderText("Level passed");
             alert.show();
+            currentLevel++;
+            levelController.initializeLevel();
             // TODO
             // zakończenie poziomu i przejście do kolejnego
         } else {
@@ -77,5 +81,9 @@ public class MainScreenController {
         }
         this.moves.getChildren().clear();
         this.movesToExecute.clear();
+    }
+
+    public BorderPane getMainBorderPane() {
+        return mainBorderPane;
     }
 }

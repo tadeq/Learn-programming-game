@@ -6,8 +6,12 @@ public class Level {
     private List<MoveType> moveTypes;
     private List<LevelPoint> fieldCoordinates;
     private Turtle turtle;
+    private int width;
+    private int height;
 
-    public Level(List<MoveType> moveTypes, List<LevelPoint> fieldCoordinates, Turtle turtle) {
+    public Level(int width, int height, List<MoveType> moveTypes, List<LevelPoint> fieldCoordinates, Turtle turtle) {
+        this.width = width;
+        this.height = height;
         this.moveTypes = moveTypes;
         this.fieldCoordinates = fieldCoordinates;
         this.turtle = turtle;
@@ -23,6 +27,14 @@ public class Level {
 
     public Turtle getTurtle() {
         return turtle;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
     }
 
     public boolean allVisited() {
@@ -46,7 +58,15 @@ public class Level {
         // TODO w zolwiu tylko metody moveForward(), turnRight(), turnLeft()
         visitPoint(turtle.getCoordinates().getX(), turtle.getCoordinates().getY());
         for (MoveType moveToExecute : movesToExecute) {
-            turtle.move(moveToExecute);
+            switch (moveToExecute){
+                case FORWARD:
+                    turtle.moveForward();
+                case LEFT:
+                    turtle.turnLeft();
+                case RIGHT:
+                    turtle.turnRight();
+                //TODO loop
+            }
             if (isMoveCorrect())
                 visitPoint(turtle.getCoordinates().getX(), turtle.getCoordinates().getY());
             else
