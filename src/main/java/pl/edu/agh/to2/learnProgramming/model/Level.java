@@ -42,6 +42,8 @@ public class Level {
     }
 
     public boolean executeMoves(List<MoveType> movesToExecute) {
+        // TODO rozdzielanie komend na pętle i ruchy, wzorzec command
+        // TODO w zolwiu tylko metody moveForward(), turnRight(), turnLeft()
         visitPoint(turtle.getCoordinates().getX(), turtle.getCoordinates().getY());
         for (MoveType moveToExecute : movesToExecute) {
             turtle.move(moveToExecute);
@@ -49,11 +51,11 @@ public class Level {
                 visitPoint(turtle.getCoordinates().getX(), turtle.getCoordinates().getY());
             else
                 return false;
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+//            try {
+//                Thread.sleep(500);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
         }
         return true;
     }
