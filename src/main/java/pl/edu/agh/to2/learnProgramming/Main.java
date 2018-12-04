@@ -22,7 +22,7 @@ public class Main extends Application {
         BorderPane pane = new BorderPane(loader.load());
         Scene scene = new Scene(pane);
         primaryStage.setScene(scene);
-        primaryStage.setResizable(false);
+        //primaryStage.setResizable(false);
         primaryStage.show();
     }
 }

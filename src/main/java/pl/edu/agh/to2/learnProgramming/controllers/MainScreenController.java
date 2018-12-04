@@ -31,6 +31,8 @@ public class MainScreenController {
 
     @FXML
     void initialize() {
+        mainBorderPane.setPrefWidth(1000);
+        mainBorderPane.setPrefHeight(1000);
         currentLevel = 1;
         movesToExecute = new LinkedList<>();
         moves = new HBox();
@@ -70,6 +72,7 @@ public class MainScreenController {
             levelController.initializeLevel();
             // TODO
             // zakończenie poziomu i przejście do kolejnego
+            // dodanie listy poziomów po prawej stronie (toggle group), nowy kontroler do VBoxa z nią
         } else {
             this.moves.getChildren().clear();
             this.movesToExecute.clear();

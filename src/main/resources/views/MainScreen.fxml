@@ -9,18 +9,19 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
 
-<BorderPane fx:id="mainBorderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="580.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.edu.agh.to2.learnProgramming.controllers.MainScreenController">
+<BorderPane fx:id="mainBorderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.edu.agh.to2.learnProgramming.controllers.MainScreenController">
    <bottom>
-      <SplitPane dividerPositions="0.8" pickOnBounds="false" prefHeight="80.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+      <SplitPane dividerPositions="0.9010025062656641" pickOnBounds="false" prefHeight="80.0" prefWidth="600.0" BorderPane.alignment="CENTER">
         <items>
-            <ScrollPane fx:id="selectedMovesPane">
+            <ScrollPane fx:id="selectedMovesPane" prefHeight="78.0" prefWidth="707.0">
                <padding>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </padding></ScrollPane>
-            <Pane>
+            <Pane maxHeight="78.0" maxWidth="84.0" minHeight="78.0" minWidth="84.0">
                <children>
-                  <Button fx:id="playButton" maxHeight="78.0" maxWidth="76.0" mnemonicParsing="false" prefHeight="78.0" prefWidth="76.0" onAction="#playButtonClicked">
+                  <Button fx:id="playButton" maxHeight="78.0" maxWidth="84.0" mnemonicParsing="false" onAction="#playButtonClicked" prefHeight="78.0" prefWidth="84.0">
                      <graphic>
                         <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" scaleZ="0.0">
                            <image>
@@ -39,4 +40,11 @@
     <center>
         <fx:include fx:id="level" source="Level.fxml" />
     </center>
+   <right>
+      <ScrollPane prefHeight="400.0" prefWidth="60.0" BorderPane.alignment="CENTER">
+         <content>
+            <VBox prefHeight="480.0" prefWidth="60.0" />
+         </content>
+      </ScrollPane>
+   </right>
 </BorderPane>

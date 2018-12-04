@@ -10,12 +10,22 @@ public class LevelGenerator {
     // otrzymuje numer poziomu i zwraca odpowiedni poziom wczytany z pliku json
     public Level generate(int levelNumber) {
         Level level;
-        int width = 6;
-        int height = 4;
-        List<MoveType> moveTypes = Arrays.asList(MoveType.FORWARD, MoveType.RIGHT, MoveType.LEFT);
-        List<LevelPoint> squares = Arrays.asList(new LevelPoint(2, 2), new LevelPoint(0, 1), new LevelPoint(1, 1), new LevelPoint(2, 1));
-        Turtle turtlePosition = new Turtle(0, 1, TurtleDirection.E);
-        level = new Level(width, height, moveTypes, squares, turtlePosition);
+        int size;
+        List<MoveType> moveTypes;
+        List<LevelPoint> fields;
+        Turtle turtle;
+        if (levelNumber == 1) {
+            size = 6;
+            moveTypes = Arrays.asList(MoveType.FORWARD);
+            fields = Arrays.asList(new LevelPoint(0, 1), new LevelPoint(1, 1), new LevelPoint(2, 1), new LevelPoint(3, 1));
+            turtle = new Turtle(0, 1, TurtleDirection.E);
+        } else {
+            size = 4;
+            moveTypes = Arrays.asList(MoveType.FORWARD, MoveType.RIGHT, MoveType.LEFT);
+            fields = Arrays.asList(new LevelPoint(1, 0), new LevelPoint(1, 1), new LevelPoint(2, 1));//, new LevelPoint(2,2));
+            turtle = new Turtle(1, 0, TurtleDirection.S);
+        }
+        level = new Level(size, moveTypes, fields, turtle);
         return level;
     }
 }

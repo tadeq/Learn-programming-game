@@ -24,7 +24,7 @@ public class Turtle {
         return turtleDirection;
     }
 
-    public void moveForward(){
+    public void moveForward() {
         switch (turtleDirection.getValue()) {
             case N: {
                 getCoordinates().yProperty().setValue(getCoordinates().getY() - 1);
@@ -47,50 +47,11 @@ public class Turtle {
         }
     }
 
-    public void turnLeft(){
+    public void turnLeft() {
         turtleDirection.setValue(turtleDirection.get().turnLeft());
     }
 
-    public void turnRight(){
+    public void turnRight() {
         turtleDirection.setValue(turtleDirection.get().turnRight());
     }
-
-    public void move(MoveType moveToExecute) {
-        switch (moveToExecute) {
-            case LEFT: {
-                turtleDirection.setValue(turtleDirection.get().turnLeft());
-                break;
-            }
-            case RIGHT: {
-                turtleDirection.setValue(turtleDirection.get().turnRight());
-                break;
-            }
-            case FORWARD: {
-                switch (turtleDirection.getValue()) {
-                    case N: {
-                        getCoordinates().yProperty().setValue(getCoordinates().getY() - 1);
-                        break;
-                    }
-                    case E: {
-                        getCoordinates().xProperty().setValue(getCoordinates().getX() + 1);
-                        break;
-
-                    }
-                    case S: {
-                        getCoordinates().yProperty().setValue(getCoordinates().getY() + 1);
-                        break;
-
-                    }
-                    case W: {
-                        getCoordinates().xProperty().setValue(getCoordinates().getX() - 1);
-                        break;
-                    }
-                }
-            }
-            // TODO
-            //case STARTLOOP:
-            //case ENDLOOP:
-        }
-    }
-
 }

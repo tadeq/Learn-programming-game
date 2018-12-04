@@ -6,10 +6,7 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.SplitPane;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.RowConstraints;
+import javafx.scene.layout.*;
 import pl.edu.agh.to2.learnProgramming.model.*;
 import pl.edu.agh.to2.learnProgramming.utilities.LevelGenerator;
 
@@ -56,29 +53,36 @@ public class LevelController {
 
     }
 
-    public void initializeLevel(){
+    public void initializeLevel() {
+        levelScreen.prefHeightProperty().bind(mainScreenController.getMainBorderPane().prefHeightProperty().subtract(100));
+        levelScreen.prefWidthProperty().bind(mainScreenController.getMainBorderPane().prefWidthProperty().subtract(100));
         generator = new LevelGenerator();
         level = generator.generate(mainScreenController.getCurrentLevel());
-        board.prefHeight(400);
-        board.prefWidth(400);
-        for (int i=0;i<level.getWidth();i++){
+        board.getChildren().clear();
+        board.getRowConstraints().clear();
+        board.getColumnConstraints().clear();
+        board.add(turtleImage, level.getTurtle().getCoordinates().getX(), level.getTurtle().getCoordinates().getY());
+        //board.prefWidthProperty().bind(levelScreen.prefWidthProperty());
+        //board.prefHeightProperty().bind(levelScreen.prefHeightProperty());
+        board.setHgap(10);
+        board.setVgap(10);
+        board.paddingProperty().setValue(new Insets(2));
+        for (int i = 0; i < level.getSize(); i++) {
             ColumnConstraints constraints = new ColumnConstraints();
-            constraints.setPercentWidth(100.0/level.getWidth());
+            constraints.setPercentWidth(100.0 / level.getSize());
+            constraints.setFillWidth(true);
             board.getColumnConstraints().add(constraints);
         }
-        for (int i=0;i<level.getHeight();i++){
-            RowConstraints constraints= new RowConstraints();
-            constraints.setPercentHeight(100.0/level.getHeight());
+        for (int i = 0; i < level.getSize(); i++) {
+            RowConstraints constraints = new RowConstraints();
+            constraints.setPercentHeight(100.0 / level.getSize());
+            constraints.setFillHeight(true);
             board.getRowConstraints().add(constraints);
         }
-        board.setHgap(0);
-        board.setVgap(0);
-        board.paddingProperty().setValue(new Insets(0));
         board.setStyle("-fx-background-color: skyblue; -fx-border-color: blue");
-        setTurtleImagePosition(level.getTurtle().getCoordinates(),level.getTurtle().getTurtleDirection());
+        setTurtleImagePosition(level.getTurtle().getCoordinates(), level.getTurtle().getTurtleDirection());
         for (Point p : level.getFieldCoordinates()) {
             Pane pane = new Pane();
-            pane.setMinSize(board.getPrefWidth()/level.getWidth(),board.getPrefHeight()/level.getHeight());
             pane.setStyle("-fx-background-color: darkolivegreen; -fx-border-color: darkgreen");
             board.add(pane, p.getX(), p.getY());
         }
@@ -90,13 +94,13 @@ public class LevelController {
         level.getTurtle().getCoordinates().yProperty().addListener((observable, oldValue, newValue) -> {
             try {
                 GridPane.setColumnIndex(turtleImage, (int) newValue);
-            } catch (IllegalArgumentException e){
+            } catch (IllegalArgumentException e) {
             }
         });
         level.getTurtle().getCoordinates().xProperty().addListener((observable, oldValue, newValue) -> {
             try {
                 GridPane.setRowIndex(turtleImage, (int) newValue);
-            }catch (IllegalArgumentException e){
+            } catch (IllegalArgumentException e) {
             }
         });
         level.getTurtle().turtleDirectionProperty().addListener(((observable, oldValue, newValue) -> {
