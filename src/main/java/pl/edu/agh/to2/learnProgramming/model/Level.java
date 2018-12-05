@@ -35,12 +35,12 @@ public class Level {
         return this.fieldCoordinates.stream().allMatch(LevelPoint::isVisited);
     }
 
-    public boolean isMoveCorrect() {
+    private boolean isMoveCorrect() {
         return this.fieldCoordinates.stream()
                 .anyMatch(field -> field.getX() == turtle.getCoordinates().getX() && field.getY() == turtle.getCoordinates().getY());
     }
 
-    public void visitPoint(int x, int y) {
+    private void visitPoint(int x, int y) {
         for (LevelPoint field : fieldCoordinates) {
             if (field.getX() == x && field.getY() == y)
                 field.setVisited();

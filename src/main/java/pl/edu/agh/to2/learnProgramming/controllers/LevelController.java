@@ -113,7 +113,7 @@ public class LevelController {
         mainScreenController.getMainBorderPane().setCenter(levelScreen);
     }
 
-    public void setTurtleImagePosition(Point turtleCoords, TurtleDirection direction) {
+    private void setTurtleImagePosition(Point turtleCoords, TurtleDirection direction) {
         GridPane.setColumnIndex(turtleImage, turtleCoords.getX());
         GridPane.setRowIndex(turtleImage, turtleCoords.getY());
         turtleImage.setRotate(direction.getRotation());

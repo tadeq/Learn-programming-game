@@ -50,7 +50,7 @@ public class MainScreenController {
         }));
     }
 
-    public void initializeMovesList(){
+    private void initializeMovesList() {
         movesToExecute = new LinkedList<>();
         moves = new HBox();
         moves.setSpacing(10);
@@ -58,6 +58,10 @@ public class MainScreenController {
 
     public int getCurrentLevel() {
         return currentLevel;
+    }
+
+    public BorderPane getMainBorderPane() {
+        return mainBorderPane;
     }
 
     public void addButton(MoveType type) {
@@ -70,18 +74,13 @@ public class MainScreenController {
         this.movesToExecute.add(type);
     }
 
-    public void removeSelectedMove(MouseEvent mouseEvent) {
+    private void removeSelectedMove(MouseEvent mouseEvent) {
         int index = this.moves.getChildren().indexOf(mouseEvent.getSource());
         this.movesToExecute.remove(index);
         this.moves.getChildren().remove(mouseEvent.getSource());
     }
 
-    public void levelChosen(ActionEvent actionEvent){
-        currentLevel = Integer.parseInt(((ToggleButton)actionEvent.getSource()).getText());
-        levelController.initializeLevel();
-    }
-
-    public void addLevelNumberButton(){
+    private void addLevelNumberButton() {
         ToggleButton button = new ToggleButton(Integer.toString(currentLevel));
         button.setId(Integer.toString(currentLevel));
         button.setPrefHeight(26);
@@ -90,6 +89,11 @@ public class MainScreenController {
         button.setOnAction(this::levelChosen);
         levelNumbersBox.getChildren().add(button);
         levelNumbers.getToggles().add(button);
+    }
+
+    private void levelChosen(ActionEvent actionEvent) {
+        currentLevel = Integer.parseInt(((ToggleButton) actionEvent.getSource()).getText());
+        levelController.initializeLevel();
     }
 
     @FXML
@@ -101,8 +105,8 @@ public class MainScreenController {
             if (levelController.getLevelGenerator().hasNext())
                 currentLevel++;
             else
-                alert.setHeaderText(alert.getHeaderText()+"\nNo more levels available.");
-            if (levelNumbers.getToggles().size()<currentLevel){
+                alert.setHeaderText(alert.getHeaderText() + "\nNo more levels available.");
+            if (levelNumbers.getToggles().size() < currentLevel) {
                 addLevelNumberButton();
             }
             alert.show();
@@ -120,7 +124,4 @@ public class MainScreenController {
         this.movesToExecute.clear();
     }
 
-    public BorderPane getMainBorderPane() {
-        return mainBorderPane;
-    }
 }
