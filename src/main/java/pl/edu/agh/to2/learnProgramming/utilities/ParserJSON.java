@@ -1,9 +1,10 @@
-package pl.edu.agh.to2.learnProgramming.model;
+package pl.edu.agh.to2.learnProgramming.utilities;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import pl.edu.agh.to2.learnProgramming.model.*;
 
 import java.io.File;
 import java.io.FileReader;
@@ -15,57 +16,61 @@ public class ParserJSON {
 
     private JSONObject jsonFile;
     private int amountLevels;
+    private int numberLevel;
 
     public ParserJSON(String path) throws IOException, ParseException {
-
         this.jsonFile = readJson(path);
         this.amountLevels = this.jsonFile.size();
     }
 
-    public JSONObject readJson(String path) throws IOException, ParseException {
+    public void setNumberLevel(int numberLevel) {
+        this.numberLevel = numberLevel;
+    }
+
+    private JSONObject readJson(String path) throws IOException, ParseException {
         JSONParser parser = new JSONParser();
         File json = new File(path);
         FileReader f = new FileReader(json);
         return (JSONObject) parser.parse(f);
     }
 
-    public int getSizeBoard(int numberLevel) {
+    public int getSizeBoard() {
         JSONObject level = (JSONObject) this.jsonFile.get(String.valueOf(numberLevel));
         JSONObject board = (JSONObject) level.get("Board");
         return (int) board.get("size");
     }
 
-    public Point getTurtlePosition(int numberLevel) {
+    public Turtle getTurtlePosition() {
         JSONObject level = (JSONObject) this.jsonFile.get(String.valueOf(numberLevel));
         JSONObject turtlePosition = (JSONObject) level.get("TurtlePosition");
         int x = (int) turtlePosition.get("x");
         int y = (int) turtlePosition.get("y");
-        return new Point(x, y);
+        String direction = (String) turtlePosition.get("direction");
+        TurtleDirection turtleDirection = TurtleDirection.valueOf(direction);
+        return new Turtle(x, y, turtleDirection);
     }
 
-    public List<MoveType> getAvailableMoves(int numberLevel) {
+    public List<MoveType> getAvailableMoves() {
         JSONObject level = (JSONObject) this.jsonFile.get(String.valueOf(numberLevel));
         JSONArray moves = (JSONArray) level.get("MoveTypes");
-        List<MoveType> availableMoves = new ArrayList<MoveType>();
+        List<MoveType> availableMoves = new ArrayList<>();
         for (int i = 0; i < moves.size(); i++) {
             availableMoves.add(MoveType.valueOf((String) moves.get(i)));
         }
         return availableMoves;
     }
 
-    public List<Point> getLevelFields(int numberLevel) {
+    public List<LevelPoint> getLevelFields() {
         JSONObject level = (JSONObject) this.jsonFile.get(String.valueOf(numberLevel));
         JSONObject board = (JSONObject) level.get("Board");
-        JSONObject map = (JSONObject) board.get("map");
-        JSONObject boardSize = (JSONObject) board.get("size");
-        int x = (int) boardSize.get("x");
-        int y = (int) boardSize.get("y");
-        List<Point> fieldList = new ArrayList<>();
-        for (int i = 0; i < y; i++) {
-            String row = (String) map.get(String.valueOf(i));
+        JSONArray map = (JSONArray) board.get("map");
+        int size = (int) board.get("size");
+        List<LevelPoint> fieldList = new ArrayList<>();
+        for (int i = 0; i < size; i++) {
+            String row = (String) map.get(i);
             for (int j = 0; j < row.length(); j++) {
                 if (row.toCharArray()[j] == '*')
-                    fieldList.add(new Point(j,i));
+                    fieldList.add(new LevelPoint(j, i));
             }
         }
         return fieldList;
