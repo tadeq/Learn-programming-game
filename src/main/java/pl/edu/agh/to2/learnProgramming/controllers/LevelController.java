@@ -48,15 +48,18 @@ public class LevelController {
         this.mainScreenController = mainScreenController;
     }
 
+    public LevelGenerator getLevelGenerator() {
+        return generator;
+    }
+
     @FXML
     public void initialize() {
-
+        generator = new LevelGenerator();
     }
 
     public void initializeLevel() {
         levelScreen.prefHeightProperty().bind(mainScreenController.getMainBorderPane().prefHeightProperty().subtract(100));
         levelScreen.prefWidthProperty().bind(mainScreenController.getMainBorderPane().prefWidthProperty().subtract(100));
-        generator = new LevelGenerator();
         level = generator.generate(mainScreenController.getCurrentLevel());
         board.getChildren().clear();
         board.getRowConstraints().clear();

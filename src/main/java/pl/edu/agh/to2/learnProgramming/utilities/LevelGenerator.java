@@ -6,8 +6,18 @@ import java.util.Arrays;
 import java.util.List;
 
 public class LevelGenerator {
-    // TODO
-    // otrzymuje numer poziomu i zwraca odpowiedni poziom wczytany z pliku json
+
+    private boolean hasNext;
+
+    public LevelGenerator() {
+        hasNext = true;
+    }
+
+    public boolean hasNext() {
+        return hasNext;
+    }
+
+    // TODO otrzymuje numer poziomu i zwraca odpowiedni poziom wczytany z pliku json
     public Level generate(int levelNumber) {
         Level level;
         int size;
@@ -22,9 +32,10 @@ public class LevelGenerator {
         } else {
             size = 4;
             moveTypes = Arrays.asList(MoveType.FORWARD, MoveType.RIGHT, MoveType.LEFT);
-            fields = Arrays.asList(new LevelPoint(1, 0), new LevelPoint(1, 1), new LevelPoint(2, 1));//, new LevelPoint(2,2));
+            fields = Arrays.asList(new LevelPoint(1, 0), new LevelPoint(1, 1), new LevelPoint(2, 1));
             turtle = new Turtle(1, 0, TurtleDirection.S);
         }
+        hasNext = levelNumber < 2;  //TODO rozpoznawanie hasNext z pliku JSON
         level = new Level(size, moveTypes, fields, turtle);
         return level;
     }

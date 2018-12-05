@@ -1,13 +1,13 @@
 package pl.edu.agh.to2.learnProgramming.controllers;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import pl.edu.agh.to2.learnProgramming.model.MoveType;
 
 import java.util.LinkedList;
@@ -22,6 +22,10 @@ public class MainScreenController {
     private LevelController levelController;
     @FXML
     private ScrollPane selectedMovesPane;
+    @FXML
+    private VBox levelNumbersBox;
+    @FXML
+    private ToggleGroup levelNumbers;
 
     private int currentLevel;
 
@@ -30,15 +34,26 @@ public class MainScreenController {
     private List<MoveType> movesToExecute;
 
     @FXML
-    void initialize() {
+    public void initialize() {
         mainBorderPane.setPrefWidth(1000);
         mainBorderPane.setPrefHeight(1000);
         currentLevel = 1;
+        levelController.setMainScreenController(this);
+        levelController.initializeLevel();
+        initializeMovesList();
+        levelNumbers = new ToggleGroup();
+        addLevelNumberButton();
+        levelNumbers.getToggles().get(0).setSelected(true);
+        levelNumbers.selectedToggleProperty().addListener(((observable, oldValue, newValue) -> {
+            if (newValue == null)
+                oldValue.setSelected(true);
+        }));
+    }
+
+    public void initializeMovesList(){
         movesToExecute = new LinkedList<>();
         moves = new HBox();
         moves.setSpacing(10);
-        levelController.setMainScreenController(this);
-        levelController.initializeLevel();
     }
 
     public int getCurrentLevel() {
@@ -61,26 +76,45 @@ public class MainScreenController {
         this.moves.getChildren().remove(mouseEvent.getSource());
     }
 
+    public void levelChosen(ActionEvent actionEvent){
+        currentLevel = Integer.parseInt(((ToggleButton)actionEvent.getSource()).getText());
+        levelController.initializeLevel();
+    }
+
+    public void addLevelNumberButton(){
+        ToggleButton button = new ToggleButton(Integer.toString(currentLevel));
+        button.setId(Integer.toString(currentLevel));
+        button.setPrefHeight(26);
+        button.setPrefWidth(50);
+        button.setSelected(true);
+        button.setOnAction(this::levelChosen);
+        levelNumbersBox.getChildren().add(button);
+        levelNumbers.getToggles().add(button);
+    }
+
     @FXML
     public void playButtonClicked() {
         Alert alert;
         if (this.levelController.checkAndExecuteMoves(movesToExecute)) {
             alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setHeaderText("Level passed");
+            if (levelController.getLevelGenerator().hasNext())
+                currentLevel++;
+            else
+                alert.setHeaderText(alert.getHeaderText()+"\nNo more levels available.");
+            if (levelNumbers.getToggles().size()<currentLevel){
+                addLevelNumberButton();
+            }
             alert.show();
-            currentLevel++;
             levelController.initializeLevel();
-            // TODO
-            // zakończenie poziomu i przejście do kolejnego
-            // dodanie listy poziomów po prawej stronie (toggle group), nowy kontroler do VBoxa z nią
         } else {
             this.moves.getChildren().clear();
             this.movesToExecute.clear();
             alert = new Alert(Alert.AlertType.ERROR);
             alert.setHeaderText("Try again");
             alert.show();
-            initialize();
-            levelController.initialize();
+            initializeMovesList();
+            levelController.initializeLevel();
         }
         this.moves.getChildren().clear();
         this.movesToExecute.clear();
