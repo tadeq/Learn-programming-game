@@ -7,7 +7,7 @@
     "TurtlePosition": {
       "x": 1,
       "y": 1,
-      "direction" : "E"
+      "direction": "E"
     },
     "Board": {
       "map": [
@@ -19,6 +19,26 @@
         "------"
       ],
       "size": 6
+    }
+  },
+  "2": {
+    "MoveTypes": [
+      "FORWARD",
+      "RIGHT",
+      "LEFT"
+    ],
+    "TurtlePosition": {
+      "x": 2,
+      "y": 0,
+      "direction": "S"
+    },
+    "Board": {
+      "map": [
+        "--*",
+        "-**",
+        "**-"
+      ],
+      "size": 3
     }
   }
 }

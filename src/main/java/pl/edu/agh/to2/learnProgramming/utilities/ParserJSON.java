@@ -37,14 +37,14 @@ public class ParserJSON {
     public int getSizeBoard() {
         JSONObject level = (JSONObject) this.jsonFile.get(String.valueOf(numberLevel));
         JSONObject board = (JSONObject) level.get("Board");
-        return (int) board.get("size");
+        return ((Long) board.get("size")).intValue();
     }
 
     public Turtle getTurtlePosition() {
         JSONObject level = (JSONObject) this.jsonFile.get(String.valueOf(numberLevel));
         JSONObject turtlePosition = (JSONObject) level.get("TurtlePosition");
-        int x = (int) turtlePosition.get("x");
-        int y = (int) turtlePosition.get("y");
+        int x = ((Long) turtlePosition.get("x")).intValue();
+        int y = ((Long) turtlePosition.get("y")).intValue();
         String direction = (String) turtlePosition.get("direction");
         TurtleDirection turtleDirection = TurtleDirection.valueOf(direction);
         return new Turtle(x, y, turtleDirection);
@@ -64,7 +64,7 @@ public class ParserJSON {
         JSONObject level = (JSONObject) this.jsonFile.get(String.valueOf(numberLevel));
         JSONObject board = (JSONObject) level.get("Board");
         JSONArray map = (JSONArray) board.get("map");
-        int size = (int) board.get("size");
+        int size = ((Long) board.get("size")).intValue();
         List<LevelPoint> fieldList = new ArrayList<>();
         for (int i = 0; i < size; i++) {
             String row = (String) map.get(i);
