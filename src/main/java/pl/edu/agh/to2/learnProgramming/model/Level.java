@@ -47,20 +47,28 @@ public class Level {
         }
     }
 
+    //private Loop loop; - obecnie otwarta petla, w klasie loop lista ruchow, ilosc wywolan
+
     public boolean executeMoves(List<CommandType> movesToExecute) {
-        // TODO rozdzielanie komend na pętle i ruchy, wzorzec command
-        // TODO w zolwiu tylko metody moveForward(), turnRight(), turnLeft()
         visitPoint(turtle.getCoordinates().getX(), turtle.getCoordinates().getY());
         for (CommandType moveToExecute : movesToExecute) {
             switch (moveToExecute) {
                 case FORWARD:
+                    // if loop!=null
                     turtle.moveForward();
+                    // else loop.add(moveToExecute)
                     break;
                 case LEFT:
                     turtle.turnLeft();
                     break;
                 case RIGHT:
                     turtle.turnRight();
+                    break;
+                case STARTLOOP:
+                    //loop = new Loop(calls) //calls - ilosc wywolan
+                    break;
+                case ENDLOOP:
+                    //loop.execute(turtle)
                     break;
                 //TODO loop
             }

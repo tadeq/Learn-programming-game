@@ -21,7 +21,6 @@ public class LevelGenerator {
         return hasNext;
     }
 
-    // TODO otrzymuje numer poziomu i zwraca odpowiedni poziom wczytany z pliku json
     public Level generate(int levelNumber) {
         parser.setNumberLevel(levelNumber);
         Level level = new Level(parser.getSizeBoard(), parser.getAvailableMoves(), parser.getLevelFields(), parser.getTurtlePosition());
