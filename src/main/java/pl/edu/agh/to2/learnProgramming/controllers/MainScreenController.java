@@ -8,7 +8,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import pl.edu.agh.to2.learnProgramming.model.MoveType;
+import pl.edu.agh.to2.learnProgramming.model.CommandType;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -31,7 +31,7 @@ public class MainScreenController {
 
     private HBox moves;
 
-    private List<MoveType> movesToExecute;
+    private List<CommandType> movesToExecute;
 
     @FXML
     public void initialize() {
@@ -64,7 +64,7 @@ public class MainScreenController {
         return mainBorderPane;
     }
 
-    public void addButton(MoveType type) {
+    public void addButton(CommandType type) {
         ImageView img = new ImageView(type.getPath());
         img.setFitHeight(40);
         img.setFitWidth(40);

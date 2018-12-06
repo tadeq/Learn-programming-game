@@ -89,11 +89,11 @@ public class LevelController {
             pane.setStyle("-fx-background-color: darkolivegreen; -fx-border-color: darkgreen");
             board.add(pane, p.getX(), p.getY());
         }
-        forwardButton.setVisible(level.getMoveTypes().contains(MoveType.FORWARD));
-        rightButton.setVisible(level.getMoveTypes().contains(MoveType.RIGHT));
-        leftButton.setVisible(level.getMoveTypes().contains(MoveType.LEFT));
-        startLoopButton.setVisible(level.getMoveTypes().contains(MoveType.STARTLOOP));
-        endLoopButton.setVisible(level.getMoveTypes().contains(MoveType.ENDLOOP));
+        forwardButton.setVisible(level.getCommandTypes().contains(CommandType.FORWARD));
+        rightButton.setVisible(level.getCommandTypes().contains(CommandType.RIGHT));
+        leftButton.setVisible(level.getCommandTypes().contains(CommandType.LEFT));
+        startLoopButton.setVisible(level.getCommandTypes().contains(CommandType.STARTLOOP));
+        endLoopButton.setVisible(level.getCommandTypes().contains(CommandType.ENDLOOP));
         level.getTurtle().getCoordinates().yProperty().addListener((observable, oldValue, newValue) -> {
             try {
                 GridPane.setColumnIndex(turtleImage, (int) newValue);
@@ -119,7 +119,7 @@ public class LevelController {
         turtleImage.setRotate(direction.getRotation());
     }
 
-    public boolean checkAndExecuteMoves(List<MoveType> movesToExecute) {
+    public boolean checkAndExecuteMoves(List<CommandType> movesToExecute) {
         return this.level.executeMoves(movesToExecute) && this.level.allVisited();
         // TODO
         // turtleImage będzie poruszał się po jednym polu tak, aby można było zobaczyć poszczególne kroki
@@ -129,27 +129,27 @@ public class LevelController {
 
     @FXML
     public void forwardClicked(ActionEvent actionEvent) {
-        mainScreenController.addButton(MoveType.FORWARD);
+        mainScreenController.addButton(CommandType.FORWARD);
     }
 
     @FXML
     public void rightClicked(ActionEvent actionEvent) {
-        mainScreenController.addButton(MoveType.RIGHT);
+        mainScreenController.addButton(CommandType.RIGHT);
     }
 
     @FXML
     public void leftClicked(ActionEvent actionEvent) {
-        mainScreenController.addButton(MoveType.LEFT);
+        mainScreenController.addButton(CommandType.LEFT);
     }
 
     @FXML
     public void startLoopClicked(ActionEvent actionEvent) {
-        mainScreenController.addButton(MoveType.STARTLOOP);
+        mainScreenController.addButton(CommandType.STARTLOOP);
     }
 
     @FXML
     public void endLoopClicked(ActionEvent actionEvent) {
-        mainScreenController.addButton(MoveType.ENDLOOP);
+        mainScreenController.addButton(CommandType.ENDLOOP);
     }
 
 }

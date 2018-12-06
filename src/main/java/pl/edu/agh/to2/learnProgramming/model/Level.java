@@ -3,20 +3,20 @@ package pl.edu.agh.to2.learnProgramming.model;
 import java.util.List;
 
 public class Level {
-    private List<MoveType> moveTypes;
+    private List<CommandType> commandTypes;
     private List<LevelPoint> fieldCoordinates;
     private Turtle turtle;
     private int size;
 
-    public Level(int size, List<MoveType> moveTypes, List<LevelPoint> fieldCoordinates, Turtle turtle) {
+    public Level(int size, List<CommandType> commandTypes, List<LevelPoint> fieldCoordinates, Turtle turtle) {
         this.size = size;
-        this.moveTypes = moveTypes;
+        this.commandTypes = commandTypes;
         this.fieldCoordinates = fieldCoordinates;
         this.turtle = turtle;
     }
 
-    public List<MoveType> getMoveTypes() {
-        return moveTypes;
+    public List<CommandType> getCommandTypes() {
+        return commandTypes;
     }
 
     public List<LevelPoint> getFieldCoordinates() {
@@ -47,11 +47,11 @@ public class Level {
         }
     }
 
-    public boolean executeMoves(List<MoveType> movesToExecute) {
+    public boolean executeMoves(List<CommandType> movesToExecute) {
         // TODO rozdzielanie komend na pętle i ruchy, wzorzec command
         // TODO w zolwiu tylko metody moveForward(), turnRight(), turnLeft()
         visitPoint(turtle.getCoordinates().getX(), turtle.getCoordinates().getY());
-        for (MoveType moveToExecute : movesToExecute) {
+        for (CommandType moveToExecute : movesToExecute) {
             switch (moveToExecute) {
                 case FORWARD:
                     turtle.moveForward();

@@ -1,6 +1,6 @@
 package pl.edu.agh.to2.learnProgramming.model;
 
-public enum MoveType {
+public enum CommandType {
     FORWARD("/images/forward.png"),
     RIGHT("/images/right.png"),
     LEFT("/images/left.png"),
@@ -9,7 +9,7 @@ public enum MoveType {
 
     private final String path;
 
-    private MoveType(String path) {
+    private CommandType(String path) {
         this.path = path;
     }
 

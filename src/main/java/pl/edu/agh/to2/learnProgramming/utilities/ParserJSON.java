@@ -50,12 +50,12 @@ public class ParserJSON {
         return new Turtle(x, y, turtleDirection);
     }
 
-    public List<MoveType> getAvailableMoves() {
+    public List<CommandType> getAvailableMoves() {
         JSONObject level = (JSONObject) this.jsonFile.get(String.valueOf(numberLevel));
         JSONArray moves = (JSONArray) level.get("MoveTypes");
-        List<MoveType> availableMoves = new ArrayList<>();
+        List<CommandType> availableMoves = new ArrayList<>();
         for (int i = 0; i < moves.size(); i++) {
-            availableMoves.add(MoveType.valueOf((String) moves.get(i)));
+            availableMoves.add(CommandType.valueOf((String) moves.get(i)));
         }
         return availableMoves;
     }
