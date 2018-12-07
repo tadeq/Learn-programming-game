@@ -47,16 +47,12 @@ public class Level {
         }
     }
 
-    //private Loop loop; - obecnie otwarta petla, w klasie loop lista ruchow, ilosc wywolan
-
     public boolean executeMoves(List<CommandType> movesToExecute) {
         visitPoint(turtle.getCoordinates().getX(), turtle.getCoordinates().getY());
         for (CommandType moveToExecute : movesToExecute) {
             switch (moveToExecute) {
                 case FORWARD:
-                    // if loop!=null
                     turtle.moveForward();
-                    // else loop.add(moveToExecute)
                     break;
                 case LEFT:
                     turtle.turnLeft();
@@ -65,10 +61,8 @@ public class Level {
                     turtle.turnRight();
                     break;
                 case STARTLOOP:
-                    //loop = new Loop(calls) //calls - ilosc wywolan
                     break;
                 case ENDLOOP:
-                    //loop.execute(turtle)
                     break;
                 //TODO loop
             }

@@ -3,13 +3,16 @@ package pl.edu.agh.to2.learnProgramming.controllers;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.SplitPane;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import pl.edu.agh.to2.learnProgramming.model.*;
+import pl.edu.agh.to2.learnProgramming.model.Point;
 import pl.edu.agh.to2.learnProgramming.utilities.LevelGenerator;
 
+import java.awt.*;
 import java.util.List;
 
 
@@ -58,15 +61,13 @@ public class LevelController {
     }
 
     public void initializeLevel() {
-        levelScreen.prefHeightProperty().bind(mainScreenController.getMainBorderPane().prefHeightProperty().subtract(100));
-        levelScreen.prefWidthProperty().bind(mainScreenController.getMainBorderPane().prefWidthProperty().subtract(100));
+        levelScreen.prefHeightProperty().bind(mainScreenController.getMainBorderPane().prefHeightProperty().subtract(90));
+        levelScreen.prefWidthProperty().bind(mainScreenController.getMainBorderPane().prefWidthProperty().subtract(75));
         level = generator.generate(mainScreenController.getCurrentLevel());
         board.getChildren().clear();
         board.getRowConstraints().clear();
         board.getColumnConstraints().clear();
         board.add(turtleImage, level.getTurtle().getCoordinates().getX(), level.getTurtle().getCoordinates().getY());
-        //board.prefWidthProperty().bind(levelScreen.prefWidthProperty());
-        //board.prefHeightProperty().bind(levelScreen.prefHeightProperty());
         board.setHgap(10);
         board.setVgap(10);
         board.paddingProperty().setValue(new Insets(2));
@@ -94,21 +95,7 @@ public class LevelController {
         leftButton.setVisible(level.getCommandTypes().contains(CommandType.LEFT));
         startLoopButton.setVisible(level.getCommandTypes().contains(CommandType.STARTLOOP));
         endLoopButton.setVisible(level.getCommandTypes().contains(CommandType.ENDLOOP));
-        level.getTurtle().getCoordinates().yProperty().addListener((observable, oldValue, newValue) -> {
-            try {
-                GridPane.setColumnIndex(turtleImage, (int) newValue);
-            } catch (IllegalArgumentException e) {
-            }
-        });
-        level.getTurtle().getCoordinates().xProperty().addListener((observable, oldValue, newValue) -> {
-            try {
-                GridPane.setRowIndex(turtleImage, (int) newValue);
-            } catch (IllegalArgumentException e) {
-            }
-        });
-        level.getTurtle().turtleDirectionProperty().addListener(((observable, oldValue, newValue) -> {
-            turtleImage.setRotate(newValue.getRotation());
-        }));
+        addListeners();
         turtleImage.toFront();
         mainScreenController.getMainBorderPane().setCenter(levelScreen);
     }
@@ -117,6 +104,35 @@ public class LevelController {
         GridPane.setColumnIndex(turtleImage, turtleCoords.getX());
         GridPane.setRowIndex(turtleImage, turtleCoords.getY());
         turtleImage.setRotate(direction.getRotation());
+    }
+
+    private void addListeners() {
+        level.getTurtle().getCoordinates().yProperty().addListener((observable, oldValue, newValue) -> {
+            try {
+                GridPane.setRowIndex(turtleImage, (int) newValue);
+            } catch (IllegalArgumentException e) {
+            }
+        });
+        level.getTurtle().getCoordinates().xProperty().addListener((observable, oldValue, newValue) -> {
+            try {
+                GridPane.setColumnIndex(turtleImage, (int) newValue);
+            } catch (IllegalArgumentException e) {
+            }
+        });
+        level.getTurtle().turtleDirectionProperty().addListener(((observable, oldValue, newValue) -> {
+            turtleImage.setRotate(newValue.getRotation());
+        }));
+        for (LevelPoint lp : level.getFieldCoordinates()) {
+            lp.visitedProperty().addListener((observable, oldValue, newValue) -> {
+                for (Node node : board.getChildren()) {
+                    if (node.getClass() == Pane.class) {
+                        Pane p = (Pane) node;
+                        if (GridPane.getRowIndex(p) == lp.getY() && GridPane.getColumnIndex(p) == lp.getX())
+                            p.setStyle("-fx-background-color: greenyellow; -fx-border-color: darkgreen");
+                    }
+                }
+            });
+        }
     }
 
     public boolean checkAndExecuteMoves(List<CommandType> movesToExecute) {

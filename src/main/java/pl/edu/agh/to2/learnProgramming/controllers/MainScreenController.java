@@ -12,6 +12,7 @@ import pl.edu.agh.to2.learnProgramming.model.CommandType;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 public class MainScreenController {
     @FXML
@@ -82,7 +83,6 @@ public class MainScreenController {
 
     private void addLevelNumberButton() {
         ToggleButton button = new ToggleButton(Integer.toString(currentLevel));
-        button.setId(Integer.toString(currentLevel));
         button.setPrefHeight(26);
         button.setPrefWidth(50);
         button.setSelected(true);
@@ -106,17 +106,18 @@ public class MainScreenController {
                 currentLevel++;
             else
                 alert.setHeaderText(alert.getHeaderText() + "\nNo more levels available.");
-            if (levelNumbers.getToggles().size() < currentLevel) {
+            if (levelNumbers.getToggles().size() < currentLevel)
                 addLevelNumberButton();
-            }
-            alert.show();
+            else
+                levelNumbers.getToggles().get(currentLevel-1).setSelected(true);
+            alert.showAndWait();
             levelController.initializeLevel();
         } else {
             this.moves.getChildren().clear();
             this.movesToExecute.clear();
             alert = new Alert(Alert.AlertType.ERROR);
             alert.setHeaderText("Try again");
-            alert.show();
+            alert.showAndWait();
             initializeMovesList();
             levelController.initializeLevel();
         }
