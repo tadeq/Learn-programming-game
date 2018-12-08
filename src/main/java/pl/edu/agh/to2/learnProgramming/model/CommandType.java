@@ -4,8 +4,8 @@ public enum CommandType {
     FORWARD("/images/forward.png"),
     RIGHT("/images/right.png"),
     LEFT("/images/left.png"),
-    STARTLOOP("/images/startloop.png"),
-    ENDLOOP("/images/endloop.png");
+    STARTLOOP("/images/startLoop.png"),
+    ENDLOOP("/images/endLoop.png");
 
     private final String path;
 

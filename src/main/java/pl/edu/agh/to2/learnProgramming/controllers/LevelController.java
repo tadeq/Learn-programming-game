@@ -6,14 +6,15 @@ import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.SplitPane;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import pl.edu.agh.to2.learnProgramming.model.*;
 import pl.edu.agh.to2.learnProgramming.model.Point;
 import pl.edu.agh.to2.learnProgramming.utilities.LevelGenerator;
 
-import java.awt.*;
 import java.util.List;
+import java.util.Optional;
 
 
 public class LevelController {
@@ -136,7 +137,7 @@ public class LevelController {
     }
 
     public boolean checkAndExecuteMoves(List<CommandType> movesToExecute) {
-        return this.level.executeMoves(movesToExecute) && this.level.allVisited();
+        return this.level.executeMoves(this.level.prepareCommands(movesToExecute)) && this.level.allVisited();
         // TODO
         // turtleImage będzie poruszał się po jednym polu tak, aby można było zobaczyć poszczególne kroki
         // kolor odwiedzanych pól będzie zmieniany
@@ -146,6 +147,7 @@ public class LevelController {
     @FXML
     public void forwardClicked(ActionEvent actionEvent) {
         mainScreenController.addButton(CommandType.FORWARD);
+
     }
 
     @FXML
@@ -161,6 +163,15 @@ public class LevelController {
     @FXML
     public void startLoopClicked(ActionEvent actionEvent) {
         mainScreenController.addButton(CommandType.STARTLOOP);
+        TextInputDialog dialog = new TextInputDialog();
+
+        dialog.setTitle("Loop");
+        dialog.setHeaderText("How many loop should repeat:");
+        dialog.setContentText("Value:");
+
+        Optional<String> result = dialog.showAndWait();
+        int aaa = Integer.parseInt(result.toString());
+        System.out.println(aaa);
     }
 
     @FXML

@@ -80,6 +80,29 @@
       ],
       "size": 3
     }
+  },
+  "5": {
+    "MoveTypes": [
+      "FORWARD",
+      "RIGHT",
+      "LEFT",
+      "STARTLOOP",
+      "ENDLOOP"
+    ],
+    "TurtlePosition": {
+      "x": 1,
+      "y": 1,
+      "direction": "E"
+    },
+    "Board": {
+      "map": [
+        "----",
+        "-**-",
+        "-**-",
+        "----"
+      ],
+      "size": 4
+    }
   }
 }
 
