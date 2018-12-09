@@ -53,46 +53,42 @@ public class Level {
 
     public List<CommandType> prepareCommands(List<CommandType> movesToExecute, List<Optional<String>> loopsRepeatList) {
         List<CommandType> commands = new ArrayList<>();
-        int loopCounter=-1;
-        int i = 0;
-        int curr_counter = 0;
-
+        int loopCounter = -1;
+        int currCounter = 0;
         for (CommandType command : movesToExecute) {
             switch (command) {
                 case STARTLOOP:
                     // Biore pierwszy element i po jego odczytaniu usuwam go z listy. Start loopow nie bedzie wiecej niz
                     // elementow w liscie wiec nie trzeba sprawdzacz czy nie pusta
-                    curr_counter = Integer.parseInt(loopsRepeatList.get(0).orElse("0"));
+                    currCounter = Integer.parseInt(loopsRepeatList.get(0).orElse("0"));
                     loopsRepeatList.remove(0);
 
-                    this.loops.add(new Loop(curr_counter > 0 ? curr_counter : 1));
+                    this.loops.add(new Loop(currCounter > 0 ? currCounter : 1));
                     loopCounter++;
                     commands.add(command);
                     break;
                 case ENDLOOP:
                     this.loops.get(loopCounter).setEnd();
-                    for (int x = 0; x < this.loops.get(loopCounter).getCounter()-1; x++) {
+                    for (int x = 0; x < this.loops.get(loopCounter).getCounter() - 1; x++) {
                         commands.addAll(this.loops.get(loopCounter).getCommands());
                     }
                     loopCounter--;
-                    if(loopCounter >= 0) {
-                        for (int x = 0; x < this.loops.get(loopCounter+1).getCounter(); x++) {
+                    if (loopCounter >= 0) {
+                        for (int x = 0; x < this.loops.get(loopCounter + 1).getCounter(); x++) {
                             this.loops.get(loopCounter).addCommands(this.loops.get(loopCounter + 1).getCommands());
                         }
                     }
-                    this.loops.remove(loopCounter+1);
+                    this.loops.remove(loopCounter + 1);
                     commands.add(command);
 
                     break;
                 default:
-                    if(loopCounter>=0) {
+                    if (loopCounter >= 0) {
                         this.loops.get(loopCounter).addCommand(command);
                         commands.add(command);
-                    }
-                    else
+                    } else
                         commands.add(command);
             }
-            i++;
         }
         return commands;
     }

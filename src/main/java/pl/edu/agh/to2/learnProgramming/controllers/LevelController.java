@@ -14,7 +14,6 @@ import pl.edu.agh.to2.learnProgramming.model.*;
 import pl.edu.agh.to2.learnProgramming.model.Point;
 import pl.edu.agh.to2.learnProgramming.utilities.LevelGenerator;
 
-import javax.swing.text.html.Option;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -51,12 +50,26 @@ public class LevelController {
 
     private LevelGenerator generator;
 
+    private int loopsOpened;
+
     public void setMainScreenController(MainScreenController mainScreenController) {
         this.mainScreenController = mainScreenController;
     }
 
     public LevelGenerator getLevelGenerator() {
         return generator;
+    }
+
+    public int getLoopsOpened() {
+        return loopsOpened;
+    }
+
+    public void decLoopsOpened() {
+        loopsOpened--;
+    }
+
+    public void incLoopsOpended() {
+        loopsOpened++;
     }
 
     private List<Optional<String>> loopsRepeatList = new LinkedList<>();
@@ -103,6 +116,7 @@ public class LevelController {
         endLoopButton.setVisible(level.getCommandTypes().contains(CommandType.ENDLOOP));
         addListeners();
         turtleImage.toFront();
+        loopsOpened = 0;
         mainScreenController.getMainBorderPane().setCenter(levelScreen);
     }
 
@@ -152,7 +166,6 @@ public class LevelController {
     @FXML
     public void forwardClicked(ActionEvent actionEvent) {
         mainScreenController.addButton(CommandType.FORWARD);
-
     }
 
     @FXML
@@ -167,6 +180,7 @@ public class LevelController {
 
     @FXML
     public void startLoopClicked(ActionEvent actionEvent) {
+        loopsOpened++;
         mainScreenController.addButton(CommandType.STARTLOOP);
         TextInputDialog dialog = new TextInputDialog();
 
@@ -177,7 +191,7 @@ public class LevelController {
         // pobieram wartosc i wrzucam go do listy, bo moze byc kilka petli
         // lista bedzie przekazana po playu do Level.prepareCommands()
         Optional<String> result = dialog.showAndWait();
-        if(Integer.parseInt(result.orElse("0")) <= 0){
+        if (Integer.parseInt(result.orElse("0")) <= 0) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setHeaderText("Not allowed value. Repeats has been set to 1.");
             alert.showAndWait();
@@ -187,7 +201,14 @@ public class LevelController {
 
     @FXML
     public void endLoopClicked(ActionEvent actionEvent) {
-        mainScreenController.addButton(CommandType.ENDLOOP);
+        if (loopsOpened == 0) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeaderText("You have to start the loop before ending it");
+            alert.show();
+        } else {
+            loopsOpened--;
+            mainScreenController.addButton(CommandType.ENDLOOP);
+        }
     }
 
 }

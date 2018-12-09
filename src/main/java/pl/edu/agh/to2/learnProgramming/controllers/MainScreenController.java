@@ -12,7 +12,6 @@ import pl.edu.agh.to2.learnProgramming.model.CommandType;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Optional;
 
 public class MainScreenController {
     @FXML
@@ -77,7 +76,12 @@ public class MainScreenController {
 
     private void removeSelectedMove(MouseEvent mouseEvent) {
         int index = this.moves.getChildren().indexOf(mouseEvent.getSource());
-        this.movesToExecute.remove(index);
+        CommandType commandType = movesToExecute.get(index);
+        if (commandType.equals(CommandType.ENDLOOP))
+            levelController.incLoopsOpended();
+        else if (commandType.equals(CommandType.STARTLOOP))
+            levelController.decLoopsOpened();
+        movesToExecute.remove(index);
         this.moves.getChildren().remove(mouseEvent.getSource());
     }
 
@@ -99,30 +103,36 @@ public class MainScreenController {
     @FXML
     public void playButtonClicked() {
         Alert alert;
-        if (this.levelController.checkAndExecuteMoves(movesToExecute)) {
-            alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setHeaderText("Level passed");
-            if (levelController.getLevelGenerator().hasNext())
-                currentLevel++;
-            else
-                alert.setHeaderText(alert.getHeaderText() + "\nNo more levels available.");
-            if (levelNumbers.getToggles().size() < currentLevel)
-                addLevelNumberButton();
-            else
-                levelNumbers.getToggles().get(currentLevel-1).setSelected(true);
-            alert.showAndWait();
-            levelController.initializeLevel();
+        if (levelController.getLoopsOpened() != 0) {
+            alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeaderText("Number of startLoop has to be equal to number of endLoop. Check your program.");
+            alert.show();
         } else {
+            if (this.levelController.checkAndExecuteMoves(movesToExecute)) {
+                alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setHeaderText("Level passed");
+                if (levelController.getLevelGenerator().hasNext())
+                    currentLevel++;
+                else
+                    alert.setHeaderText(alert.getHeaderText() + "\nNo more levels available.");
+                if (levelNumbers.getToggles().size() < currentLevel)
+                    addLevelNumberButton();
+                else
+                    levelNumbers.getToggles().get(currentLevel - 1).setSelected(true);
+                alert.showAndWait();
+                levelController.initializeLevel();
+            } else {
+                this.moves.getChildren().clear();
+                this.movesToExecute.clear();
+                alert = new Alert(Alert.AlertType.ERROR);
+                alert.setHeaderText("Try again");
+                alert.showAndWait();
+                initializeMovesList();
+                levelController.initializeLevel();
+            }
             this.moves.getChildren().clear();
             this.movesToExecute.clear();
-            alert = new Alert(Alert.AlertType.ERROR);
-            alert.setHeaderText("Try again");
-            alert.showAndWait();
-            initializeMovesList();
-            levelController.initializeLevel();
         }
-        this.moves.getChildren().clear();
-        this.movesToExecute.clear();
     }
 
 }
