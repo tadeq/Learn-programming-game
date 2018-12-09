@@ -20,7 +20,7 @@ public class Loop {
     }
 
     public int getCounter() {
-        return counter;
+        return this.counter;
     }
 
     public void addCommand(CommandType command) {

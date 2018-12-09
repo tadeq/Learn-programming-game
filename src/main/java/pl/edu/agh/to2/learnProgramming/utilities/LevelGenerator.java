@@ -9,7 +9,7 @@ public class LevelGenerator {
 
     public LevelGenerator() {
         hasNext = true;
-        String path = this.getClass().getResource("/configs/levels.json").getPath();
+        String path = this.getClass().getResource("/configs/levels.json").getPath().replaceAll("%20"," ");
         try {
             parser = new ParserJSON(path);
         } catch (Exception e) {

@@ -13,6 +13,8 @@ import pl.edu.agh.to2.learnProgramming.model.*;
 import pl.edu.agh.to2.learnProgramming.model.Point;
 import pl.edu.agh.to2.learnProgramming.utilities.LevelGenerator;
 
+import javax.swing.text.html.Option;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
@@ -55,6 +57,8 @@ public class LevelController {
     public LevelGenerator getLevelGenerator() {
         return generator;
     }
+
+    private List<Optional<String>> loopsRepeatList = new LinkedList<>();
 
     @FXML
     public void initialize() {
@@ -137,7 +141,7 @@ public class LevelController {
     }
 
     public boolean checkAndExecuteMoves(List<CommandType> movesToExecute) {
-        return this.level.executeMoves(this.level.prepareCommands(movesToExecute)) && this.level.allVisited();
+        return this.level.executeMoves(this.level.prepareCommands(movesToExecute, loopsRepeatList)) && this.level.allVisited();
         // TODO
         // turtleImage będzie poruszał się po jednym polu tak, aby można było zobaczyć poszczególne kroki
         // kolor odwiedzanych pól będzie zmieniany
@@ -169,9 +173,10 @@ public class LevelController {
         dialog.setHeaderText("How many loop should repeat:");
         dialog.setContentText("Value:");
 
+        // pobieram wartosc i wrzucam go do listy, bo moze byc kilka petli
+        // lista bedzie przekazana po playu do Level.prepareCommands()
         Optional<String> result = dialog.showAndWait();
-        int aaa = Integer.parseInt(result.toString());
-        System.out.println(aaa);
+        loopsRepeatList.add(result);
     }
 
     @FXML

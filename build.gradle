@@ -12,8 +12,8 @@ Maciej Moskal
 Jakub Pajor
 Michał Zadora """
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+sourceCompatibility = JavaVersion.VERSION_1_10
+targetCompatibility = JavaVersion.VERSION_1_10
 version = '0.1'
 
 mainClassName = 'pl.edu.agh.to2.learnProgramming.Main'
