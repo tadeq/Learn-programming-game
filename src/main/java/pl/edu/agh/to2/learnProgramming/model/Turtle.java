@@ -33,12 +33,10 @@ public class Turtle {
             case E: {
                 getCoordinates().xProperty().setValue(getCoordinates().getX() + 1);
                 break;
-
             }
             case S: {
                 getCoordinates().yProperty().setValue(getCoordinates().getY() + 1);
                 break;
-
             }
             case W: {
                 getCoordinates().xProperty().setValue(getCoordinates().getX() - 1);

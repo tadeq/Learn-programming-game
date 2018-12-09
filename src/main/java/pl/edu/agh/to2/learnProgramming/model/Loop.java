@@ -6,13 +6,10 @@ import java.util.List;
 public class Loop {
     private int counter;
     private List<CommandType> commands;
-    private boolean isEnd;
-
 
     public Loop(int counter) {
         this.counter = counter;
         this.commands = new ArrayList<>();
-        this.isEnd = false;
     }
 
     public void setCounter(int counter) {
@@ -26,15 +23,12 @@ public class Loop {
     public void addCommand(CommandType command) {
         this.commands.add(command);
     }
-    public void addCommands(List<CommandType> commands){
+
+    public void addCommands(List<CommandType> commands) {
         this.commands.addAll(commands);
     }
 
     public List<CommandType> getCommands() {
         return this.commands;
-    }
-
-    public void setEnd(){
-        this.isEnd = true;
     }
 }

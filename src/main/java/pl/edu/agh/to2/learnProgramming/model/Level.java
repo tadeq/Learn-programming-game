@@ -2,7 +2,6 @@ package pl.edu.agh.to2.learnProgramming.model;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class Level {
     private List<CommandType> commandTypes;
@@ -51,7 +50,7 @@ public class Level {
     }
 
 
-    public List<CommandType> prepareCommands(List<CommandType> movesToExecute, List<Optional<String>> loopsRepeatList) {
+    public List<CommandType> prepareCommands(List<CommandType> movesToExecute, List<Integer> loopsRepeatList) {
         List<CommandType> commands = new ArrayList<>();
         int loopCounter = -1;
         int currCounter = 0;
@@ -60,15 +59,13 @@ public class Level {
                 case STARTLOOP:
                     // Biore pierwszy element i po jego odczytaniu usuwam go z listy. Start loopow nie bedzie wiecej niz
                     // elementow w liscie wiec nie trzeba sprawdzacz czy nie pusta
-                    currCounter = Integer.parseInt(loopsRepeatList.get(0).orElse("0"));
+                    currCounter = loopsRepeatList.get(0);
                     loopsRepeatList.remove(0);
-
                     this.loops.add(new Loop(currCounter > 0 ? currCounter : 1));
                     loopCounter++;
                     commands.add(command);
                     break;
                 case ENDLOOP:
-                    this.loops.get(loopCounter).setEnd();
                     for (int x = 0; x < this.loops.get(loopCounter).getCounter() - 1; x++) {
                         commands.addAll(this.loops.get(loopCounter).getCommands());
                     }
@@ -80,7 +77,6 @@ public class Level {
                     }
                     this.loops.remove(loopCounter + 1);
                     commands.add(command);
-
                     break;
                 default:
                     if (loopCounter >= 0) {

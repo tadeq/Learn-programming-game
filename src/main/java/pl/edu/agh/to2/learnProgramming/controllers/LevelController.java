@@ -4,10 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.SplitPane;
-import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import pl.edu.agh.to2.learnProgramming.model.*;
@@ -52,6 +49,8 @@ public class LevelController {
 
     private int loopsOpened;
 
+    private List<Integer> loopsRepeatList = new LinkedList<>();
+
     public void setMainScreenController(MainScreenController mainScreenController) {
         this.mainScreenController = mainScreenController;
     }
@@ -68,11 +67,13 @@ public class LevelController {
         loopsOpened--;
     }
 
-    public void incLoopsOpended() {
+    public void incLoopsOpened() {
         loopsOpened++;
     }
 
-    private List<Optional<String>> loopsRepeatList = new LinkedList<>();
+    public List<Integer> getLoopsRepeatList() {
+        return this.loopsRepeatList;
+    }
 
     @FXML
     public void initialize() {
@@ -114,6 +115,11 @@ public class LevelController {
         leftButton.setVisible(level.getCommandTypes().contains(CommandType.LEFT));
         startLoopButton.setVisible(level.getCommandTypes().contains(CommandType.STARTLOOP));
         endLoopButton.setVisible(level.getCommandTypes().contains(CommandType.ENDLOOP));
+        forwardButton.setTooltip(new Tooltip("Move forward"));
+        rightButton.setTooltip(new Tooltip("Turn Right"));
+        leftButton.setTooltip(new Tooltip("Turn left"));
+        startLoopButton.setTooltip(new Tooltip("Start Loop"));
+        endLoopButton.setTooltip(new Tooltip("End loop"));
         addListeners();
         turtleImage.toFront();
         loopsOpened = 0;
@@ -165,23 +171,22 @@ public class LevelController {
 
     @FXML
     public void forwardClicked(ActionEvent actionEvent) {
-        mainScreenController.addButton(CommandType.FORWARD);
+        mainScreenController.addCommand(CommandType.FORWARD);
     }
 
     @FXML
     public void rightClicked(ActionEvent actionEvent) {
-        mainScreenController.addButton(CommandType.RIGHT);
+        mainScreenController.addCommand(CommandType.RIGHT);
     }
 
     @FXML
     public void leftClicked(ActionEvent actionEvent) {
-        mainScreenController.addButton(CommandType.LEFT);
+        mainScreenController.addCommand(CommandType.LEFT);
     }
 
     @FXML
     public void startLoopClicked(ActionEvent actionEvent) {
         loopsOpened++;
-        mainScreenController.addButton(CommandType.STARTLOOP);
         TextInputDialog dialog = new TextInputDialog();
 
         dialog.setTitle("Loop");
@@ -191,12 +196,20 @@ public class LevelController {
         // pobieram wartosc i wrzucam go do listy, bo moze byc kilka petli
         // lista bedzie przekazana po playu do Level.prepareCommands()
         Optional<String> result = dialog.showAndWait();
-        if (Integer.parseInt(result.orElse("0")) <= 0) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setHeaderText("Not allowed value. Repeats has been set to 1.");
-            alert.showAndWait();
+        if (result.isPresent()) {
+            int number;
+            if (result.get().equals(""))
+                number = 1;
+            else
+                number = Integer.parseInt(result.get());
+            if (result.get().equals("") || number <= 0) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setHeaderText("Not allowed value. Repeats has been set to 1.");
+                alert.showAndWait();
+            }
+            loopsRepeatList.add(number);
+            mainScreenController.addCommand(CommandType.STARTLOOP);
         }
-        loopsRepeatList.add(result);
     }
 
     @FXML
@@ -207,7 +220,7 @@ public class LevelController {
             alert.show();
         } else {
             loopsOpened--;
-            mainScreenController.addButton(CommandType.ENDLOOP);
+            mainScreenController.addCommand(CommandType.ENDLOOP);
         }
     }
 

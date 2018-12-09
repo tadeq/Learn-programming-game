@@ -1,7 +1,9 @@
 {
   "1": {
     "MoveTypes": [
-      "FORWARD"
+      "FORWARD",
+      "STARTLOOP",
+      "ENDLOOP"
     ],
     "TurtlePosition": {
       "x": 1,

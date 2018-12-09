@@ -5,9 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import pl.edu.agh.to2.learnProgramming.model.CommandType;
 
 import java.util.LinkedList;
@@ -64,12 +62,23 @@ public class MainScreenController {
         return mainBorderPane;
     }
 
-    public void addButton(CommandType type) {
+    public void addCommand(CommandType type) {
         ImageView img = new ImageView(type.getPath());
         img.setFitHeight(40);
         img.setFitWidth(40);
-        img.setOnMouseClicked(this::removeSelectedMove);
-        moves.getChildren().add(img);
+        if (type.equals(CommandType.STARTLOOP)) {
+            HBox box = new HBox();
+            box.setPrefSize(60, 40);
+            box.getChildren().add(img);
+            Label label = new Label(levelController.getLoopsRepeatList().get(levelController.getLoopsRepeatList().size() - 1).toString());
+            label.setPrefSize(20, 40);
+            box.getChildren().add(label);
+            box.setOnMouseClicked(this::removeSelectedMove);
+            moves.getChildren().add(box);
+        } else {
+            img.setOnMouseClicked(this::removeSelectedMove);
+            moves.getChildren().add(img);
+        }
         this.selectedMovesPane.setContent(moves);
         this.movesToExecute.add(type);
     }
@@ -78,7 +87,7 @@ public class MainScreenController {
         int index = this.moves.getChildren().indexOf(mouseEvent.getSource());
         CommandType commandType = movesToExecute.get(index);
         if (commandType.equals(CommandType.ENDLOOP))
-            levelController.incLoopsOpended();
+            levelController.incLoopsOpened();
         else if (commandType.equals(CommandType.STARTLOOP))
             levelController.decLoopsOpened();
         movesToExecute.remove(index);
