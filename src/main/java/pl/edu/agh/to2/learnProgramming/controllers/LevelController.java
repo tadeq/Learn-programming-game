@@ -4,6 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextInputDialog;
@@ -176,6 +177,11 @@ public class LevelController {
         // pobieram wartosc i wrzucam go do listy, bo moze byc kilka petli
         // lista bedzie przekazana po playu do Level.prepareCommands()
         Optional<String> result = dialog.showAndWait();
+        if(Integer.parseInt(result.orElse("0")) <= 0){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeaderText("Not allowed value. Repeats has been set to 1.");
+            alert.showAndWait();
+        }
         loopsRepeatList.add(result);
     }
 

@@ -54,15 +54,18 @@ public class Level {
     public List<CommandType> prepareCommands(List<CommandType> movesToExecute, List<Optional<String>> loopsRepeatList) {
         List<CommandType> commands = new ArrayList<>();
         int loopCounter=-1;
-        int i =0;
+        int i = 0;
+        int curr_counter = 0;
+
         for (CommandType command : movesToExecute) {
             switch (command) {
                 case STARTLOOP:
                     // Biore pierwszy element i po jego odczytaniu usuwam go z listy. Start loopow nie bedzie wiecej niz
                     // elementow w liscie wiec nie trzeba sprawdzacz czy nie pusta
-                    int counter = Integer.parseInt(loopsRepeatList.get(0).orElse("0"));
+                    curr_counter = Integer.parseInt(loopsRepeatList.get(0).orElse("0"));
                     loopsRepeatList.remove(0);
-                    this.loops.add(new Loop(counter));
+
+                    this.loops.add(new Loop(curr_counter > 0 ? curr_counter : 1));
                     loopCounter++;
                     commands.add(command);
                     break;
@@ -72,7 +75,7 @@ public class Level {
                         commands.addAll(this.loops.get(loopCounter).getCommands());
                     }
                     loopCounter--;
-                    if(loopCounter>=0) {
+                    if(loopCounter >= 0) {
                         for (int x = 0; x < this.loops.get(loopCounter+1).getCounter(); x++) {
                             this.loops.get(loopCounter).addCommands(this.loops.get(loopCounter + 1).getCommands());
                         }
