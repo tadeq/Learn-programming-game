@@ -49,8 +49,7 @@ public class Level {
         }
     }
 
-
-    public List<CommandType> prepareCommands(List<CommandType> movesToExecute, List<Integer> loopsRepeatList) {
+    private List<CommandType> prepareCommands(List<CommandType> movesToExecute, List<Integer> loopsRepeatList) {
         List<CommandType> commands = new ArrayList<>();
         int loopCounter = -1;
         int currCounter = 0;
@@ -89,9 +88,10 @@ public class Level {
         return commands;
     }
 
-    public boolean executeMoves(List<CommandType> movesToExecute) {
+    public boolean executeMoves(List<CommandType> movesToExecute, List<Integer> loopsRepeatList) {
+        List<CommandType> moves = prepareCommands(movesToExecute, loopsRepeatList);
         visitPoint(turtle.getCoordinates().getX(), turtle.getCoordinates().getY());
-        for (CommandType moveToExecute : movesToExecute) {
+        for (CommandType moveToExecute : moves) {
             switch (moveToExecute) {
                 case FORWARD:
                     turtle.moveForward();
@@ -102,11 +102,6 @@ public class Level {
                 case RIGHT:
                     turtle.turnRight();
                     break;
-//                case STARTLOOP:
-//                    break;
-//                case ENDLOOP:
-//                    break;
-//                //TODO loop
             }
             if (isMoveCorrect())
                 visitPoint(turtle.getCoordinates().getX(), turtle.getCoordinates().getY());

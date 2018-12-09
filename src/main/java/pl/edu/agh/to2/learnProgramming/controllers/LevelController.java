@@ -78,6 +78,11 @@ public class LevelController {
     @FXML
     public void initialize() {
         generator = new LevelGenerator();
+        forwardButton.setTooltip(new Tooltip("Move forward"));
+        rightButton.setTooltip(new Tooltip("Turn Right"));
+        leftButton.setTooltip(new Tooltip("Turn left"));
+        startLoopButton.setTooltip(new Tooltip("Start Loop"));
+        endLoopButton.setTooltip(new Tooltip("End loop"));
     }
 
     public void initializeLevel() {
@@ -115,11 +120,6 @@ public class LevelController {
         leftButton.setVisible(level.getCommandTypes().contains(CommandType.LEFT));
         startLoopButton.setVisible(level.getCommandTypes().contains(CommandType.STARTLOOP));
         endLoopButton.setVisible(level.getCommandTypes().contains(CommandType.ENDLOOP));
-        forwardButton.setTooltip(new Tooltip("Move forward"));
-        rightButton.setTooltip(new Tooltip("Turn Right"));
-        leftButton.setTooltip(new Tooltip("Turn left"));
-        startLoopButton.setTooltip(new Tooltip("Start Loop"));
-        endLoopButton.setTooltip(new Tooltip("End loop"));
         addListeners();
         turtleImage.toFront();
         loopsOpened = 0;
@@ -162,7 +162,7 @@ public class LevelController {
     }
 
     public boolean checkAndExecuteMoves(List<CommandType> movesToExecute) {
-        return this.level.executeMoves(this.level.prepareCommands(movesToExecute, loopsRepeatList)) && this.level.allVisited();
+        return this.level.executeMoves(movesToExecute, loopsRepeatList) && this.level.allVisited();
         // TODO
         // turtleImage będzie poruszał się po jednym polu tak, aby można było zobaczyć poszczególne kroki
         // kolor odwiedzanych pól będzie zmieniany
