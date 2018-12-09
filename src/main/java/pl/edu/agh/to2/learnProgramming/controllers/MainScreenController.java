@@ -66,7 +66,7 @@ public class MainScreenController {
         ImageView img = new ImageView(type.getPath());
         img.setFitHeight(40);
         img.setFitWidth(40);
-        if (type.equals(CommandType.STARTLOOP)) {
+        if (type == CommandType.STARTLOOP) {
             HBox box = new HBox();
             box.setPrefSize(60, 40);
             box.getChildren().add(img);
@@ -86,10 +86,18 @@ public class MainScreenController {
     private void removeSelectedMove(MouseEvent mouseEvent) {
         int index = this.moves.getChildren().indexOf(mouseEvent.getSource());
         CommandType commandType = movesToExecute.get(index);
-        if (commandType.equals(CommandType.ENDLOOP))
+        if (commandType == CommandType.ENDLOOP)
             levelController.incLoopsOpened();
-        else if (commandType.equals(CommandType.STARTLOOP))
+        else if (commandType == CommandType.STARTLOOP) {
             levelController.decLoopsOpened();
+            int loopsBefore = 0;
+            for (int i = 0; i < index; i++) {
+                if (movesToExecute.get(i) == CommandType.STARTLOOP) {
+                    loopsBefore++;
+                }
+            }
+            levelController.getLoopsRepeatList().remove(loopsBefore);
+        }
         movesToExecute.remove(index);
         this.moves.getChildren().remove(mouseEvent.getSource());
     }
