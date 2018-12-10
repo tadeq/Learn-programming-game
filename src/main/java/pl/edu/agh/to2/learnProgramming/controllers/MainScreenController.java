@@ -1,3 +1,25 @@
+/**
+ * Controller - main screen.
+ * Contains information about:
+ *      frontend:
+ *          BorderPane mainBorderPane
+ *          Button playButton
+ *          ScrollPane selectedMovesPane
+ *          VBox levelNumbersBox
+ *          ToggleGroup levelNumbers
+ *          HBox moves
+ *
+ *      backend:
+ *          int currentLevel
+ *          List<CommandType> movesToExecute
+ *
+ *
+ * @author
+ *      Maciej Moskal
+ *      Jakub Pajor
+ *      Michał Zadora
+ */
+
 package pl.edu.agh.to2.learnProgramming.controllers;
 
 import javafx.event.ActionEvent;
@@ -10,6 +32,7 @@ import pl.edu.agh.to2.learnProgramming.model.CommandType;
 
 import java.util.LinkedList;
 import java.util.List;
+
 
 public class MainScreenController {
     @FXML
@@ -48,6 +71,9 @@ public class MainScreenController {
         }));
     }
 
+    /**
+     * Initialize a HBox for moves.
+     */
     private void initializeMovesList() {
         movesToExecute = new LinkedList<>();
         moves = new HBox();
@@ -62,6 +88,10 @@ public class MainScreenController {
         return mainBorderPane;
     }
 
+    /**
+     * Adds command do movesToExecute and sets it on the view.
+     * @param type - (Enum) CommandType
+     */
     public void addCommand(CommandType type) {
         ImageView img = new ImageView(type.getPath());
         img.setFitHeight(40);
@@ -83,6 +113,11 @@ public class MainScreenController {
         this.movesToExecute.add(type);
     }
 
+    /**
+     * When user clicks on a previously selected command
+     * then the action is delivered and the command is removed.
+     * @param mouseEvent - MouseEvent
+     */
     private void removeSelectedMove(MouseEvent mouseEvent) {
         int index = this.moves.getChildren().indexOf(mouseEvent.getSource());
         CommandType commandType = movesToExecute.get(index);
@@ -102,6 +137,9 @@ public class MainScreenController {
         this.moves.getChildren().remove(mouseEvent.getSource());
     }
 
+    /**
+     * Adds level number button on right VBox in the view.
+     */
     private void addLevelNumberButton() {
         ToggleButton button = new ToggleButton(Integer.toString(currentLevel));
         button.setPrefHeight(26);
@@ -112,11 +150,19 @@ public class MainScreenController {
         levelNumbers.getToggles().add(button);
     }
 
+    /**
+     * Is invoked when user selects other available level.
+     * @param actionEvent
+     */
     private void levelChosen(ActionEvent actionEvent) {
         currentLevel = Integer.parseInt(((ToggleButton) actionEvent.getSource()).getText());
         levelController.initializeLevel();
     }
 
+    /**
+     * Is invoked when user clicks "play" button.
+     * It means, when user wants to run his commands.
+     */
     @FXML
     public void playButtonClicked() {
         Alert alert;
