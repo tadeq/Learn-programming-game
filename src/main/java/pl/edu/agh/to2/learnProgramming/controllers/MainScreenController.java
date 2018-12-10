@@ -125,30 +125,48 @@ public class MainScreenController {
             alert.setHeaderText("Number of startLoop has to be equal to number of endLoop. Check your program.");
             alert.show();
         } else {
-            if (this.levelController.checkAndExecuteMoves(movesToExecute)) {
-                alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setHeaderText("Level passed");
-                if (levelController.getLevelGenerator().hasNext())
-                    currentLevel++;
-                else
-                    alert.setHeaderText(alert.getHeaderText() + "\nNo more levels available.");
-                if (levelNumbers.getToggles().size() < currentLevel)
-                    addLevelNumberButton();
-                else
-                    levelNumbers.getToggles().get(currentLevel - 1).setSelected(true);
-                alert.showAndWait();
-                levelController.initializeLevel();
-            } else {
+            boolean loopsGood = true;
+            int loopsOpened = 0;
+            for (CommandType command : movesToExecute) {
+                if (command == CommandType.STARTLOOP)
+                    loopsOpened++;
+                else if (command == CommandType.ENDLOOP)
+                    loopsOpened--;
+                if (loopsOpened < 0) {
+                    loopsGood = false;
+                    break;
+                }
+            }
+            if (loopsGood) {
+                if (this.levelController.checkAndExecuteMoves(movesToExecute)) {
+                    alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setHeaderText("Level passed");
+                    if (levelController.getLevelGenerator().hasNext())
+                        currentLevel++;
+                    else
+                        alert.setHeaderText(alert.getHeaderText() + "\nNo more levels available.");
+                    if (levelNumbers.getToggles().size() < currentLevel)
+                        addLevelNumberButton();
+                    else
+                        levelNumbers.getToggles().get(currentLevel - 1).setSelected(true);
+                    alert.showAndWait();
+                    levelController.initializeLevel();
+                } else {
+                    this.moves.getChildren().clear();
+                    this.movesToExecute.clear();
+                    alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setHeaderText("Try again");
+                    alert.showAndWait();
+                    initializeMovesList();
+                    levelController.initializeLevel();
+                }
                 this.moves.getChildren().clear();
                 this.movesToExecute.clear();
+            } else {
                 alert = new Alert(Alert.AlertType.ERROR);
-                alert.setHeaderText("Try again");
-                alert.showAndWait();
-                initializeMovesList();
-                levelController.initializeLevel();
+                alert.setHeaderText("Can't end loop before starting it. Check your program.");
+                alert.show();
             }
-            this.moves.getChildren().clear();
-            this.movesToExecute.clear();
         }
     }
 
