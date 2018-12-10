@@ -15,9 +15,9 @@ public class LevelTest {
     @Test
     public void testFieldsVisiting() {
         level.executeMoves(Arrays.asList(CommandType.FORWARD, CommandType.FORWARD, CommandType.RIGHT), null);
-        assertFalse(level.allVisited());
+        assertFalse(level.areAllFieldsVisited());
         level.executeMoves(Arrays.asList(CommandType.FORWARD), null);
-        assertTrue(level.allVisited());
+        assertTrue(level.areAllFieldsVisited());
     }
 
     @Test

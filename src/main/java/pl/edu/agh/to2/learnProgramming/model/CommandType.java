@@ -1,3 +1,19 @@
+/**
+ * @author
+ *      Maciej Moskal
+ *      Jakub Pajor
+ *      Michał Zadora
+ *
+ * Enum - command types.
+ * All command types contain its picture path.
+ * Available commands:
+ *      FORWARD
+ *      RIGHT
+ *      LEFT
+ *      STARTLOOP
+ *      ENDLOOP
+ *
+ */
 package pl.edu.agh.to2.learnProgramming.model;
 
 public enum CommandType {

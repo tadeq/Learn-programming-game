@@ -1,3 +1,15 @@
+/**
+ * @author
+ *      Maciej Moskal
+ *      Jakub Pajor
+ *      Michał Zadora
+ *
+ * Model - turtle.
+ * Contains information about:
+ *      Point coordinates
+ *      ObjectProperty<TurtleDirection> turtleDirection
+ */
+
 package pl.edu.agh.to2.learnProgramming.model;
 
 import javafx.beans.property.ObjectProperty;
@@ -24,6 +36,9 @@ public class Turtle {
         return turtleDirection;
     }
 
+    /**
+     * Moves forward depending on the current direction.
+     */
     public void moveForward() {
         switch (turtleDirection.getValue()) {
             case N: {
@@ -45,10 +60,16 @@ public class Turtle {
         }
     }
 
+    /**
+     * Sets its direction to the next left.
+     */
     public void turnLeft() {
         turtleDirection.setValue(turtleDirection.get().turnLeft());
     }
 
+    /**
+     * Sets its direction to the next right.
+     */
     public void turnRight() {
         turtleDirection.setValue(turtleDirection.get().turnRight());
     }

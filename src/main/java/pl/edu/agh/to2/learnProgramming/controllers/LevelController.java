@@ -1,3 +1,28 @@
+/**
+ * @author
+ *      Maciej Moskal
+ *      Jakub Pajor
+ *      Michał Zadora
+ *
+ * Contains information about:
+ *      frontend:
+ *          SplitPane levelScreen
+ *          ImageView turtleImage
+ *          GridPane board
+ *          Button forwardButton
+ *          Button rightButton
+ *          Button leftButton
+ *          Button startLoopButton
+ *          Button endLoopButton
+ *
+ *      backend:
+ *          MainScreenController mainScreenController
+ *          private Level level
+ *          LevelGenerator generator
+ *          int loopsOpened
+ *          List<Integer> loopsRepeatList
+ */
+
 package pl.edu.agh.to2.learnProgramming.controllers;
 
 import javafx.event.ActionEvent;
@@ -85,6 +110,17 @@ public class LevelController {
         endLoopButton.setTooltip(new Tooltip("End loop"));
     }
 
+    /**
+     * Set up lazily level using LevelGenerator generator,
+     * based on currently selected level in mainScreenController:
+     *      levelScreen
+     *      level
+     *      board
+     *      turtle
+     *      visible commands
+     *
+     * Observe turtle and change its position as well as current field color in the view.
+     */
     public void initializeLevel() {
         levelScreen.prefHeightProperty().bind(mainScreenController.getMainBorderPane().prefHeightProperty().subtract(90));
         levelScreen.prefWidthProperty().bind(mainScreenController.getMainBorderPane().prefWidthProperty().subtract(75));
@@ -126,12 +162,22 @@ public class LevelController {
         mainScreenController.getMainBorderPane().setCenter(levelScreen);
     }
 
+    /**
+     * Sets turtle position and direction in the view.
+     *
+     * @param turtleCoords - Point
+     * @param direction - (Enum) TurtleDirection
+     */
     private void setTurtleImagePosition(Point turtleCoords, TurtleDirection direction) {
         GridPane.setColumnIndex(turtleImage, turtleCoords.getX());
         GridPane.setRowIndex(turtleImage, turtleCoords.getY());
         turtleImage.setRotate(direction.getRotation());
     }
 
+    /**
+     * Listens to current turtle positions in (this) Level
+     * and sets its: position, direction, field color in the view.
+     */
     private void addListeners() {
         level.getTurtle().getCoordinates().yProperty().addListener((observable, oldValue, newValue) -> {
             try {
@@ -161,29 +207,53 @@ public class LevelController {
         }
     }
 
+
+    /**
+     * Asks this.level to execute given moves (commands) for turtle
+     * and to checks if after the execution every field has been visited
+     *
+     * @param movesToExecute
+     * @return true - if moves has been executed successfully and every field has been visited, false - otherwise
+     */
     public boolean checkAndExecuteMoves(List<CommandType> movesToExecute) {
-        return this.level.executeMoves(movesToExecute, loopsRepeatList) && this.level.allVisited();
+        return this.level.executeMoves(movesToExecute, loopsRepeatList) && this.level.areAllFieldsVisited();
         // TODO
         // turtleImage będzie poruszał się po jednym polu tak, aby można było zobaczyć poszczególne kroki
         // kolor odwiedzanych pól będzie zmieniany
     }
 
 
+    /**
+     * Adds FORWARD command after being chosen by user.
+     * @param actionEvent
+     */
     @FXML
     public void forwardClicked(ActionEvent actionEvent) {
         mainScreenController.addCommand(CommandType.FORWARD);
     }
 
+    /**
+     * Adds RIGHT command after being chosen by user.
+     * @param actionEvent
+     */
     @FXML
     public void rightClicked(ActionEvent actionEvent) {
         mainScreenController.addCommand(CommandType.RIGHT);
     }
 
+    /**
+     * Adds LEFT command after being chosen by user.
+     * @param actionEvent
+     */
     @FXML
     public void leftClicked(ActionEvent actionEvent) {
         mainScreenController.addCommand(CommandType.LEFT);
     }
 
+    /**
+     * Adds and opens LOOP command after being chosen by user.
+     * @param actionEvent
+     */
     @FXML
     public void startLoopClicked(ActionEvent actionEvent) {
         loopsOpened++;
@@ -212,6 +282,10 @@ public class LevelController {
         }
     }
 
+    /**
+     * Adds and closes LOOP command after being chosen by user.
+     * @param actionEvent
+     */
     @FXML
     public void endLoopClicked(ActionEvent actionEvent) {
         if (loopsOpened == 0) {

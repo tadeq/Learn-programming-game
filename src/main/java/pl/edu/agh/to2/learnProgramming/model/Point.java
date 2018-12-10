@@ -1,3 +1,14 @@
+/**
+ * @author
+ *      Maciej Moskal
+ *      Jakub Pajor
+ *      Michał Zadora
+ *
+ * Model - point.
+ * Contains information about:
+ *      IntegerProperty x, y (observable coordinates)
+ */
+
 package pl.edu.agh.to2.learnProgramming.model;
 
 import javafx.beans.property.IntegerProperty;

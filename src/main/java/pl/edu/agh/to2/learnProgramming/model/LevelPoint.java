@@ -1,5 +1,16 @@
-package pl.edu.agh.to2.learnProgramming.model;
+/**
+ * @author
+ *      Maciej Moskal
+ *      Jakub Pajor
+ *      Michał Zadora
+ *
+ * Model - level point.
+ * Contains information about:
+ *      IntegerProperty x, y (observable coordinates)
+ *      BooleanProperty visited (observable, if has been visited).
+ */
 
+package pl.edu.agh.to2.learnProgramming.model;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -24,8 +35,4 @@ public class LevelPoint extends Point {
         this.visited.setValue(true);
     }
 
-    /* Method not really necessary */
-    public void setNotVisited() {
-        this.visited.setValue(false);
-    }
 }

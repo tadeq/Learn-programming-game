@@ -1,3 +1,18 @@
+/**
+ * @author
+ *      Maciej Moskal
+ *      Jakub Pajor
+ *      Michał Zadora
+ *
+ * Enum - turtle direction.
+ * All directions contain its proper angle.
+ * Available commands:
+ *      N
+ *      S
+ *      W
+ *      E
+ */
+
 package pl.edu.agh.to2.learnProgramming.model;
 
 public enum TurtleDirection {
@@ -12,6 +27,10 @@ public enum TurtleDirection {
         this.rotation = value;
     }
 
+    /**
+     * Sets current direction to next on the right.
+     * @return this
+     */
     public TurtleDirection turnRight() {
         switch (this) {
             case N:
@@ -26,6 +45,11 @@ public enum TurtleDirection {
         return this;
     }
 
+
+    /**
+     * Sets current direction to next on the left.
+     * @return this
+     */
     public TurtleDirection turnLeft() {
         switch (this) {
             case N:

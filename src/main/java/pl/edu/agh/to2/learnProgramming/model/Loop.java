@@ -1,3 +1,15 @@
+/**
+ * @author
+ *      Maciej Moskal
+ *      Jakub Pajor
+ *      Michał Zadora
+ *
+ * Model - loop.
+ * Contains information about:
+ *      List<CommandType> commands (commands inside the loop)
+ *      int counter (its repetition number)
+ */
+
 package pl.edu.agh.to2.learnProgramming.model;
 
 import java.util.ArrayList;

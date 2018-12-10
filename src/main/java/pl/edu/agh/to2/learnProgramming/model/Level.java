@@ -1,3 +1,17 @@
+/**
+ * @author
+ *      Maciej Moskal
+ *      Jakub Pajor
+ *      Michał Zadora
+ *
+ * Model - level.
+ * Contains information about:
+ *     List<CommandType> commandTypes
+ *     List<LevelPoint> fieldCoordinates
+ *     List<Loop> loops
+ *     Turtle turtle
+ *     int size
+ */
 package pl.edu.agh.to2.learnProgramming.model;
 
 import java.util.ArrayList;
@@ -33,22 +47,43 @@ public class Level {
         return this.size;
     }
 
-    public boolean allVisited() {
+    /**
+     * Checks if all required fields have visited status.
+     * @return true : false
+     */
+    public boolean areAllFieldsVisited() {
         return this.fieldCoordinates.stream().allMatch(LevelPoint::isVisited);
     }
 
+    /**
+     * Checks if turtle position after move (command) execution is still on required path
+     * @return true : false
+     */
     private boolean isMoveCorrect() {
         return this.fieldCoordinates.stream()
                 .anyMatch(field -> field.getX() == turtle.getCoordinates().getX() && field.getY() == turtle.getCoordinates().getY());
     }
 
-    private void visitPoint(int x, int y) {
+    /**
+     * Sets given point (int x, int y) as visited.
+     * @param x - turtle x position
+     * @param y - turtle y position
+     */
+    private void setPointVisited(int x, int y) {
         for (LevelPoint field : fieldCoordinates) {
             if (field.getX() == x && field.getY() == y)
                 field.setVisited();
         }
     }
 
+    /**
+     * Processes selected by user commands (moves) to prepare loops;
+     * Checks if user has used loop(s) and if so, then add every commands required by user times to the list.
+     *
+     * @param movesToExecute - list of moves (commands) selected by user
+     * @param loopsRepeatList - list of loops' repetitions number
+     * @return - prepared list of commands (moves) to execute
+     */
     private List<CommandType> prepareCommands(List<CommandType> movesToExecute, List<Integer> loopsRepeatList) {
         List<CommandType> commands = new ArrayList<>();
         int loopCounter = -1;
@@ -88,9 +123,16 @@ public class Level {
         return commands;
     }
 
+    /**
+     * Executes chosen by user moves (commands) for turtle.
+     *
+     * @param movesToExecute - list of moves (commands) selected by user
+     * @param loopsRepeatList - list of loops' repetitions number
+     * @return true - if moves (commands) executed correctly, false - otherwise
+     */
     public boolean executeMoves(List<CommandType> movesToExecute, List<Integer> loopsRepeatList) {
         List<CommandType> moves = prepareCommands(movesToExecute, loopsRepeatList);
-        visitPoint(turtle.getCoordinates().getX(), turtle.getCoordinates().getY());
+        setPointVisited(turtle.getCoordinates().getX(), turtle.getCoordinates().getY());
         for (CommandType moveToExecute : moves) {
             switch (moveToExecute) {
                 case FORWARD:
@@ -104,7 +146,7 @@ public class Level {
                     break;
             }
             if (isMoveCorrect())
-                visitPoint(turtle.getCoordinates().getX(), turtle.getCoordinates().getY());
+                setPointVisited(turtle.getCoordinates().getX(), turtle.getCoordinates().getY());
             else
                 return false;
 //            try {

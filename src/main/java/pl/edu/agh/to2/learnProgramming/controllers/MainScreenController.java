@@ -1,4 +1,9 @@
 /**
+ * @author
+ *      Maciej Moskal
+ *      Jakub Pajor
+ *      Michał Zadora
+ *
  * Controller - main screen.
  * Contains information about:
  *      frontend:
@@ -10,14 +15,9 @@
  *          HBox moves
  *
  *      backend:
+ *          LevelController levelController
  *          int currentLevel
  *          List<CommandType> movesToExecute
- *
- *
- * @author
- *      Maciej Moskal
- *      Jakub Pajor
- *      Michał Zadora
  */
 
 package pl.edu.agh.to2.learnProgramming.controllers;
