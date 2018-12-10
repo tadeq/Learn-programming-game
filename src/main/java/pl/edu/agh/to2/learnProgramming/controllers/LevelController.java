@@ -256,7 +256,6 @@ public class LevelController {
      */
     @FXML
     public void startLoopClicked(ActionEvent actionEvent) {
-        loopsOpened++;
         TextInputDialog dialog = new TextInputDialog();
 
         dialog.setTitle("Loop");
@@ -278,6 +277,7 @@ public class LevelController {
                 alert.showAndWait();
             }
             loopsRepeatList.add(number);
+            loopsOpened++;
             mainScreenController.addCommand(CommandType.STARTLOOP);
         }
     }
