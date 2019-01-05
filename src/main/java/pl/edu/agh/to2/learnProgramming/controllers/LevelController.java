@@ -31,6 +31,7 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import pl.edu.agh.to2.learnProgramming.command.*;
 import pl.edu.agh.to2.learnProgramming.model.*;
 import pl.edu.agh.to2.learnProgramming.model.Point;
 import pl.edu.agh.to2.learnProgramming.utilities.LevelGenerator;
@@ -71,7 +72,7 @@ public class LevelController {
 
     private LevelGenerator generator;
 
-    private int loopsOpened;
+    private Integer loopsOpened;
 
     private List<Integer> loopsRepeatList = new LinkedList<>();
 
@@ -112,12 +113,12 @@ public class LevelController {
     /**
      * Set up lazily level using LevelGenerator generator,
      * based on currently selected level in mainScreenController:
-     *      levelScreen
-     *      level
-     *      board
-     *      turtle
-     *      visible commands
-     *
+     * levelScreen
+     * level
+     * board
+     * turtle
+     * visible commands
+     * <p>
      * Observe turtle and change its position as well as current field color in the view.
      */
     public void initializeLevel() {
@@ -165,7 +166,7 @@ public class LevelController {
      * Sets turtle position and direction in the view.
      *
      * @param turtleCoords - Point
-     * @param direction - (Enum) TurtleDirection
+     * @param direction    - (Enum) TurtleDirection
      */
     private void setTurtleImagePosition(Point turtleCoords, TurtleDirection direction) {
         GridPane.setColumnIndex(turtleImage, turtleCoords.getX());
@@ -214,7 +215,7 @@ public class LevelController {
      * @param movesToExecute
      * @return true - if moves has been executed successfully and every field has been visited, false - otherwise
      */
-    public boolean checkAndExecuteMoves(List<CommandType> movesToExecute) {
+    public boolean checkAndExecuteMoves(List<Command> movesToExecute) {
         return this.level.executeMoves(movesToExecute, loopsRepeatList) && this.level.areAllFieldsVisited();
         // TODO
         // turtleImage będzie poruszał się po jednym polu tak, aby można było zobaczyć poszczególne kroki
@@ -226,33 +227,37 @@ public class LevelController {
 
     /**
      * Adds FORWARD command after being chosen by user.
+     *
      * @param actionEvent
      */
     @FXML
     public void forwardClicked(ActionEvent actionEvent) {
-        mainScreenController.addCommand(CommandType.FORWARD);
+        mainScreenController.addCommand(new MoveForwardCommand(level.getTurtle()));
     }
 
     /**
      * Adds RIGHT command after being chosen by user.
+     *
      * @param actionEvent
      */
     @FXML
     public void rightClicked(ActionEvent actionEvent) {
-        mainScreenController.addCommand(CommandType.RIGHT);
+        mainScreenController.addCommand(new TurnRightCommand(level.getTurtle()));
     }
 
     /**
      * Adds LEFT command after being chosen by user.
+     *
      * @param actionEvent
      */
     @FXML
     public void leftClicked(ActionEvent actionEvent) {
-        mainScreenController.addCommand(CommandType.LEFT);
+        mainScreenController.addCommand(new TurnLeftCommand(level.getTurtle()));
     }
 
     /**
      * Adds and opens LOOP command after being chosen by user.
+     *
      * @param actionEvent
      */
     @FXML
@@ -279,12 +284,13 @@ public class LevelController {
             }
             loopsRepeatList.add(number);
             loopsOpened++;
-            mainScreenController.addCommand(CommandType.STARTLOOP);
+            mainScreenController.addCommand(new StartLoopCommand());
         }
     }
 
     /**
      * Adds and closes LOOP command after being chosen by user.
+     *
      * @param actionEvent
      */
     @FXML
@@ -295,7 +301,7 @@ public class LevelController {
             alert.show();
         } else {
             loopsOpened--;
-            mainScreenController.addCommand(CommandType.ENDLOOP);
+            mainScreenController.addCommand(new EndLoopCommand());
         }
     }
 }

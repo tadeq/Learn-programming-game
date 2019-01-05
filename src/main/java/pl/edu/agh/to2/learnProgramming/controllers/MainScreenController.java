@@ -1,23 +1,22 @@
 /**
- * @author
- *      Maciej Moskal
- *      Jakub Pajor
- *      Michał Zadora
- *
+ * @author Maciej Moskal
+ * Jakub Pajor
+ * Michał Zadora
+ * <p>
  * Controller - main screen.
  * Contains information about:
- *      frontend:
- *          BorderPane mainBorderPane
- *          Button playButton
- *          ScrollPane selectedMovesPane
- *          VBox levelNumbersBox
- *          ToggleGroup levelNumbers
- *          HBox moves
- *
- *      backend:
- *          LevelController levelController
- *          int currentLevel
- *          List<CommandType> movesToExecute
+ * frontend:
+ * BorderPane mainBorderPane
+ * Button playButton
+ * ScrollPane selectedMovesPane
+ * VBox levelNumbersBox
+ * ToggleGroup levelNumbers
+ * HBox moves
+ * <p>
+ * backend:
+ * LevelController levelController
+ * int currentLevel
+ * List<CommandType> movesToExecute
  */
 
 package pl.edu.agh.to2.learnProgramming.controllers;
@@ -28,7 +27,9 @@ import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
-import pl.edu.agh.to2.learnProgramming.model.CommandType;
+import pl.edu.agh.to2.learnProgramming.command.Command;
+import pl.edu.agh.to2.learnProgramming.command.LoopCommand;
+import pl.edu.agh.to2.learnProgramming.command.StartLoopCommand;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -52,7 +53,7 @@ public class MainScreenController {
 
     private HBox moves;
 
-    private List<CommandType> movesToExecute;
+    private List<Command> movesToExecute;
 
     @FXML
     public void initialize() {
@@ -78,6 +79,7 @@ public class MainScreenController {
         movesToExecute = new LinkedList<>();
         moves = new HBox();
         moves.setSpacing(10);
+        this.selectedMovesPane.setContent(moves);
     }
 
     public int getCurrentLevel() {
@@ -90,14 +92,15 @@ public class MainScreenController {
 
     /**
      * Adds command do movesToExecute and sets it on the view.
-     * @param type - (Enum) CommandType
+     *
+     * @param command - (Enum) CommandType
      */
-    public void addCommand(CommandType type) {
+    public void addCommand(Command command) {
         //TODO przeciąganie klocków na liście ruchów
-        ImageView img = new ImageView(type.getPath());
+        ImageView img = new ImageView(command.getPath());
         img.setFitHeight(40);
         img.setFitWidth(40);
-        if (type == CommandType.STARTLOOP) {
+        if (command.getClass() == StartLoopCommand.class) {
             HBox box = new HBox();
             box.setPrefSize(60, 40);
             box.getChildren().add(img);
@@ -111,28 +114,20 @@ public class MainScreenController {
             moves.getChildren().add(img);
         }
         this.selectedMovesPane.setContent(moves);
-        this.movesToExecute.add(type);
+        this.movesToExecute.add(command);
     }
 
     /**
      * When user clicks on a previously selected command
      * then the action is delivered and the command is removed.
+     *
      * @param mouseEvent - MouseEvent
      */
     private void removeSelectedMove(MouseEvent mouseEvent) {
         int index = this.moves.getChildren().indexOf(mouseEvent.getSource());
-        CommandType commandType = movesToExecute.get(index);
-        if (commandType == CommandType.ENDLOOP)
-            levelController.incLoopsOpened();
-        else if (commandType == CommandType.STARTLOOP) {
-            levelController.decLoopsOpened();
-            int loopsBefore = 0;
-            for (int i = 0; i < index; i++) {
-                if (movesToExecute.get(i) == CommandType.STARTLOOP) {
-                    loopsBefore++;
-                }
-            }
-            levelController.getLoopsRepeatList().remove(loopsBefore);
+        Command command = movesToExecute.get(index);
+        if (command.isLoop()) {
+            ((LoopCommand) command).onRemove(index, levelController, movesToExecute);
         }
         movesToExecute.remove(index);
         this.moves.getChildren().remove(mouseEvent.getSource());
@@ -153,10 +148,12 @@ public class MainScreenController {
 
     /**
      * Is invoked when user selects other available level.
+     *
      * @param actionEvent
      */
     private void levelChosen(ActionEvent actionEvent) {
         currentLevel = Integer.parseInt(((ToggleButton) actionEvent.getSource()).getText());
+        initializeMovesList();
         levelController.initializeLevel();
     }
 
@@ -174,11 +171,9 @@ public class MainScreenController {
         } else {
             boolean loopsGood = true;
             int loopsOpened = 0;
-            for (CommandType command : movesToExecute) {
-                if (command == CommandType.STARTLOOP)
-                    loopsOpened++;
-                else if (command == CommandType.ENDLOOP)
-                    loopsOpened--;
+            for (Command command : movesToExecute) {
+                if (command.isLoop())
+                    loopsOpened = ((LoopCommand) command).changeLoopsOpened(loopsOpened);
                 if (loopsOpened < 0) {
                     loopsGood = false;
                     break;
