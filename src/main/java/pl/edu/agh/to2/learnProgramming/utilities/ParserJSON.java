@@ -4,6 +4,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import pl.edu.agh.to2.learnProgramming.model.CommandType;
 import pl.edu.agh.to2.learnProgramming.model.*;
 
 import java.io.File;
@@ -52,7 +53,7 @@ public class ParserJSON {
 
     public List<CommandType> getAvailableMoves() {
         JSONObject level = (JSONObject) this.jsonFile.get(String.valueOf(numberLevel));
-        JSONArray moves = (JSONArray) level.get("MoveTypes");
+        JSONArray moves = (JSONArray) level.get("Commands");
         List<CommandType> availableMoves = new ArrayList<>();
         for (int i = 0; i < moves.size(); i++) {
             availableMoves.add(CommandType.valueOf((String) moves.get(i)));

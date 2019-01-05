@@ -26,16 +26,22 @@ package pl.edu.agh.to2.learnProgramming.controllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import pl.edu.agh.to2.learnProgramming.command.*;
 import pl.edu.agh.to2.learnProgramming.model.*;
 import pl.edu.agh.to2.learnProgramming.model.Point;
 import pl.edu.agh.to2.learnProgramming.utilities.LevelGenerator;
 
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -66,13 +72,16 @@ public class LevelController {
     @FXML
     private Button endLoopButton;
 
+    @FXML
+    public Button procedureButton;
+
     private MainScreenController mainScreenController;
 
     private Level level;
 
     private LevelGenerator generator;
 
-    private Integer loopsOpened;
+    private int loopsOpened;
 
     private List<Integer> loopsRepeatList = new LinkedList<>();
 
@@ -106,8 +115,9 @@ public class LevelController {
         forwardButton.setTooltip(new Tooltip("Move forward"));
         rightButton.setTooltip(new Tooltip("Turn Right"));
         leftButton.setTooltip(new Tooltip("Turn left"));
-        startLoopButton.setTooltip(new Tooltip("Start Loop"));
+        startLoopButton.setTooltip(new Tooltip("Start loop"));
         endLoopButton.setTooltip(new Tooltip("End loop"));
+        procedureButton.setTooltip(new Tooltip("Procedures menu"));
     }
 
     /**
@@ -156,6 +166,7 @@ public class LevelController {
         leftButton.setVisible(level.getCommandTypes().contains(CommandType.LEFT));
         startLoopButton.setVisible(level.getCommandTypes().contains(CommandType.STARTLOOP));
         endLoopButton.setVisible(level.getCommandTypes().contains(CommandType.ENDLOOP));
+        procedureButton.setVisible(level.getCommandTypes().contains(CommandType.PROCEDURE));
         addListeners();
         turtleImage.toFront();
         loopsOpened = 0;
@@ -303,5 +314,21 @@ public class LevelController {
             loopsOpened--;
             mainScreenController.addCommand(new EndLoopCommand());
         }
+    }
+
+    @FXML
+    public void procedureClicked(ActionEvent actionEvent) {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/procedures.fxml"));
+        Parent root = null;
+        try {
+            root = loader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Stage stage = new Stage();
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setTitle("Procedures");
+        stage.setScene(new Scene(root));
+        stage.show();
     }
 }

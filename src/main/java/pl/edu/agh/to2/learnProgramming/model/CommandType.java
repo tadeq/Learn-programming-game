@@ -21,7 +21,8 @@ public enum CommandType {
     RIGHT("/images/right.png"),
     LEFT("/images/left.png"),
     STARTLOOP("/images/startLoop.png"),
-    ENDLOOP("/images/endLoop.png");
+    ENDLOOP("/images/endLoop.png"),
+    PROCEDURE("/images/procedure.png");
 
     private final String path;
 

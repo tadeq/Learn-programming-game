@@ -10,8 +10,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 
-
-<SplitPane fx:id="levelScreen" dividerPositions="0.8241206030150754" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" pickOnBounds="false" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.edu.agh.to2.learnProgramming.controllers.LevelController">
+<SplitPane fx:id="levelScreen" dividerPositions="0.8241206030150754" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" pickOnBounds="false" prefHeight="254.0" prefWidth="553.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.edu.agh.to2.learnProgramming.controllers.LevelController">
    <items>
       <GridPane fx:id="board" hgap="10.0" vgap="10.0">
          <columnConstraints>
@@ -98,6 +97,15 @@
                <HBox.margin>
                   <Insets />
                </HBox.margin>
+            </Button>
+            <Button fx:id="procedureButton" alignment="CENTER" mnemonicParsing="false" onAction="#procedureClicked" prefHeight="70.0" prefWidth="60.0">
+               <graphic>
+                  <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/procedure.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
             </Button>
          </children>
          <padding>

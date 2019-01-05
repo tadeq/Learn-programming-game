@@ -1,7 +1,8 @@
 {
   "1": {
-    "MoveTypes": [
-      "FORWARD"
+    "Commands": [
+      "FORWARD",
+      "PROCEDURE"
     ],
     "TurtlePosition": {
       "x": 0,
@@ -18,7 +19,7 @@
     }
   },
   "2": {
-    "MoveTypes": [
+    "Commands": [
       "FORWARD",
       "RIGHT"
     ],
@@ -38,7 +39,7 @@
     }
   },
   "3": {
-    "MoveTypes": [
+    "Commands": [
       "FORWARD",
       "RIGHT",
       "LEFT"
@@ -60,7 +61,7 @@
     }
   },
   "4": {
-    "MoveTypes": [
+    "Commands": [
       "FORWARD",
       "RIGHT",
       "LEFT"
@@ -80,7 +81,7 @@
     }
   },
   "5": {
-    "MoveTypes": [
+    "Commands": [
       "FORWARD",
       "RIGHT",
       "LEFT",
@@ -103,7 +104,7 @@
     }
   },
   "6": {
-    "MoveTypes": [
+    "Commands": [
       "FORWARD",
       "RIGHT",
       "LEFT",
