@@ -93,6 +93,7 @@ public class MainScreenController {
      * @param type - (Enum) CommandType
      */
     public void addCommand(CommandType type) {
+        //TODO przeciąganie klocków na liście ruchów
         ImageView img = new ImageView(type.getPath());
         img.setFitHeight(40);
         img.setFitWidth(40);

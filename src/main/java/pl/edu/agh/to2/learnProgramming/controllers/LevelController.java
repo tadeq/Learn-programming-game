@@ -1,26 +1,25 @@
 /**
- * @author
- *      Maciej Moskal
- *      Jakub Pajor
- *      Michał Zadora
- *
+ * @author Maciej Moskal
+ * Jakub Pajor
+ * Michał Zadora
+ * <p>
  * Contains information about:
- *      frontend:
- *          SplitPane levelScreen
- *          ImageView turtleImage
- *          GridPane board
- *          Button forwardButton
- *          Button rightButton
- *          Button leftButton
- *          Button startLoopButton
- *          Button endLoopButton
- *
- *      backend:
- *          MainScreenController mainScreenController
- *          private Level level
- *          LevelGenerator generator
- *          int loopsOpened
- *          List<Integer> loopsRepeatList
+ * frontend:
+ * SplitPane levelScreen
+ * ImageView turtleImage
+ * GridPane board
+ * Button forwardButton
+ * Button rightButton
+ * Button leftButton
+ * Button startLoopButton
+ * Button endLoopButton
+ * <p>
+ * backend:
+ * MainScreenController mainScreenController
+ * private Level level
+ * LevelGenerator generator
+ * int loopsOpened
+ * List<Integer> loopsRepeatList
  */
 
 package pl.edu.agh.to2.learnProgramming.controllers;
@@ -220,6 +219,8 @@ public class LevelController {
         // TODO
         // turtleImage będzie poruszał się po jednym polu tak, aby można było zobaczyć poszczególne kroki
         // kolor odwiedzanych pól będzie zmieniany
+        // SequentialTransition
+        // AnimationTimer
     }
 
 
@@ -259,7 +260,7 @@ public class LevelController {
         TextInputDialog dialog = new TextInputDialog();
 
         dialog.setTitle("Loop");
-        dialog.setHeaderText("How many loop should repeat:");
+        dialog.setHeaderText("Loop repeats:");
         dialog.setContentText("Value:");
 
         // pobieram wartosc i wrzucam go do listy, bo moze byc kilka petli
@@ -273,7 +274,7 @@ public class LevelController {
                 number = Integer.parseInt(result.get());
             if (result.get().equals("") || number <= 0) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setHeaderText("Not allowed value. Repeats has been set to 1.");
+                alert.setHeaderText("Value not allowed. Repeats has been set to 1.");
                 alert.showAndWait();
             }
             loopsRepeatList.add(number);
@@ -297,5 +298,4 @@ public class LevelController {
             mainScreenController.addCommand(CommandType.ENDLOOP);
         }
     }
-
 }
