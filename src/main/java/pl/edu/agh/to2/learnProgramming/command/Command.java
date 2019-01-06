@@ -1,8 +1,17 @@
 package pl.edu.agh.to2.learnProgramming.command;
 
-public interface Command {
+import javafx.scene.Node;
 
-    String getPath();
+import java.util.List;
+
+public interface Command {
+    void execute();
 
     boolean isLoop();
+
+    Node getImage();
+
+    void setCommands(List<Command> commands);
+
+    void setLoopCounter(int loopCounter);
 }

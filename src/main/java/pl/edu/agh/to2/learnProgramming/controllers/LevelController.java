@@ -77,6 +77,8 @@ public class LevelController {
 
     private MainScreenController mainScreenController;
 
+    private ProceduresController proceduresController;
+
     private Level level;
 
     private LevelGenerator generator;
@@ -223,11 +225,11 @@ public class LevelController {
      * Asks this.level to execute given moves (commands) for turtle
      * and to checks if after the execution every field has been visited
      *
-     * @param movesToExecute
+     * @param commandsToExecute
      * @return true - if moves has been executed successfully and every field has been visited, false - otherwise
      */
-    public boolean checkAndExecuteMoves(List<Command> movesToExecute) {
-        return this.level.executeMoves(movesToExecute, loopsRepeatList) && this.level.areAllFieldsVisited();
+    public boolean checkAndExecuteMoves(List<Command> commandsToExecute) {
+        return this.level.executeMoves(commandsToExecute, loopsRepeatList) && this.level.areAllFieldsVisited();
         // TODO
         // turtleImage będzie poruszał się po jednym polu tak, aby można było zobaczyć poszczególne kroki
         // kolor odwiedzanych pól będzie zmieniany
@@ -243,7 +245,7 @@ public class LevelController {
      */
     @FXML
     public void forwardClicked(ActionEvent actionEvent) {
-        mainScreenController.addCommand(new MoveForwardCommand(level.getTurtle()));
+        mainScreenController.addCommand(new MoveForwardCommand(this.level.getLoops()));
     }
 
     /**
@@ -253,7 +255,7 @@ public class LevelController {
      */
     @FXML
     public void rightClicked(ActionEvent actionEvent) {
-        mainScreenController.addCommand(new TurnRightCommand(level.getTurtle()));
+        mainScreenController.addCommand(new TurnRightCommand(this.level.getLoops()));
     }
 
     /**
@@ -263,7 +265,7 @@ public class LevelController {
      */
     @FXML
     public void leftClicked(ActionEvent actionEvent) {
-        mainScreenController.addCommand(new TurnLeftCommand(level.getTurtle()));
+        mainScreenController.addCommand(new TurnLeftCommand(this.level.getLoops()));
     }
 
     /**
@@ -279,8 +281,6 @@ public class LevelController {
         dialog.setHeaderText("Loop repeats:");
         dialog.setContentText("Value:");
 
-        // pobieram wartosc i wrzucam go do listy, bo moze byc kilka petli
-        // lista bedzie przekazana po playu do Level.prepareCommands()
         Optional<String> result = dialog.showAndWait();
         if (result.isPresent()) {
             int number;
@@ -295,7 +295,7 @@ public class LevelController {
             }
             loopsRepeatList.add(number);
             loopsOpened++;
-            mainScreenController.addCommand(new StartLoopCommand());
+            mainScreenController.addCommand(new StartLoopCommand(this.level.getLoops(), this.loopsRepeatList));
         }
     }
 
@@ -312,7 +312,7 @@ public class LevelController {
             alert.show();
         } else {
             loopsOpened--;
-            mainScreenController.addCommand(new EndLoopCommand());
+            mainScreenController.addCommand(new EndLoopCommand(this.level.getLoops(), this.loopsRepeatList));
         }
     }
 
@@ -330,5 +330,9 @@ public class LevelController {
         stage.setTitle("Procedures");
         stage.setScene(new Scene(root));
         stage.show();
+        ProceduresController proceduresController = loader.getController();
+        proceduresController.setMainScreenController(this.mainScreenController);
+        proceduresController.setProcedures(this.mainScreenController.getProcedures());
+        proceduresController.setLoops(level.getLoops());
     }
 }

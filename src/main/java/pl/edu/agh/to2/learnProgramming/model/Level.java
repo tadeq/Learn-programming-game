@@ -18,6 +18,7 @@ import pl.edu.agh.to2.learnProgramming.command.LoopCommand;
 import pl.edu.agh.to2.learnProgramming.command.MoveCommand;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class Level {
@@ -48,6 +49,10 @@ public class Level {
 
     public int getSize() {
         return this.size;
+    }
+
+    public List<Loop> getLoops() {
+        return this.loops;
     }
 
     /**
@@ -83,36 +88,8 @@ public class Level {
     }
 
     /**
-     * Processes selected by user commands (moves) to prepare loops;
-     * Checks if user has used loop(s) and if so, then add every commands required by user times to the list.
-     *
-     * @param movesToExecute  - list of moves (commands) selected by user
-     * @param loopsRepeatList - list of loops' repetitions number
-     * @return - prepared list of commands (moves) to execute
-     */
-    private List<Command> prepareCommands(List<Command> movesToExecute, List<Integer> loopsRepeatList) {
-        List<Command> commands = new ArrayList<>();
-        int loopCounter = -1;
-        int currCounter = 0;
-        for (Command command : movesToExecute) {
-            if (command.isLoop()) {
-                LoopCommand loopCommand = (LoopCommand) command;
-                loopCommand.setCurrCounter(currCounter);
-                loopCommand.setLoopCounter(loopCounter);
-                loopCommand.execute(loops, loopsRepeatList, commands);
-                loopCounter = loopCommand.getLoopCounter();
-                currCounter = loopCommand.getCurrCounter();
-            } else {
-                if (loopCounter >= 0) {
-                    this.loops.get(loopCounter).addCommand(command);
-                }
-                commands.add(command);
-            }
-        }
-        return commands;
-    }
-
-    /**
+     * At first processes selected by user commands (moves) to prepare loops,
+     * then checks if user has used loop(s) and if so, then add every commands required by user times to the list.
      * Executes chosen by user moves (commands) for turtle.
      *
      * @param movesToExecute  - list of moves (commands) selected by user
@@ -120,9 +97,26 @@ public class Level {
      * @return true - if moves (commands) executed correctly, false - otherwise
      */
     public boolean executeMoves(List<Command> movesToExecute, List<Integer> loopsRepeatList) {
-        List<Command> moves = prepareCommands(movesToExecute, loopsRepeatList);
+        List<Command> commands = new LinkedList<>();
+        int loopCounter = -1;
+        int currCounter = 0;
+        for (Command command : movesToExecute) {
+            command.setCommands(commands);
+            command.setLoopCounter(loopCounter);
+            if (command.isLoop()) {
+                LoopCommand loopCommand = (LoopCommand) command;
+                loopCommand.setCurrCounter(currCounter);
+                loopCommand.execute();
+                loopCounter = loopCommand.getLoopCounter();
+                currCounter = loopCommand.getCurrCounter();
+            } else {
+                MoveCommand moveCommand = (MoveCommand) command;
+                moveCommand.setTurtle(turtle);
+                moveCommand.prepare();
+            }
+        }
         setPointVisited(turtle.getCoordinates().getX(), turtle.getCoordinates().getY());
-        for (Command command : moves) {
+        for (Command command : commands) {
             MoveCommand moveCommand = (MoveCommand) command;
             moveCommand.execute();
             if (isMoveCorrect())

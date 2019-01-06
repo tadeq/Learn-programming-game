@@ -18,12 +18,12 @@
          <children>
             <ScrollPane prefHeight="200.0" prefWidth="520.0">
                <content>
-                  <ListView prefHeight="269.0" prefWidth="505.0" />
+                  <ListView fx:id="proceduresList" prefHeight="269.0" prefWidth="505.0" />
                </content>
             </ScrollPane>
             <VBox prefHeight="200.0" prefWidth="100.0">
                <children>
-                  <Button fx:id="addProcedureButton" alignment="CENTER" mnemonicParsing="false" onAction="#addProcedureClicked" prefHeight="70.0" prefWidth="60.0">
+                  <Button fx:id="addButton" alignment="CENTER" mnemonicParsing="false" onAction="#addClicked" prefHeight="70.0" prefWidth="60.0">
                      <graphic>
                         <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -40,6 +40,18 @@
                         <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../images/check.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <VBox.margin>
+                        <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                     </VBox.margin>
+                  </Button>
+                  <Button fx:id="deleteButton" alignment="CENTER" mnemonicParsing="false" onAction="#deleteClicked" prefHeight="70.0" prefWidth="60.0">
+                     <graphic>
+                        <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/delete.png" />
                            </image>
                         </ImageView>
                      </graphic>
@@ -125,7 +137,7 @@
          <children>
             <SplitPane dividerPositions="0.9010025062656641" pickOnBounds="false" prefHeight="80.0" prefWidth="600.0">
                <items>
-                  <ScrollPane fx:id="selectedMovesPane" prefHeight="6.0" prefWidth="707.0">
+                  <ScrollPane fx:id="selectedCommandsPane" prefHeight="6.0" prefWidth="707.0">
                      <padding>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </padding>

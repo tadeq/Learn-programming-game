@@ -1,18 +1,35 @@
 package pl.edu.agh.to2.learnProgramming.command;
 
+import javafx.scene.Node;
+import javafx.scene.image.ImageView;
 import pl.edu.agh.to2.learnProgramming.controllers.LevelController;
+import pl.edu.agh.to2.learnProgramming.model.CommandType;
 import pl.edu.agh.to2.learnProgramming.model.Loop;
 
 import java.util.List;
 
 public class EndLoopCommand implements LoopCommand {
-    private String path;
-
     private int loopCounter;
     private int currCounter;
 
-    public EndLoopCommand() {
-        this.path = "/images/endLoop.png";
+    private List<Command> commands;
+
+    private List<Integer> loopsRepeatList;
+
+    private List<Loop> loops;
+
+    private ImageView img;
+
+    public EndLoopCommand(List<Loop> loops, List<Integer> loopsRepeatList) {
+        this.loops = loops;
+        this.loopsRepeatList = loopsRepeatList;
+        this.img = new ImageView(CommandType.ENDLOOP.getPath());
+        img.setFitHeight(40);
+        img.setFitWidth(40);
+    }
+
+    public void setCommands(List<Command> commands) {
+        this.commands = commands;
     }
 
     public void setLoopCounter(int loopCounter) {
@@ -37,7 +54,12 @@ public class EndLoopCommand implements LoopCommand {
     }
 
     @Override
-    public void execute(List<Loop> loops, List<Integer> loopsRepeats, List<Command> commands) {
+    public Node getImage() {
+        return img;
+    }
+
+    @Override
+    public void execute() {
         for (int x = 0; x < loops.get(loopCounter).getCounter() - 1; x++) {
             commands.addAll(loops.get(loopCounter).getCommands());
         }
@@ -48,11 +70,6 @@ public class EndLoopCommand implements LoopCommand {
             }
         }
         loops.remove(loopCounter + 1);
-    }
-
-    @Override
-    public String getPath() {
-        return path;
     }
 
     public void onRemove(int index, LevelController levelController, List<Command> movesToExecute) {

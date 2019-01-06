@@ -1,15 +1,22 @@
 package pl.edu.agh.to2.learnProgramming.controllers;
 
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Tooltip;
+import javafx.scene.Node;
+import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
+import pl.edu.agh.to2.learnProgramming.command.*;
+import pl.edu.agh.to2.learnProgramming.model.Loop;
+import pl.edu.agh.to2.learnProgramming.model.Procedure;
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Optional;
 
 public class ProceduresController {
-
-    @FXML
-    private Button addProcedureButton;
-
     @FXML
     private Button forwardButton;
 
@@ -26,44 +33,34 @@ public class ProceduresController {
     private Button endLoopButton;
 
     @FXML
+    private Button addButton;
+
+    @FXML
     private Button saveButton;
 
     @FXML
     private Button useButton;
 
     @FXML
-    public void addProcedureClicked(ActionEvent actionEvent) {
-        setButtonsVisibility(true);
-    }
+    private Button deleteButton;
 
     @FXML
-    public void saveClicked(ActionEvent actionEvent) {
-        setButtonsVisibility(false);
-    }
+    public ListView<Procedure> proceduresList;
 
     @FXML
-    public void useClicked(ActionEvent actionEvent) {
-    }
+    public ScrollPane selectedCommandsPane;
 
-    @FXML
-    public void forwardClicked(ActionEvent actionEvent) {
-    }
+    private HBox commands;
 
-    @FXML
-    public void rightClicked(ActionEvent actionEvent) {
-    }
+    private ObservableList<Procedure> procedures;
 
-    @FXML
-    public void leftClicked(ActionEvent actionEvent) {
-    }
+    private Procedure currentProcedure;
 
-    @FXML
-    public void startLoopClicked(ActionEvent actionEvent) {
-    }
+    private List<Command> currentCommands;
 
-    @FXML
-    public void endLoopClicked(ActionEvent actionEvent) {
-    }
+    private List<Loop> loops;
+
+    private MainScreenController mainScreenController;
 
     @FXML
     public void initialize() {
@@ -74,15 +71,140 @@ public class ProceduresController {
         startLoopButton.setTooltip(new Tooltip("Start loop"));
         endLoopButton.setTooltip(new Tooltip("End loop"));
         saveButton.setTooltip(new Tooltip("Save procedure"));
-        addProcedureButton.setTooltip(new Tooltip("Add procedure"));
+        addButton.setTooltip(new Tooltip("Add procedure"));
         useButton.setTooltip(new Tooltip("Use procedure"));
+        deleteButton.setTooltip(new Tooltip("Delete procedure"));
+        currentCommands = new LinkedList<>();
+        proceduresList.getSelectionModel().selectedItemProperty().addListener(((observable, oldValue, newValue) -> {
+            initializeMovesList();
+            if (newValue != null) {
+                addButton.setVisible(false);
+                currentProcedure = newValue;
+                setButtonsVisibility(true);
+                List<Command> commands = newValue.getCommands();
+                for (Command command : commands) {
+                    addCommand(command);
+                }
+            } else {
+                addButton.setVisible(true);
+            }
+        }));
+    }
+
+    public void setMainScreenController(MainScreenController mainScreenController) {
+        this.mainScreenController = mainScreenController;
+    }
+
+    public void setProcedures(ObservableList<Procedure> procedures) {
+        this.procedures = procedures;
+        this.proceduresList.setItems(this.procedures);
+    }
+
+    public void setLoops(List<Loop> loops) {
+        this.loops = loops;
     }
 
     private void setButtonsVisibility(boolean visible) {
         forwardButton.setVisible(visible);
         rightButton.setVisible(visible);
         leftButton.setVisible(visible);
-        startLoopButton.setVisible(visible);
-        endLoopButton.setVisible(visible);
+        saveButton.setVisible(visible);
+        deleteButton.setVisible(visible);
+        useButton.setVisible(visible);
+        startLoopButton.setVisible(false);
+        endLoopButton.setVisible(false);
+    }
+
+    @FXML
+    public void addClicked(ActionEvent actionEvent) {
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle("New procedure");
+        dialog.setHeaderText("Procedure name:");
+        Optional<String> result = dialog.showAndWait();
+        if (result.isPresent()) {
+            if (procedures.stream().anyMatch(procedure -> procedure.getName().equals(result.get()))) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setHeaderText("A procedure with the same name is already on the list");
+                alert.showAndWait();
+            } else {
+                Procedure procedure = new Procedure(result.get());
+                procedures.add(procedure);
+                proceduresList.setItems(procedures);
+                currentProcedure = procedure;
+                proceduresList.getSelectionModel().select(procedure);
+                setButtonsVisibility(true);
+            }
+        }
+    }
+
+    @FXML
+    public void saveClicked(ActionEvent actionEvent) {
+        setButtonsVisibility(false);
+        currentProcedure.getCommands().clear();
+        for (Command command : currentCommands) {
+            currentProcedure.addCommand(command);
+        }
+        currentProcedure = null;
+        proceduresList.getSelectionModel().clearSelection();
+    }
+
+    @FXML
+    public void deleteClicked(ActionEvent actionEvent) {
+        setButtonsVisibility(false);
+        procedures.remove(proceduresList.getSelectionModel().getSelectedIndex());
+        proceduresList.setItems(procedures);
+        proceduresList.getSelectionModel().clearSelection();
+    }
+
+    @FXML
+    public void useClicked(ActionEvent actionEvent) {
+        mainScreenController.addCommand(new ProcedureCommand(currentProcedure.getName(), currentProcedure.getCommands(), loops));
+        ((Stage) useButton.getScene().getWindow()).close();
+    }
+
+    @FXML
+    public void forwardClicked(ActionEvent actionEvent) {
+        addCommand(new MoveForwardCommand(loops));
+    }
+
+    @FXML
+    public void rightClicked(ActionEvent actionEvent) {
+        addCommand(new TurnRightCommand(loops));
+    }
+
+    @FXML
+    public void leftClicked(ActionEvent actionEvent) {
+        addCommand(new TurnLeftCommand(loops));
+    }
+
+    @FXML
+    public void startLoopClicked(ActionEvent actionEvent) {
+    }
+
+    @FXML
+    public void endLoopClicked(ActionEvent actionEvent) {
+    }
+
+
+    private void initializeMovesList() {
+        commands = new HBox();
+        commands.setSpacing(10);
+        this.selectedCommandsPane.setContent(commands);
+        currentCommands.clear();
+    }
+
+    public void addCommand(Command command) {
+        Node img = command.getImage();
+        img.setOnMouseClicked(this::removeSelectedMove);
+        commands.getChildren().add(img);
+        this.selectedCommandsPane.setContent(commands);
+        currentCommands.add(command);
+    }
+
+    private void removeSelectedMove(MouseEvent mouseEvent) {
+        int index = this.commands.getChildren().indexOf(mouseEvent.getSource());
+        //currentProcedure.getCommands().remove(index);
+        currentCommands.remove(index);
+        this.commands.getChildren().remove(mouseEvent.getSource());
     }
 }

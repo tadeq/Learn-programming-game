@@ -1,15 +1,29 @@
 package pl.edu.agh.to2.learnProgramming.command;
 
+import javafx.scene.Node;
+import javafx.scene.image.ImageView;
+import pl.edu.agh.to2.learnProgramming.model.CommandType;
+import pl.edu.agh.to2.learnProgramming.model.Loop;
 import pl.edu.agh.to2.learnProgramming.model.Turtle;
+
+import java.util.List;
 
 public class MoveForwardCommand implements MoveCommand {
     private Turtle turtle;
 
-    private String path;
+    private ImageView img;
 
-    public MoveForwardCommand(Turtle turtle) {
-        this.turtle = turtle;
-        this.path = "/images/forward.png";
+    private List<Command> commands;
+
+    private List<Loop> loops;
+
+    private int loopCounter;
+
+    public MoveForwardCommand(List<Loop> loops) {
+        this.loops = loops;
+        this.img = new ImageView(CommandType.FORWARD.getPath());
+        img.setFitHeight(40);
+        img.setFitWidth(40);
     }
 
     @Override
@@ -18,12 +32,35 @@ public class MoveForwardCommand implements MoveCommand {
     }
 
     @Override
-    public String getPath() {
-        return this.path;
+    public void prepare() {
+        if (loopCounter >= 0) {
+            this.loops.get(loopCounter).addCommand(this);
+        }
+        commands.add(this);
+    }
+
+    @Override
+    public void setTurtle(Turtle turtle) {
+        this.turtle = turtle;
+    }
+
+    @Override
+    public void setCommands(List<Command> commands) {
+        this.commands = commands;
+    }
+
+    @Override
+    public void setLoopCounter(int loopCounter) {
+        this.loopCounter = loopCounter;
     }
 
     @Override
     public boolean isLoop() {
         return false;
+    }
+
+    @Override
+    public Node getImage() {
+        return img;
     }
 }

@@ -8,10 +8,10 @@
  * frontend:
  * BorderPane mainBorderPane
  * Button playButton
- * ScrollPane selectedMovesPane
+ * ScrollPane selectedCommandsPane
  * VBox levelNumbersBox
  * ToggleGroup levelNumbers
- * HBox moves
+ * HBox commands
  * <p>
  * backend:
  * LevelController levelController
@@ -21,15 +21,17 @@
 
 package pl.edu.agh.to2.learnProgramming.controllers;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import pl.edu.agh.to2.learnProgramming.command.Command;
 import pl.edu.agh.to2.learnProgramming.command.LoopCommand;
-import pl.edu.agh.to2.learnProgramming.command.StartLoopCommand;
+import pl.edu.agh.to2.learnProgramming.model.Procedure;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -43,7 +45,9 @@ public class MainScreenController {
     @FXML
     private LevelController levelController;
     @FXML
-    private ScrollPane selectedMovesPane;
+    private ProceduresController proceduresController;
+    @FXML
+    private ScrollPane selectedCommandsPane;
     @FXML
     private VBox levelNumbersBox;
     @FXML
@@ -51,9 +55,11 @@ public class MainScreenController {
 
     private int currentLevel;
 
-    private HBox moves;
+    private HBox commands;
 
-    private List<Command> movesToExecute;
+    private List<Command> commandsToExecute;
+
+    private ObservableList<Procedure> procedures;
 
     @FXML
     public void initialize() {
@@ -70,16 +76,17 @@ public class MainScreenController {
             if (newValue == null)
                 oldValue.setSelected(true);
         }));
+        procedures = FXCollections.observableArrayList();
     }
 
     /**
-     * Initialize a HBox for moves.
+     * Initialize a HBox for commands.
      */
     private void initializeMovesList() {
-        movesToExecute = new LinkedList<>();
-        moves = new HBox();
-        moves.setSpacing(10);
-        this.selectedMovesPane.setContent(moves);
+        commandsToExecute = new LinkedList<>();
+        commands = new HBox();
+        commands.setSpacing(10);
+        this.selectedCommandsPane.setContent(commands);
     }
 
     public int getCurrentLevel() {
@@ -90,31 +97,21 @@ public class MainScreenController {
         return mainBorderPane;
     }
 
+    public ObservableList<Procedure> getProcedures() {
+        return this.procedures;
+    }
+
     /**
      * Adds command do movesToExecute and sets it on the view.
      *
      * @param command - (Enum) CommandType
      */
     public void addCommand(Command command) {
-        //TODO przeciąganie klocków na liście ruchów
-        ImageView img = new ImageView(command.getPath());
-        img.setFitHeight(40);
-        img.setFitWidth(40);
-        if (command.getClass() == StartLoopCommand.class) {
-            HBox box = new HBox();
-            box.setPrefSize(60, 40);
-            box.getChildren().add(img);
-            Label label = new Label(levelController.getLoopsRepeatList().get(levelController.getLoopsRepeatList().size() - 1).toString());
-            label.setPrefSize(20, 40);
-            box.getChildren().add(label);
-            box.setOnMouseClicked(this::removeSelectedMove);
-            moves.getChildren().add(box);
-        } else {
-            img.setOnMouseClicked(this::removeSelectedMove);
-            moves.getChildren().add(img);
-        }
-        this.selectedMovesPane.setContent(moves);
-        this.movesToExecute.add(command);
+        Node img = command.getImage();
+        img.setOnMouseClicked(this::removeSelectedMove);
+        commands.getChildren().add(img);
+        this.selectedCommandsPane.setContent(commands);
+        this.commandsToExecute.add(command);
     }
 
     /**
@@ -124,13 +121,13 @@ public class MainScreenController {
      * @param mouseEvent - MouseEvent
      */
     private void removeSelectedMove(MouseEvent mouseEvent) {
-        int index = this.moves.getChildren().indexOf(mouseEvent.getSource());
-        Command command = movesToExecute.get(index);
+        int index = this.commands.getChildren().indexOf(mouseEvent.getSource());
+        Command command = commandsToExecute.get(index);
         if (command.isLoop()) {
-            ((LoopCommand) command).onRemove(index, levelController, movesToExecute);
+            ((LoopCommand) command).onRemove(index, levelController, commandsToExecute);
         }
-        movesToExecute.remove(index);
-        this.moves.getChildren().remove(mouseEvent.getSource());
+        commandsToExecute.remove(index);
+        this.commands.getChildren().remove(mouseEvent.getSource());
     }
 
     /**
@@ -171,7 +168,7 @@ public class MainScreenController {
         } else {
             boolean loopsGood = true;
             int loopsOpened = 0;
-            for (Command command : movesToExecute) {
+            for (Command command : commandsToExecute) {
                 if (command.isLoop())
                     loopsOpened = ((LoopCommand) command).changeLoopsOpened(loopsOpened);
                 if (loopsOpened < 0) {
@@ -180,7 +177,7 @@ public class MainScreenController {
                 }
             }
             if (loopsGood) {
-                if (this.levelController.checkAndExecuteMoves(movesToExecute)) {
+                if (this.levelController.checkAndExecuteMoves(commandsToExecute)) {
                     alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setHeaderText("Level passed");
                     if (levelController.getLevelGenerator().hasNext())
@@ -194,16 +191,16 @@ public class MainScreenController {
                     alert.showAndWait();
                     levelController.initializeLevel();
                 } else {
-                    this.moves.getChildren().clear();
-                    this.movesToExecute.clear();
+                    this.commands.getChildren().clear();
+                    this.commandsToExecute.clear();
                     alert = new Alert(Alert.AlertType.ERROR);
                     alert.setHeaderText("Try again");
                     alert.showAndWait();
                     initializeMovesList();
                     levelController.initializeLevel();
                 }
-                this.moves.getChildren().clear();
-                this.movesToExecute.clear();
+                this.commands.getChildren().clear();
+                this.commandsToExecute.clear();
             } else {
                 alert = new Alert(Alert.AlertType.ERROR);
                 alert.setHeaderText("Can't end loop before starting it. Check your program.");

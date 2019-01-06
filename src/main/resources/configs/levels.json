@@ -1,8 +1,7 @@
 {
   "1": {
     "Commands": [
-      "FORWARD",
-      "PROCEDURE"
+      "FORWARD"
     ],
     "TurtlePosition": {
       "x": 0,
@@ -127,6 +126,34 @@
         "-------"
       ],
       "size": 7
+    }
+  },
+  "7": {
+    "Commands": [
+      "FORWARD",
+      "RIGHT",
+      "LEFT",
+      "STARTLOOP",
+      "ENDLOOP",
+      "PROCEDURE"
+    ],
+    "TurtlePosition": {
+      "x": 0,
+      "y": 6,
+      "direction": "N"
+    },
+    "Board": {
+      "map": [
+        "--------",
+        "***-***-",
+        "*-*-*-*-",
+        "*-*-*-*-",
+        "*-*-*-*-",
+        "*-*-*-*-",
+        "*-***-**",
+        "--------"
+      ],
+      "size": 8
     }
   }
 }

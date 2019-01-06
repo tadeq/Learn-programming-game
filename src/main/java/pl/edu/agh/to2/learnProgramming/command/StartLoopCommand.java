@@ -1,18 +1,43 @@
 package pl.edu.agh.to2.learnProgramming.command;
 
+import javafx.scene.Node;
+import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import pl.edu.agh.to2.learnProgramming.controllers.LevelController;
+import pl.edu.agh.to2.learnProgramming.model.CommandType;
 import pl.edu.agh.to2.learnProgramming.model.Loop;
 
 import java.util.List;
 
 public class StartLoopCommand implements LoopCommand {
-    private String path;
-
     private int loopCounter;
     private int currCounter;
 
-    public StartLoopCommand() {
-        this.path = "/images/startLoop.png";
+    private List<Command> commands;
+
+    private List<Integer> loopsRepeatList;
+
+    private List<Loop> loops;
+
+    private HBox box;
+
+    public StartLoopCommand(List<Loop> loops, List<Integer> loopsRepeatList) {
+        this.loops = loops;
+        this.loopsRepeatList = loopsRepeatList;
+        ImageView img = new ImageView(CommandType.STARTLOOP.getPath());
+        img.setFitHeight(40);
+        img.setFitWidth(40);
+        box = new HBox();
+        box.setPrefSize(60, 40);
+        box.getChildren().add(img);
+        Label label = new Label(loopsRepeatList.get(loopsRepeatList.size() - 1).toString());
+        label.setPrefSize(20, 40);
+        box.getChildren().add(label);
+    }
+
+    public void setCommands(List<Command> commands) {
+        this.commands = commands;
     }
 
     public void setLoopCounter(int loopCounter) {
@@ -32,21 +57,21 @@ public class StartLoopCommand implements LoopCommand {
     }
 
     @Override
+    public Node getImage() {
+        return box;
+    }
+
+    @Override
     public boolean isLoop() {
         return true;
     }
 
     @Override
-    public void execute(List<Loop> loops, List<Integer> loopsRepeats, List<Command> commands) {
-        currCounter = loopsRepeats.get(0);
-        loopsRepeats.remove(0);
+    public void execute() {
+        currCounter = loopsRepeatList.get(0);
+        loopsRepeatList.remove(0);
         loops.add(new Loop(currCounter > 0 ? currCounter : 1));
         loopCounter++;
-    }
-
-    @Override
-    public String getPath() {
-        return this.path;
     }
 
     public void onRemove(int index, LevelController levelController, List<Command> movesToExecute) {
