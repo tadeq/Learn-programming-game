@@ -39,7 +39,7 @@ public class ProcedureCommand implements ComplexCommand {
         for (Command command : procedureCommands) {
             command.setLevelCommands(levelCommands);
             command.setLoopCounter(loopCounter);
-            if (command.isLoop()) {
+            if (command.isComplex()) {
                 ComplexCommand complexCommand = (ComplexCommand) command;
                 complexCommand.setCurrCounter(currCounter);
                 complexCommand.execute();
@@ -88,7 +88,7 @@ public class ProcedureCommand implements ComplexCommand {
     }
 
     @Override
-    public boolean isLoop() {
+    public boolean isComplex() {
         return true;
     }
 

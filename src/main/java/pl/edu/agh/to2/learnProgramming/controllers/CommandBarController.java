@@ -72,7 +72,7 @@ public class CommandBarController {
     public void removeSelectedMove(MouseEvent mouseEvent) {
         int index = this.commandsBox.getChildren().indexOf(mouseEvent.getSource());
         Command command = commands.get(index);
-        if (command.isLoop()) {
+        if (command.isComplex()) {
             ((ComplexCommand) command).onRemove(index, loopManager, commands);
         }
         commands.remove(index);

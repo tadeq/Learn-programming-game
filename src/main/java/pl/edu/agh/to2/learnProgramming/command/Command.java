@@ -7,7 +7,7 @@ import java.util.List;
 public interface Command {
     void execute();
 
-    boolean isLoop();
+    boolean isComplex();
 
     Node getImage();
 

@@ -109,7 +109,7 @@ public class Level {
         for (Command command : movesToExecute) {
             command.setLevelCommands(commands);
             command.setLoopCounter(loopCounter);
-            if (command.isLoop()) {
+            if (command.isComplex()) {
                 ComplexCommand complexCommand = (ComplexCommand) command;
                 complexCommand.setCurrCounter(currCounter);
                 complexCommand.execute();

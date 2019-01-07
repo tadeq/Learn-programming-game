@@ -62,7 +62,7 @@ public class StartLoopCommand implements ComplexCommand {
     }
 
     @Override
-    public boolean isLoop() {
+    public boolean isComplex() {
         return true;
     }
 

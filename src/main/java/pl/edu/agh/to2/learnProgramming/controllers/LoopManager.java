@@ -86,7 +86,7 @@ public class LoopManager {
             return false;
         } else {
             for (Command command : commands) {
-                if (command.isLoop())
+                if (command.isComplex())
                     loopsOpened = ((ComplexCommand) command).changeLoopsOpened(loopsOpened);
                 if (loopsOpened < 0) {
                     alert = new Alert(Alert.AlertType.ERROR);

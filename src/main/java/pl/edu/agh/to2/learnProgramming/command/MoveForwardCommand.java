@@ -55,7 +55,7 @@ public class MoveForwardCommand implements MoveCommand {
     }
 
     @Override
-    public boolean isLoop() {
+    public boolean isComplex() {
         return false;
     }
 

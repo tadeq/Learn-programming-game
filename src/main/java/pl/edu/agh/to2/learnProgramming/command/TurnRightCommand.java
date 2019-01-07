@@ -55,7 +55,7 @@ public class TurnRightCommand implements MoveCommand {
     }
 
     @Override
-    public boolean isLoop() {
+    public boolean isComplex() {
         return false;
     }
 
