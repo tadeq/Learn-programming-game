@@ -16,7 +16,7 @@
 package pl.edu.agh.to2.learnProgramming.model;
 
 public enum TurtleDirection {
-    N(-90),
+    N(270),
     E(0),
     S(90),
     W(180);

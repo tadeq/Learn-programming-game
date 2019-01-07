@@ -26,6 +26,7 @@ public class Level {
     private List<LevelPoint> fieldCoordinates;
     private List<Loop> loops = new ArrayList<>();
     private Turtle turtle;
+    private Turtle startingTurtle;
     private int size;
 
     public Level(int size, List<CommandType> commandTypes, List<LevelPoint> fieldCoordinates, Turtle turtle) {
@@ -33,6 +34,7 @@ public class Level {
         this.commandTypes = commandTypes;
         this.fieldCoordinates = fieldCoordinates;
         this.turtle = turtle;
+        this.startingTurtle = new Turtle(turtle.getCoordinates().getX(),turtle.getCoordinates().getY(),turtle.getTurtleDirection());
     }
 
     public List<CommandType> getCommandTypes() {
@@ -45,6 +47,10 @@ public class Level {
 
     public Turtle getTurtle() {
         return turtle;
+    }
+
+    public Turtle getStartingTurtle() {
+        return startingTurtle;
     }
 
     public int getSize() {
@@ -80,7 +86,7 @@ public class Level {
      * @param x - turtle x position
      * @param y - turtle y position
      */
-    private void setPointVisited(int x, int y) {
+    public void setPointVisited(int x, int y) {
         for (LevelPoint field : fieldCoordinates) {
             if (field.getX() == x && field.getY() == y)
                 field.setVisited();

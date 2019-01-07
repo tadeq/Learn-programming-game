@@ -1,19 +1,20 @@
 /**
- * @author
- *      Maciej Moskal
- *      Jakub Pajor
- *      Michał Zadora
- *
+ * @author Maciej Moskal
+ * Jakub Pajor
+ * Michał Zadora
+ * <p>
  * Model - turtle.
  * Contains information about:
- *      Point coordinates
- *      ObjectProperty<TurtleDirection> turtleDirection
+ * Point coordinates
+ * ObjectProperty<TurtleDirection> turtleDirection
  */
 
 package pl.edu.agh.to2.learnProgramming.model;
 
+import javafx.animation.PauseTransition;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.util.Duration;
 
 public class Turtle {
     private Point coordinates;

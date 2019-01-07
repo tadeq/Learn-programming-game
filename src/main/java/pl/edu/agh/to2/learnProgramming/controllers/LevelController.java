@@ -24,27 +24,39 @@
 
 package pl.edu.agh.to2.learnProgramming.controllers;
 
+import javafx.animation.*;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
+import javafx.geometry.VPos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.SnapshotParameters;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
+import javafx.scene.effect.ColorInput;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Path;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import pl.edu.agh.to2.learnProgramming.command.*;
 import pl.edu.agh.to2.learnProgramming.model.*;
 import pl.edu.agh.to2.learnProgramming.model.Point;
 import pl.edu.agh.to2.learnProgramming.utilities.LevelGenerator;
 
 import java.io.IOException;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.concurrent.*;
 
 
 public class LevelController {
@@ -84,6 +96,8 @@ public class LevelController {
     private LevelGenerator generator;
 
     private int loopsOpened;
+
+    private List<String> steps;
 
     private List<Integer> loopsRepeatList = new LinkedList<>();
 
@@ -137,10 +151,19 @@ public class LevelController {
         levelScreen.prefHeightProperty().bind(mainScreenController.getMainBorderPane().prefHeightProperty().subtract(90));
         levelScreen.prefWidthProperty().bind(mainScreenController.getMainBorderPane().prefWidthProperty().subtract(75));
         level = generator.generate(mainScreenController.getCurrentLevel());
+
+        ImageView newTurtle = new ImageView("/images/turtle.png");
+        newTurtle.setFitWidth(60);
+        newTurtle.setFitHeight(60);
+        GridPane.setHalignment(newTurtle, HPos.CENTER);
+        GridPane.setValignment(newTurtle, VPos.CENTER);
+        this.turtleImage = newTurtle;
+
         board.getChildren().clear();
         board.getRowConstraints().clear();
         board.getColumnConstraints().clear();
-        board.add(turtleImage, level.getTurtle().getCoordinates().getX(), level.getTurtle().getCoordinates().getY());
+        setTurtleImagePosition(level.getTurtle().getCoordinates(), level.getTurtle().getTurtleDirection(), newTurtle);
+        board.add(newTurtle, level.getTurtle().getCoordinates().getX(), level.getTurtle().getCoordinates().getY());
         board.setHgap(10);
         board.setVgap(10);
         board.paddingProperty().setValue(new Insets(2));
@@ -157,7 +180,6 @@ public class LevelController {
             board.getRowConstraints().add(constraints);
         }
         board.setStyle("-fx-background-color: skyblue; -fx-border-color: blue");
-        setTurtleImagePosition(level.getTurtle().getCoordinates(), level.getTurtle().getTurtleDirection());
         for (Point p : level.getFieldCoordinates()) {
             Pane pane = new Pane();
             pane.setStyle("-fx-background-color: darkolivegreen; -fx-border-color: darkgreen");
@@ -169,6 +191,7 @@ public class LevelController {
         startLoopButton.setVisible(level.getCommandTypes().contains(CommandType.STARTLOOP));
         endLoopButton.setVisible(level.getCommandTypes().contains(CommandType.ENDLOOP));
         procedureButton.setVisible(level.getCommandTypes().contains(CommandType.PROCEDURE));
+
         addListeners();
         turtleImage.toFront();
         loopsOpened = 0;
@@ -181,45 +204,45 @@ public class LevelController {
      * @param turtleCoords - Point
      * @param direction    - (Enum) TurtleDirection
      */
-    private void setTurtleImagePosition(Point turtleCoords, TurtleDirection direction) {
-        GridPane.setColumnIndex(turtleImage, turtleCoords.getX());
-        GridPane.setRowIndex(turtleImage, turtleCoords.getY());
-        turtleImage.setRotate(direction.getRotation());
+    private void setTurtleImagePosition(Point turtleCoords, TurtleDirection direction, ImageView newTurtle) {
+        GridPane.setColumnIndex(newTurtle, turtleCoords.getX());
+        GridPane.setRowIndex(newTurtle, turtleCoords.getY());
+        newTurtle.setRotate(direction.getRotation());
     }
+
 
     /**
      * Listens to current turtle positions in (this) Level
      * and sets its: position, direction, field color in the view.
      */
-    private void addListeners() {
+    private void addListeners() {;
+        this.steps = new LinkedList<>();
         level.getTurtle().getCoordinates().yProperty().addListener((observable, oldValue, newValue) -> {
-            try {
-                GridPane.setRowIndex(turtleImage, (int) newValue);
-            } catch (IllegalArgumentException e) {
-            }
+                if((int) oldValue > (int) newValue)
+                    steps.add("UP");
+                else
+                    steps.add("DOWN");
         });
         level.getTurtle().getCoordinates().xProperty().addListener((observable, oldValue, newValue) -> {
-            try {
-                GridPane.setColumnIndex(turtleImage, (int) newValue);
-            } catch (IllegalArgumentException e) {
-            }
+                if((int) oldValue > (int) newValue)
+                    steps.add("LEFT");
+                else
+                    steps.add("RIGHT");
         });
-        level.getTurtle().turtleDirectionProperty().addListener(((observable, oldValue, newValue) -> {
-            turtleImage.setRotate(newValue.getRotation());
-        }));
+        level.getTurtle().turtleDirectionProperty().addListener(((observable, oldValue, newValue) -> steps.add(String.valueOf(newValue.getRotation()))));
         for (LevelPoint lp : level.getFieldCoordinates()) {
             lp.visitedProperty().addListener((observable, oldValue, newValue) -> {
                 for (Node node : board.getChildren()) {
                     if (node.getClass() == Pane.class) {
                         Pane p = (Pane) node;
-                        if (GridPane.getRowIndex(p) == lp.getY() && GridPane.getColumnIndex(p) == lp.getX())
+                        if (GridPane.getRowIndex(p) == lp.getY() && GridPane.getColumnIndex(p) == lp.getX()) {
                             p.setStyle("-fx-background-color: greenyellow; -fx-border-color: darkgreen");
+                        }
                     }
                 }
             });
         }
     }
-
 
     /**
      * Asks this.level to execute given moves (commands) for turtle
@@ -229,14 +252,80 @@ public class LevelController {
      * @return true - if moves has been executed successfully and every field has been visited, false - otherwise
      */
     public boolean checkAndExecuteMoves(List<Command> commandsToExecute) {
-        return this.level.executeMoves(commandsToExecute, loopsRepeatList) && this.level.areAllFieldsVisited();
-        // TODO
-        // turtleImage będzie poruszał się po jednym polu tak, aby można było zobaczyć poszczególne kroki
-        // kolor odwiedzanych pól będzie zmieniany
-        // SequentialTransition
-        // AnimationTimer
+        boolean result = (this.level.executeMoves(commandsToExecute, loopsRepeatList) && this.level.areAllFieldsVisited());
+        animate(level.getStartingTurtle().getCoordinates().getX(), level.getStartingTurtle().getCoordinates().getY());
+        return result;
+
     }
 
+    public void animate(int startX, int startY) {
+
+        DoubleProperty x = new SimpleDoubleProperty(startX);
+        DoubleProperty y = new SimpleDoubleProperty(startY);
+        DoubleProperty r = new SimpleDoubleProperty(level.getStartingTurtle().getTurtleDirection().getRotation());
+        SequentialTransition s = new SequentialTransition();
+
+        int xEnd = x.intValue(), yEnd = y.intValue(), rEnd = r.intValue();
+
+        for (String step : steps) {
+            switch (step) {
+                case "UP":
+                    yEnd -= 1;
+                    break;
+                case "DOWN":
+                    yEnd += 1;
+                    break;
+                case "LEFT":
+                    xEnd -= 1;
+                    break;
+                case "RIGHT":
+                    xEnd += 1;
+                    break;
+                case "0":
+                    rEnd = 0;
+                    break;
+                case "90":
+                    rEnd = 90;
+                    break;
+                case "180":
+                    rEnd = 180;
+                    break;
+                case "270":
+                    rEnd = 270;
+                    break;
+            }
+
+            KeyValue px = new KeyValue(x, xEnd);
+            KeyValue py = new KeyValue(y, yEnd);
+            KeyValue pr = new KeyValue(r, rEnd);
+            KeyFrame kf = new KeyFrame(Duration.seconds(0.6), px, py, pr);
+            Timeline t = new Timeline(kf);
+            Timeline pause = new Timeline(new KeyFrame(Duration.seconds(0.15)));
+
+            s.getChildren().addAll(t,pause);
+
+        }
+
+        AnimationTimer timer = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                turtleImage.setRotate(r.doubleValue());
+                GridPane.setColumnIndex(turtleImage, x.intValue());
+                GridPane.setRowIndex(turtleImage, y.intValue());
+//                level.setPointVisited(x.intValue(),y.intValue());
+            }
+        };
+
+        s.setOnFinished(event -> {
+
+            timer.stop();
+            //what to do after animation ends
+        });
+        timer.start();
+        s.play();
+
+
+    }
 
     /**
      * Adds FORWARD command after being chosen by user.

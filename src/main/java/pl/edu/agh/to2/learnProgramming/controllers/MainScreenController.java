@@ -159,7 +159,7 @@ public class MainScreenController {
      * It means, when user wants to run his commands.
      */
     @FXML
-    public void playButtonClicked() {
+    public void playButtonClicked() throws InterruptedException {
         Alert alert;
         if (levelController.getLoopsOpened() != 0) {
             alert = new Alert(Alert.AlertType.ERROR);
