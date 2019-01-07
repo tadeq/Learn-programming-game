@@ -33,6 +33,7 @@ import pl.edu.agh.to2.learnProgramming.command.Command;
 import pl.edu.agh.to2.learnProgramming.command.LoopCommand;
 import pl.edu.agh.to2.learnProgramming.model.Procedure;
 
+import java.io.*;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -101,6 +102,8 @@ public class MainScreenController {
     public ObservableList<Procedure> getProcedures() {
         return this.procedures;
     }
+
+
 
     /**
      * Adds command do movesToExecute and sets it on the view.
@@ -187,6 +190,61 @@ public class MainScreenController {
             }
             this.commands.getChildren().clear();
             this.commandsToExecute.clear();
+        }
+    }
+
+    public void resetSaveClicked(){
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter("./resources/config/gamesave"));
+            writer.write(1);
+            writer.close();
+
+            if(currentLevel > 1){
+                levelNumbersBox.getChildren().remove(1,levelNumbers.getToggles().size());
+                levelNumbers.getToggles().remove(1, levelNumbers.getToggles().size());
+            }
+
+        } catch (IOException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeaderText("Error while saving game.");
+            alert.showAndWait();
+        }
+    }
+
+    public void saveClicked(){
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter("./resources/config/gamesave"));
+            writer.write(levelNumbers.getToggles().size());
+            writer.close();
+        } catch (IOException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeaderText("Error while saving game.");
+            alert.showAndWait();
+        }
+    }
+
+    public void loadLevelsClicked(){
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader("./resources/config/gamesave"));
+            int maxLevel = reader.read();
+            reader.close();
+
+            if(maxLevel > 0 && currentLevel < maxLevel){
+                for(int i = currentLevel+1; i < maxLevel; i++){
+                    ToggleButton button = new ToggleButton(Integer.toString(i));
+                    button.setPrefHeight(26);
+                    button.setPrefWidth(50);
+                    button.setSelected(true);
+                    //button.setOnAction(this::levelChosen);
+                    levelNumbersBox.getChildren().add(button);
+                    levelNumbers.getToggles().add(button);
+                }
+            }
+
+        } catch (IOException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeaderText("Error while reading save file.");
+            alert.showAndWait();
         }
     }
 

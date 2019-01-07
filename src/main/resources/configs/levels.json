@@ -1,5 +1,5 @@
 {
-  "7": {
+  "1": {
     "Commands": [
       "FORWARD"
     ],
@@ -128,7 +128,7 @@
       "size": 7
     }
   },
-  "1": {
+  "10": {
     "Commands": [
       "FORWARD",
       "RIGHT",
