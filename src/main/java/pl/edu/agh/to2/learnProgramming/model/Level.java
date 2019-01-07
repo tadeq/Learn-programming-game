@@ -125,9 +125,7 @@ public class Level {
             MoveCommand moveCommand = (MoveCommand) command;
             moveCommand.setTurtle(turtle);
             moveCommand.execute();
-            if (isMoveCorrect())
-                setPointVisited(turtle.getCoordinates().getX(), turtle.getCoordinates().getY());
-            else
+            if (!isMoveCorrect())
                 return false;
         }
         return true;
