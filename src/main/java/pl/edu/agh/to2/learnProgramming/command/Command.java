@@ -11,7 +11,7 @@ public interface Command {
 
     Node getImage();
 
-    void setCommands(List<Command> commands);
+    void setLevelCommands(List<Command> levelCommands);
 
     void setLoopCounter(int loopCounter);
 }

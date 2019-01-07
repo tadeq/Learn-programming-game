@@ -9,6 +9,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import pl.edu.agh.to2.learnProgramming.command.*;
+import pl.edu.agh.to2.learnProgramming.model.Level;
 import pl.edu.agh.to2.learnProgramming.model.Loop;
 import pl.edu.agh.to2.learnProgramming.model.Procedure;
 
@@ -60,11 +61,17 @@ public class ProceduresController {
 
     private List<Loop> loops;
 
+    private LoopManager loopManager;
+
     private MainScreenController mainScreenController;
+
+    private LevelController levelController;
 
     @FXML
     public void initialize() {
         setButtonsVisibility(false);
+        loopManager = new LoopManager();
+        currentCommands = new LinkedList<>();
         forwardButton.setTooltip(new Tooltip("Move forward"));
         rightButton.setTooltip(new Tooltip("Turn Right"));
         leftButton.setTooltip(new Tooltip("Turn left"));
@@ -74,7 +81,6 @@ public class ProceduresController {
         addButton.setTooltip(new Tooltip("Add procedure"));
         useButton.setTooltip(new Tooltip("Use procedure"));
         deleteButton.setTooltip(new Tooltip("Delete procedure"));
-        currentCommands = new LinkedList<>();
         proceduresList.getSelectionModel().selectedItemProperty().addListener(((observable, oldValue, newValue) -> {
             initializeMovesList();
             if (newValue != null) {
@@ -95,6 +101,10 @@ public class ProceduresController {
         this.mainScreenController = mainScreenController;
     }
 
+    public void setLevelController(LevelController levelController) {
+        this.levelController = levelController;
+    }
+
     public void setProcedures(ObservableList<Procedure> procedures) {
         this.procedures = procedures;
         this.proceduresList.setItems(this.procedures);
@@ -104,15 +114,19 @@ public class ProceduresController {
         this.loops = loops;
     }
 
+    public LoopManager getLoopManager() {
+        return loopManager;
+    }
+
     private void setButtonsVisibility(boolean visible) {
         forwardButton.setVisible(visible);
         rightButton.setVisible(visible);
         leftButton.setVisible(visible);
+        startLoopButton.setVisible(visible);
+        endLoopButton.setVisible(visible);
         saveButton.setVisible(visible);
         deleteButton.setVisible(visible);
         useButton.setVisible(visible);
-        startLoopButton.setVisible(false);
-        endLoopButton.setVisible(false);
     }
 
     @FXML
@@ -133,19 +147,22 @@ public class ProceduresController {
                 currentProcedure = procedure;
                 proceduresList.getSelectionModel().select(procedure);
                 setButtonsVisibility(true);
+                useButton.setVisible(false);
             }
         }
     }
 
     @FXML
     public void saveClicked(ActionEvent actionEvent) {
-        setButtonsVisibility(false);
-        currentProcedure.getCommands().clear();
-        for (Command command : currentCommands) {
-            currentProcedure.addCommand(command);
+        if (loopManager.loopsGood(currentCommands)) {
+            setButtonsVisibility(false);
+            currentProcedure.getCommands().clear();
+            for (Command command : currentCommands) {
+                currentProcedure.addCommand(command);
+            }
+            currentProcedure = null;
+            proceduresList.getSelectionModel().clearSelection();
         }
-        currentProcedure = null;
-        proceduresList.getSelectionModel().clearSelection();
     }
 
     @FXML
@@ -179,18 +196,22 @@ public class ProceduresController {
 
     @FXML
     public void startLoopClicked(ActionEvent actionEvent) {
+        if (loopManager.openLoop())
+            addCommand(new StartLoopCommand(levelController.getLevel().getLoops(), loopManager.getLoopsRepeatList()));
     }
 
     @FXML
     public void endLoopClicked(ActionEvent actionEvent) {
+        if (loopManager.closeLoop())
+            addCommand(new EndLoopCommand(levelController.getLevel().getLoops(), loopManager.getLoopsRepeatList()));
     }
 
 
     private void initializeMovesList() {
+        currentCommands.clear();
         commands = new HBox();
         commands.setSpacing(10);
         this.selectedCommandsPane.setContent(commands);
-        currentCommands.clear();
     }
 
     public void addCommand(Command command) {
@@ -203,7 +224,10 @@ public class ProceduresController {
 
     private void removeSelectedMove(MouseEvent mouseEvent) {
         int index = this.commands.getChildren().indexOf(mouseEvent.getSource());
-        //currentProcedure.getCommands().remove(index);
+        Command command = currentCommands.get(index);
+        if (command.isLoop()) {
+            ((LoopCommand) command).onRemove(index, levelController, currentCommands);
+        }
         currentCommands.remove(index);
         this.commands.getChildren().remove(mouseEvent.getSource());
     }

@@ -28,8 +28,8 @@ public class EndLoopCommand implements LoopCommand {
         img.setFitWidth(40);
     }
 
-    public void setCommands(List<Command> commands) {
-        this.commands = commands;
+    public void setLevelCommands(List<Command> levelCommands) {
+        this.commands = levelCommands;
     }
 
     public void setLoopCounter(int loopCounter) {
@@ -73,7 +73,7 @@ public class EndLoopCommand implements LoopCommand {
     }
 
     public void onRemove(int index, LevelController levelController, List<Command> movesToExecute) {
-        levelController.incLoopsOpened();
+        levelController.getLoopManager().incLoopsOpened();
     }
 
     public int changeLoopsOpened(int loopsOpened) {

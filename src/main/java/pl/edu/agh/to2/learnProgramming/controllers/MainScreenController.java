@@ -63,6 +63,7 @@ public class MainScreenController {
 
     @FXML
     public void initialize() {
+        commandsToExecute = new LinkedList<>();
         mainBorderPane.setPrefWidth(1000);
         mainBorderPane.setPrefHeight(1000);
         currentLevel = 1;
@@ -83,7 +84,7 @@ public class MainScreenController {
      * Initialize a HBox for commands.
      */
     private void initializeMovesList() {
-        commandsToExecute = new LinkedList<>();
+        commandsToExecute.clear();
         commands = new HBox();
         commands.setSpacing(10);
         this.selectedCommandsPane.setContent(commands);
@@ -159,53 +160,33 @@ public class MainScreenController {
      * It means, when user wants to run his commands.
      */
     @FXML
-    public void playButtonClicked() throws InterruptedException {
+    public void playButtonClicked() {
         Alert alert;
-        if (levelController.getLoopsOpened() != 0) {
-            alert = new Alert(Alert.AlertType.ERROR);
-            alert.setHeaderText("Number of startLoop has to be equal to number of endLoop. Check your program.");
-            alert.show();
-        } else {
-            boolean loopsGood = true;
-            int loopsOpened = 0;
-            for (Command command : commandsToExecute) {
-                if (command.isLoop())
-                    loopsOpened = ((LoopCommand) command).changeLoopsOpened(loopsOpened);
-                if (loopsOpened < 0) {
-                    loopsGood = false;
-                    break;
-                }
-            }
-            if (loopsGood) {
-                if (this.levelController.checkAndExecuteMoves(commandsToExecute)) {
-                    alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setHeaderText("Level passed");
-                    if (levelController.getLevelGenerator().hasNext())
-                        currentLevel++;
-                    else
-                        alert.setHeaderText(alert.getHeaderText() + "\nNo more levels available.");
-                    if (levelNumbers.getToggles().size() < currentLevel)
-                        addLevelNumberButton();
-                    else
-                        levelNumbers.getToggles().get(currentLevel - 1).setSelected(true);
-                    alert.showAndWait();
-                    levelController.initializeLevel();
-                } else {
-                    this.commands.getChildren().clear();
-                    this.commandsToExecute.clear();
-                    alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setHeaderText("Try again");
-                    alert.showAndWait();
-                    initializeMovesList();
-                    levelController.initializeLevel();
-                }
+        if (levelController.getLoopManager().loopsGood(commandsToExecute)) {
+            if (this.levelController.checkAndExecuteMoves(commandsToExecute)) {
+                alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setHeaderText("Level passed");
+                if (levelController.getLevelGenerator().hasNext())
+                    currentLevel++;
+                else
+                    alert.setHeaderText(alert.getHeaderText() + "\nNo more levels available.");
+                if (levelNumbers.getToggles().size() < currentLevel)
+                    addLevelNumberButton();
+                else
+                    levelNumbers.getToggles().get(currentLevel - 1).setSelected(true);
+                alert.showAndWait();
+                levelController.initializeLevel();
+            } else {
                 this.commands.getChildren().clear();
                 this.commandsToExecute.clear();
-            } else {
                 alert = new Alert(Alert.AlertType.ERROR);
-                alert.setHeaderText("Can't end loop before starting it. Check your program.");
-                alert.show();
+                alert.setHeaderText("Try again");
+                alert.showAndWait();
+                initializeMovesList();
+                levelController.initializeLevel();
             }
+            this.commands.getChildren().clear();
+            this.commandsToExecute.clear();
         }
     }
 

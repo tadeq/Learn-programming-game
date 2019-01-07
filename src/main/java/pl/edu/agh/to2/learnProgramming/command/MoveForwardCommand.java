@@ -45,8 +45,8 @@ public class MoveForwardCommand implements MoveCommand {
     }
 
     @Override
-    public void setCommands(List<Command> commands) {
-        this.commands = commands;
+    public void setLevelCommands(List<Command> levelCommands) {
+        this.commands = levelCommands;
     }
 
     @Override

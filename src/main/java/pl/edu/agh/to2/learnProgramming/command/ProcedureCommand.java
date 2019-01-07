@@ -16,19 +16,19 @@ public class ProcedureCommand implements MoveCommand {
 
     private ImageView img;
 
-    private List<Command> commands;
+    private List<Command> levelCommands;
 
-    private List<Command> moves;
+    private List<Command> procedureCommands;
 
     private List<Loop> loops;
 
     private int loopCounter;
 
-    public ProcedureCommand(String name, List<Command> moves, List<Loop> loops) {
+    public ProcedureCommand(String name, List<Command> procedureCommands, List<Loop> loops) {
         this.loops = loops;
         this.name = name;
-        this.moves = moves;
-        this.img = new javafx.scene.image.ImageView(CommandType.PROCEDURE.getPath());
+        this.procedureCommands = procedureCommands;
+        this.img = new ImageView(CommandType.PROCEDURE.getPath());
         img.setFitHeight(40);
         img.setFitWidth(40);
         Tooltip.install(img, new Tooltip(name));
@@ -36,21 +36,33 @@ public class ProcedureCommand implements MoveCommand {
 
     @Override
     public void execute() {
+        int loopCounter = -1;
+        int currCounter = 0;
+        for (Command command : procedureCommands) {
+            command.setLevelCommands(levelCommands);
+            command.setLoopCounter(loopCounter);
+            if (command.isLoop()) {
+                LoopCommand loopCommand = (LoopCommand) command;
+                loopCommand.setCurrCounter(currCounter);
+                loopCommand.execute();
+                loopCounter = loopCommand.getLoopCounter();
+                currCounter = loopCommand.getCurrCounter();
+            } else {
+                MoveCommand moveCommand = (MoveCommand) command;
+                moveCommand.setTurtle(turtle);
+                moveCommand.prepare();
+            }
+        }
     }
 
     @Override
     public void prepare() {
-        for (Command move : moves)
-            ((MoveCommand) move).setTurtle(turtle);
-        if (loopCounter >= 0) {
-            this.loops.get(loopCounter).addCommands(moves);
-        }
-        commands.addAll(moves);
+
     }
 
     @Override
-    public void setCommands(List<Command> commands) {
-        this.commands = commands;
+    public void setLevelCommands(List<Command> levelCommands) {
+        this.levelCommands = levelCommands;
     }
 
     @Override

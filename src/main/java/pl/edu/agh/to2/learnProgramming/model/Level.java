@@ -102,12 +102,12 @@ public class Level {
      * @param loopsRepeatList - list of loops' repetitions number
      * @return true - if moves (commands) executed correctly, false - otherwise
      */
-    public boolean executeMoves(List<Command> movesToExecute, List<Integer> loopsRepeatList) {
+    public boolean executeMoves(List<Command> movesToExecute) {
         List<Command> commands = new LinkedList<>();
         int loopCounter = -1;
         int currCounter = 0;
         for (Command command : movesToExecute) {
-            command.setCommands(commands);
+            command.setLevelCommands(commands);
             command.setLoopCounter(loopCounter);
             if (command.isLoop()) {
                 LoopCommand loopCommand = (LoopCommand) command;

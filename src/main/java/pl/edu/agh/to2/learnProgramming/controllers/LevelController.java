@@ -95,38 +95,29 @@ public class LevelController {
 
     private LevelGenerator generator;
 
-    private int loopsOpened;
+    private LoopManager loopManager;
 
     private List<String> steps;
 
-    private List<Integer> loopsRepeatList = new LinkedList<>();
-
     public void setMainScreenController(MainScreenController mainScreenController) {
         this.mainScreenController = mainScreenController;
+    }
+
+    public Level getLevel(){
+        return level;
     }
 
     public LevelGenerator getLevelGenerator() {
         return generator;
     }
 
-    public int getLoopsOpened() {
-        return loopsOpened;
-    }
-
-    public void decLoopsOpened() {
-        loopsOpened--;
-    }
-
-    public void incLoopsOpened() {
-        loopsOpened++;
-    }
-
-    public List<Integer> getLoopsRepeatList() {
-        return this.loopsRepeatList;
+    public LoopManager getLoopManager() {
+        return this.loopManager;
     }
 
     @FXML
     public void initialize() {
+        loopManager = new LoopManager();
         generator = new LevelGenerator();
         forwardButton.setTooltip(new Tooltip("Move forward"));
         rightButton.setTooltip(new Tooltip("Turn Right"));
@@ -194,7 +185,7 @@ public class LevelController {
 
         addListeners();
         turtleImage.toFront();
-        loopsOpened = 0;
+        loopManager.resetLoopsOpened();
         mainScreenController.getMainBorderPane().setCenter(levelScreen);
     }
 
@@ -215,19 +206,19 @@ public class LevelController {
      * Listens to current turtle positions in (this) Level
      * and sets its: position, direction, field color in the view.
      */
-    private void addListeners() {;
+    private void addListeners() {
         this.steps = new LinkedList<>();
         level.getTurtle().getCoordinates().yProperty().addListener((observable, oldValue, newValue) -> {
-                if((int) oldValue > (int) newValue)
-                    steps.add("UP");
-                else
-                    steps.add("DOWN");
+            if ((int) oldValue > (int) newValue)
+                steps.add("UP");
+            else
+                steps.add("DOWN");
         });
         level.getTurtle().getCoordinates().xProperty().addListener((observable, oldValue, newValue) -> {
-                if((int) oldValue > (int) newValue)
-                    steps.add("LEFT");
-                else
-                    steps.add("RIGHT");
+            if ((int) oldValue > (int) newValue)
+                steps.add("LEFT");
+            else
+                steps.add("RIGHT");
         });
         level.getTurtle().turtleDirectionProperty().addListener(((observable, oldValue, newValue) -> steps.add(String.valueOf(newValue.getRotation()))));
         for (LevelPoint lp : level.getFieldCoordinates()) {
@@ -252,13 +243,12 @@ public class LevelController {
      * @return true - if moves has been executed successfully and every field has been visited, false - otherwise
      */
     public boolean checkAndExecuteMoves(List<Command> commandsToExecute) {
-        boolean result = (this.level.executeMoves(commandsToExecute, loopsRepeatList) && this.level.areAllFieldsVisited());
+        boolean result = (this.level.executeMoves(commandsToExecute) && this.level.areAllFieldsVisited());
         animate(level.getStartingTurtle().getCoordinates().getX(), level.getStartingTurtle().getCoordinates().getY());
         return result;
-
     }
 
-    public void animate(int startX, int startY) {
+    private void animate(int startX, int startY) {
 
         DoubleProperty x = new SimpleDoubleProperty(startX);
         DoubleProperty y = new SimpleDoubleProperty(startY);
@@ -302,7 +292,7 @@ public class LevelController {
             Timeline t = new Timeline(kf);
             Timeline pause = new Timeline(new KeyFrame(Duration.seconds(0.15)));
 
-            s.getChildren().addAll(t,pause);
+            s.getChildren().addAll(t, pause);
 
         }
 
@@ -364,28 +354,8 @@ public class LevelController {
      */
     @FXML
     public void startLoopClicked(ActionEvent actionEvent) {
-        TextInputDialog dialog = new TextInputDialog();
-
-        dialog.setTitle("Loop");
-        dialog.setHeaderText("Loop repeats:");
-        dialog.setContentText("Value:");
-
-        Optional<String> result = dialog.showAndWait();
-        if (result.isPresent()) {
-            int number;
-            if (result.get().equals(""))
-                number = 1;
-            else
-                number = Integer.parseInt(result.get());
-            if (result.get().equals("") || number <= 0) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setHeaderText("Value not allowed. Repeats has been set to 1.");
-                alert.showAndWait();
-            }
-            loopsRepeatList.add(number);
-            loopsOpened++;
-            mainScreenController.addCommand(new StartLoopCommand(this.level.getLoops(), this.loopsRepeatList));
-        }
+        if (loopManager.openLoop())
+            mainScreenController.addCommand(new StartLoopCommand(this.level.getLoops(), loopManager.getLoopsRepeatList()));
     }
 
     /**
@@ -395,14 +365,8 @@ public class LevelController {
      */
     @FXML
     public void endLoopClicked(ActionEvent actionEvent) {
-        if (loopsOpened == 0) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setHeaderText("You have to start the loop before ending it");
-            alert.show();
-        } else {
-            loopsOpened--;
-            mainScreenController.addCommand(new EndLoopCommand(this.level.getLoops(), this.loopsRepeatList));
-        }
+        if (loopManager.closeLoop())
+            mainScreenController.addCommand(new EndLoopCommand(this.level.getLoops(), loopManager.getLoopsRepeatList()));
     }
 
     @FXML
@@ -421,6 +385,7 @@ public class LevelController {
         stage.show();
         ProceduresController proceduresController = loader.getController();
         proceduresController.setMainScreenController(this.mainScreenController);
+        proceduresController.setLevelController(this);
         proceduresController.setProcedures(this.mainScreenController.getProcedures());
         proceduresController.setLoops(level.getLoops());
     }

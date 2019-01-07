@@ -36,8 +36,8 @@ public class StartLoopCommand implements LoopCommand {
         box.getChildren().add(label);
     }
 
-    public void setCommands(List<Command> commands) {
-        this.commands = commands;
+    public void setLevelCommands(List<Command> levelCommands) {
+        this.commands = levelCommands;
     }
 
     public void setLoopCounter(int loopCounter) {
@@ -75,14 +75,14 @@ public class StartLoopCommand implements LoopCommand {
     }
 
     public void onRemove(int index, LevelController levelController, List<Command> movesToExecute) {
-        levelController.decLoopsOpened();
+        levelController.getLoopManager().decLoopsOpened();
         int loopsBefore = 0;
         for (int i = 0; i < index; i++) {
             if (movesToExecute.get(i).getClass() == StartLoopCommand.class) {
                 loopsBefore++;
             }
         }
-        levelController.getLoopsRepeatList().remove(loopsBefore);
+        levelController.getLoopManager().removeLoop(loopsBefore);
     }
 
     public int changeLoopsOpened(int loopsOpened) {
