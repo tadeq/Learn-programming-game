@@ -3,7 +3,7 @@ package pl.edu.agh.to2.learnProgramming.controllers;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextInputDialog;
 import pl.edu.agh.to2.learnProgramming.command.Command;
-import pl.edu.agh.to2.learnProgramming.command.LoopCommand;
+import pl.edu.agh.to2.learnProgramming.command.ComplexCommand;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -87,7 +87,7 @@ public class LoopManager {
         } else {
             for (Command command : commands) {
                 if (command.isLoop())
-                    loopsOpened = ((LoopCommand) command).changeLoopsOpened(loopsOpened);
+                    loopsOpened = ((ComplexCommand) command).changeLoopsOpened(loopsOpened);
                 if (loopsOpened < 0) {
                     alert = new Alert(Alert.AlertType.ERROR);
                     alert.setHeaderText("Can't end loop before starting it. Check your program.");

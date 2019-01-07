@@ -4,7 +4,7 @@ import pl.edu.agh.to2.learnProgramming.controllers.LoopManager;
 
 import java.util.List;
 
-public interface LoopCommand extends Command {
+public interface ComplexCommand extends Command {
 
     void onRemove(int index, LoopManager loopManager, List<Command> movesToExecute);
 

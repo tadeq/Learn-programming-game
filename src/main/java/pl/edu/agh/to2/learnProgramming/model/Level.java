@@ -14,7 +14,7 @@
 package pl.edu.agh.to2.learnProgramming.model;
 
 import pl.edu.agh.to2.learnProgramming.command.Command;
-import pl.edu.agh.to2.learnProgramming.command.LoopCommand;
+import pl.edu.agh.to2.learnProgramming.command.ComplexCommand;
 import pl.edu.agh.to2.learnProgramming.command.MoveCommand;
 
 import java.util.ArrayList;
@@ -34,7 +34,7 @@ public class Level {
         this.commandTypes = commandTypes;
         this.fieldCoordinates = fieldCoordinates;
         this.turtle = turtle;
-        this.startingTurtle = new Turtle(turtle.getCoordinates().getX(),turtle.getCoordinates().getY(),turtle.getTurtleDirection());
+        this.startingTurtle = new Turtle(turtle.getCoordinates().getX(), turtle.getCoordinates().getY(), turtle.getTurtleDirection());
     }
 
     public List<CommandType> getCommandTypes() {
@@ -110,11 +110,11 @@ public class Level {
             command.setLevelCommands(commands);
             command.setLoopCounter(loopCounter);
             if (command.isLoop()) {
-                LoopCommand loopCommand = (LoopCommand) command;
-                loopCommand.setCurrCounter(currCounter);
-                loopCommand.execute();
-                loopCounter = loopCommand.getLoopCounter();
-                currCounter = loopCommand.getCurrCounter();
+                ComplexCommand complexCommand = (ComplexCommand) command;
+                complexCommand.setCurrCounter(currCounter);
+                complexCommand.execute();
+                loopCounter = complexCommand.getLoopCounter();
+                currCounter = complexCommand.getCurrCounter();
             } else {
                 MoveCommand moveCommand = (MoveCommand) command;
                 moveCommand.prepare();

@@ -25,33 +25,28 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
-import javafx.stage.StageStyle;
 import pl.edu.agh.to2.learnProgramming.command.Command;
-import pl.edu.agh.to2.learnProgramming.command.LoopCommand;
 import pl.edu.agh.to2.learnProgramming.model.Procedure;
-
-import java.awt.image.LookupOp;
-import java.util.LinkedList;
-import java.util.List;
 
 
 public class MainScreenController {
     @FXML
     private BorderPane mainBorderPane;
+
     @FXML
     private Button playButton;
+
     @FXML
     private LevelController levelController;
-    @FXML
-    private ProceduresController proceduresController;
+
     @FXML
     private VBox levelNumbersBox;
+
     @FXML
     private ToggleGroup levelNumbers;
+
     @FXML
     private ScrollPane selectedCommandsPane;
 

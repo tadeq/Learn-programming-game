@@ -4,14 +4,13 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
-import pl.edu.agh.to2.learnProgramming.controllers.LevelController;
 import pl.edu.agh.to2.learnProgramming.controllers.LoopManager;
 import pl.edu.agh.to2.learnProgramming.model.CommandType;
 import pl.edu.agh.to2.learnProgramming.model.Loop;
 
 import java.util.List;
 
-public class StartLoopCommand implements LoopCommand {
+public class StartLoopCommand implements ComplexCommand {
     private int loopCounter;
     private int currCounter;
 

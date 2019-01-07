@@ -105,7 +105,7 @@ public class LevelController {
         this.mainScreenController = mainScreenController;
     }
 
-    public Level getLevel(){
+    public Level getLevel() {
         return level;
     }
 
@@ -117,7 +117,7 @@ public class LevelController {
         return this.loopManager;
     }
 
-    public boolean wasLevelPassed(){
+    public boolean wasLevelPassed() {
         return levelPassed;
     }
 
@@ -298,7 +298,6 @@ public class LevelController {
             Timeline pause = new Timeline(new KeyFrame(Duration.seconds(0.15)));
 
             s.getChildren().addAll(t, pause);
-
         }
 
         AnimationTimer timer = new AnimationTimer() {
@@ -316,8 +315,6 @@ public class LevelController {
         });
         timer.start();
         s.play();
-
-
     }
 
     /**

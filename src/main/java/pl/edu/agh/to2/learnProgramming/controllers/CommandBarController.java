@@ -5,7 +5,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import pl.edu.agh.to2.learnProgramming.command.Command;
-import pl.edu.agh.to2.learnProgramming.command.LoopCommand;
+import pl.edu.agh.to2.learnProgramming.command.ComplexCommand;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -73,7 +73,7 @@ public class CommandBarController {
         int index = this.commandsBox.getChildren().indexOf(mouseEvent.getSource());
         Command command = commands.get(index);
         if (command.isLoop()) {
-            ((LoopCommand) command).onRemove(index, loopManager, commands);
+            ((ComplexCommand) command).onRemove(index, loopManager, commands);
         }
         commands.remove(index);
         this.commandsBox.getChildren().remove(mouseEvent.getSource());

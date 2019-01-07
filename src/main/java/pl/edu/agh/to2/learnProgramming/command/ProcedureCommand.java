@@ -9,7 +9,7 @@ import pl.edu.agh.to2.learnProgramming.model.Loop;
 
 import java.util.List;
 
-public class ProcedureCommand implements LoopCommand {
+public class ProcedureCommand implements ComplexCommand {
     private String name;
 
     private ImageView img;
@@ -40,11 +40,11 @@ public class ProcedureCommand implements LoopCommand {
             command.setLevelCommands(levelCommands);
             command.setLoopCounter(loopCounter);
             if (command.isLoop()) {
-                LoopCommand loopCommand = (LoopCommand) command;
-                loopCommand.setCurrCounter(currCounter);
-                loopCommand.execute();
-                loopCounter = loopCommand.getLoopCounter();
-                currCounter = loopCommand.getCurrCounter();
+                ComplexCommand complexCommand = (ComplexCommand) command;
+                complexCommand.setCurrCounter(currCounter);
+                complexCommand.execute();
+                loopCounter = complexCommand.getLoopCounter();
+                currCounter = complexCommand.getCurrCounter();
             } else {
                 MoveCommand moveCommand = (MoveCommand) command;
                 moveCommand.prepare();
