@@ -149,16 +149,17 @@ public class MainScreenController {
             else
                 levelNumbers.getToggles().get(currentLevel - 1).setSelected(true);
             alert.show();
-            levelController.initializeLevel();
+            alert.setOnHidden(event -> levelController.initializeLevel());
         } else {
-            commandBarController.clearCommands();
             alert = new Alert(Alert.AlertType.ERROR);
             alert.setHeaderText("Try again");
             alert.show();
-            commandBarController.initializeMovesList();
-            levelController.initializeLevel();
+            alert.setOnHidden(event -> {
+                commandBarController.clearCommands();
+                commandBarController.initializeMovesList();
+                levelController.initializeLevel();
+            });
         }
-        commandBarController.clearCommands();
     }
 
     public void resetSaveClicked() {

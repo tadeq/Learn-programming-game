@@ -306,7 +306,7 @@ public class LevelController {
                 turtleImage.setRotate(r.doubleValue());
                 GridPane.setColumnIndex(turtleImage, x.intValue());
                 GridPane.setRowIndex(turtleImage, y.intValue());
-                level.setPointVisited(x.intValue(),y.intValue());
+                level.setPointVisited(x.intValue(), y.intValue());
             }
         };
 
