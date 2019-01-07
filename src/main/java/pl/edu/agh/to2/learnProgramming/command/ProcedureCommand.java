@@ -3,15 +3,13 @@ package pl.edu.agh.to2.learnProgramming.command;
 import javafx.scene.Node;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.ImageView;
+import pl.edu.agh.to2.learnProgramming.controllers.LoopManager;
 import pl.edu.agh.to2.learnProgramming.model.CommandType;
 import pl.edu.agh.to2.learnProgramming.model.Loop;
-import pl.edu.agh.to2.learnProgramming.model.Turtle;
 
 import java.util.List;
 
-public class ProcedureCommand implements MoveCommand {
-    private Turtle turtle;
-
+public class ProcedureCommand implements LoopCommand {
     private String name;
 
     private ImageView img;
@@ -23,6 +21,8 @@ public class ProcedureCommand implements MoveCommand {
     private List<Loop> loops;
 
     private int loopCounter;
+
+    private int currCounter = 0;
 
     public ProcedureCommand(String name, List<Command> procedureCommands, List<Loop> loops) {
         this.loops = loops;
@@ -36,8 +36,6 @@ public class ProcedureCommand implements MoveCommand {
 
     @Override
     public void execute() {
-        int loopCounter = -1;
-        int currCounter = 0;
         for (Command command : procedureCommands) {
             command.setLevelCommands(levelCommands);
             command.setLoopCounter(loopCounter);
@@ -49,16 +47,11 @@ public class ProcedureCommand implements MoveCommand {
                 currCounter = loopCommand.getCurrCounter();
             } else {
                 MoveCommand moveCommand = (MoveCommand) command;
-                moveCommand.setTurtle(turtle);
                 moveCommand.prepare();
             }
         }
     }
 
-    @Override
-    public void prepare() {
-
-    }
 
     @Override
     public void setLevelCommands(List<Command> levelCommands) {
@@ -71,13 +64,32 @@ public class ProcedureCommand implements MoveCommand {
     }
 
     @Override
-    public void setTurtle(Turtle turtle) {
-        this.turtle = turtle;
+    public void onRemove(int index, LoopManager loopManager, List<Command> movesToExecute) {
+    }
+
+    @Override
+    public void setCurrCounter(int currCounter) {
+        this.currCounter = currCounter;
+    }
+
+    @Override
+    public int getLoopCounter() {
+        return this.loopCounter;
+    }
+
+    @Override
+    public int getCurrCounter() {
+        return this.currCounter;
+    }
+
+    @Override
+    public int changeLoopsOpened(int loopsOpened) {
+        return loopsOpened;
     }
 
     @Override
     public boolean isLoop() {
-        return false;
+        return true;
     }
 
     @Override

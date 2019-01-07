@@ -11,7 +11,7 @@
  * ScrollPane selectedCommandsPane
  * VBox levelNumbersBox
  * ToggleGroup levelNumbers
- * HBox commands
+ * HBox commandsBox
  * <p>
  * backend:
  * LevelController levelController
@@ -29,10 +29,12 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.stage.StageStyle;
 import pl.edu.agh.to2.learnProgramming.command.Command;
 import pl.edu.agh.to2.learnProgramming.command.LoopCommand;
 import pl.edu.agh.to2.learnProgramming.model.Procedure;
 
+import java.awt.image.LookupOp;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -47,29 +49,27 @@ public class MainScreenController {
     @FXML
     private ProceduresController proceduresController;
     @FXML
-    private ScrollPane selectedCommandsPane;
-    @FXML
     private VBox levelNumbersBox;
     @FXML
     private ToggleGroup levelNumbers;
+    @FXML
+    private ScrollPane selectedCommandsPane;
 
     private int currentLevel;
 
-    private HBox commands;
-
-    private List<Command> commandsToExecute;
-
     private ObservableList<Procedure> procedures;
+
+    private CommandBarController commandBarController;
 
     @FXML
     public void initialize() {
-        commandsToExecute = new LinkedList<>();
+        commandBarController = new CommandBarController(selectedCommandsPane);
         mainBorderPane.setPrefWidth(1000);
         mainBorderPane.setPrefHeight(1000);
         currentLevel = 1;
         levelController.setMainScreenController(this);
         levelController.initializeLevel();
-        initializeMovesList();
+        commandBarController.initializeMovesList();
         levelNumbers = new ToggleGroup();
         addLevelNumberButton();
         levelNumbers.getToggles().get(0).setSelected(true);
@@ -78,16 +78,6 @@ public class MainScreenController {
                 oldValue.setSelected(true);
         }));
         procedures = FXCollections.observableArrayList();
-    }
-
-    /**
-     * Initialize a HBox for commands.
-     */
-    private void initializeMovesList() {
-        commandsToExecute.clear();
-        commands = new HBox();
-        commands.setSpacing(10);
-        this.selectedCommandsPane.setContent(commands);
     }
 
     public int getCurrentLevel() {
@@ -102,33 +92,8 @@ public class MainScreenController {
         return this.procedures;
     }
 
-    /**
-     * Adds command do movesToExecute and sets it on the view.
-     *
-     * @param command - (Enum) CommandType
-     */
     public void addCommand(Command command) {
-        Node img = command.getImage();
-        img.setOnMouseClicked(this::removeSelectedMove);
-        commands.getChildren().add(img);
-        this.selectedCommandsPane.setContent(commands);
-        this.commandsToExecute.add(command);
-    }
-
-    /**
-     * When user clicks on a previously selected command
-     * then the action is delivered and the command is removed.
-     *
-     * @param mouseEvent - MouseEvent
-     */
-    private void removeSelectedMove(MouseEvent mouseEvent) {
-        int index = this.commands.getChildren().indexOf(mouseEvent.getSource());
-        Command command = commandsToExecute.get(index);
-        if (command.isLoop()) {
-            ((LoopCommand) command).onRemove(index, levelController, commandsToExecute);
-        }
-        commandsToExecute.remove(index);
-        this.commands.getChildren().remove(mouseEvent.getSource());
+        commandBarController.addCommand(command);
     }
 
     /**
@@ -151,7 +116,7 @@ public class MainScreenController {
      */
     private void levelChosen(ActionEvent actionEvent) {
         currentLevel = Integer.parseInt(((ToggleButton) actionEvent.getSource()).getText());
-        initializeMovesList();
+        commandBarController.initializeMovesList();
         levelController.initializeLevel();
     }
 
@@ -161,33 +126,34 @@ public class MainScreenController {
      */
     @FXML
     public void playButtonClicked() {
+        if (levelController.getLoopManager().loopsGood(commandBarController.getCommands()))
+            this.levelController.executeMoves(commandBarController.getCommands());
+    }
+
+    public void loadLevel() {
         Alert alert;
-        if (levelController.getLoopManager().loopsGood(commandsToExecute)) {
-            if (this.levelController.checkAndExecuteMoves(commandsToExecute)) {
-                alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setHeaderText("Level passed");
-                if (levelController.getLevelGenerator().hasNext())
-                    currentLevel++;
-                else
-                    alert.setHeaderText(alert.getHeaderText() + "\nNo more levels available.");
-                if (levelNumbers.getToggles().size() < currentLevel)
-                    addLevelNumberButton();
-                else
-                    levelNumbers.getToggles().get(currentLevel - 1).setSelected(true);
-                alert.showAndWait();
-                levelController.initializeLevel();
-            } else {
-                this.commands.getChildren().clear();
-                this.commandsToExecute.clear();
-                alert = new Alert(Alert.AlertType.ERROR);
-                alert.setHeaderText("Try again");
-                alert.showAndWait();
-                initializeMovesList();
-                levelController.initializeLevel();
-            }
-            this.commands.getChildren().clear();
-            this.commandsToExecute.clear();
+        if (levelController.wasLevelPassed()) {
+            alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setHeaderText("Level passed");
+            if (levelController.getLevelGenerator().hasNext())
+                currentLevel++;
+            else
+                alert.setHeaderText(alert.getHeaderText() + "\nNo more levels available.");
+            if (levelNumbers.getToggles().size() < currentLevel)
+                addLevelNumberButton();
+            else
+                levelNumbers.getToggles().get(currentLevel - 1).setSelected(true);
+            alert.show();
+            levelController.initializeLevel();
+        } else {
+            commandBarController.clearCommands();
+            alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeaderText("Try again");
+            alert.show();
+            commandBarController.initializeMovesList();
+            levelController.initializeLevel();
         }
+        commandBarController.clearCommands();
     }
 
 }

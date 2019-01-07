@@ -19,10 +19,6 @@ public class LoopManager {
         loopsRepeatList = new LinkedList<>();
     }
 
-    public int getLoopsOpened() {
-        return loopsOpened;
-    }
-
     public void decLoopsOpened() {
         loopsOpened--;
     }

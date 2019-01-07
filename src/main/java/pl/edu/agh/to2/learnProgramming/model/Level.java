@@ -117,13 +117,13 @@ public class Level {
                 currCounter = loopCommand.getCurrCounter();
             } else {
                 MoveCommand moveCommand = (MoveCommand) command;
-                moveCommand.setTurtle(turtle);
                 moveCommand.prepare();
             }
         }
         setPointVisited(turtle.getCoordinates().getX(), turtle.getCoordinates().getY());
         for (Command command : commands) {
             MoveCommand moveCommand = (MoveCommand) command;
+            moveCommand.setTurtle(turtle);
             moveCommand.execute();
             if (isMoveCorrect())
                 setPointVisited(turtle.getCoordinates().getX(), turtle.getCoordinates().getY());
