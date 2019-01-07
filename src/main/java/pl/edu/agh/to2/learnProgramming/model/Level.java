@@ -14,6 +14,7 @@
 package pl.edu.agh.to2.learnProgramming.model;
 
 import pl.edu.agh.to2.learnProgramming.command.Command;
+import pl.edu.agh.to2.learnProgramming.command.CommandType;
 import pl.edu.agh.to2.learnProgramming.command.ComplexCommand;
 import pl.edu.agh.to2.learnProgramming.command.MoveCommand;
 

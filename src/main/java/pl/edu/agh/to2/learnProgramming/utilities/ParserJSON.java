@@ -4,7 +4,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import pl.edu.agh.to2.learnProgramming.model.CommandType;
+import pl.edu.agh.to2.learnProgramming.command.CommandType;
 import pl.edu.agh.to2.learnProgramming.model.*;
 
 import java.io.File;

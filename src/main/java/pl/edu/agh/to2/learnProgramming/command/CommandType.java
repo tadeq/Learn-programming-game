@@ -12,7 +12,7 @@
  * STARTLOOP
  * ENDLOOP
  */
-package pl.edu.agh.to2.learnProgramming.model;
+package pl.edu.agh.to2.learnProgramming.command;
 
 public enum CommandType {
     FORWARD("/images/forward.png"),

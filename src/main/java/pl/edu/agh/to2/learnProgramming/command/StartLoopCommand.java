@@ -5,7 +5,6 @@ import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import pl.edu.agh.to2.learnProgramming.controllers.LoopManager;
-import pl.edu.agh.to2.learnProgramming.model.CommandType;
 import pl.edu.agh.to2.learnProgramming.model.Loop;
 
 import java.util.List;

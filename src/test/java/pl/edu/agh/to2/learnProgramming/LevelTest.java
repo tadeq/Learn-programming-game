@@ -1,12 +1,9 @@
 package pl.edu.agh.to2.learnProgramming;
 
-import org.junit.Test;
-import pl.edu.agh.to2.learnProgramming.model.CommandType;
+import pl.edu.agh.to2.learnProgramming.command.CommandType;
 import pl.edu.agh.to2.learnProgramming.model.*;
 
 import java.util.Arrays;
-
-import static org.junit.Assert.*;
 
 public class LevelTest {
     private Level level = new Level(4, Arrays.asList(CommandType.FORWARD, CommandType.RIGHT),

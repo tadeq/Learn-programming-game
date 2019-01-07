@@ -3,7 +3,6 @@ package pl.edu.agh.to2.learnProgramming.command;
 import javafx.scene.Node;
 import javafx.scene.image.ImageView;
 import pl.edu.agh.to2.learnProgramming.controllers.LoopManager;
-import pl.edu.agh.to2.learnProgramming.model.CommandType;
 import pl.edu.agh.to2.learnProgramming.model.Loop;
 
 import java.util.List;
