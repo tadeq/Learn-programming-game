@@ -102,7 +102,7 @@
       "size": 4
     }
   },
-  "1": {
+  "2": {
     "Commands": [
       "FORWARD",
       "RIGHT",
@@ -128,7 +128,7 @@
       "size": 7
     }
   },
-  "2": {
+  "1": {
     "Commands": [
       "FORWARD",
       "RIGHT",

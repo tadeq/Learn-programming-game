@@ -61,6 +61,7 @@ public class MainScreenController {
     @FXML
     public void initialize() {
         commandBarController = new CommandBarController(selectedCommandsPane);
+        commandBarController.setLoopManager(levelController.getLoopManager());
         mainBorderPane.setPrefWidth(1000);
         mainBorderPane.setPrefHeight(1000);
         currentLevel = 1;

@@ -65,7 +65,6 @@ public class ProceduresController {
     public void initialize() {
         setButtonsVisibility(false);
         commandBarController = new CommandBarController(selectedCommandsPane);
-        commandBarController.setLoopManager(this.loopManager);
         forwardButton.setTooltip(new Tooltip("Move forward"));
         rightButton.setTooltip(new Tooltip("Turn Right"));
         leftButton.setTooltip(new Tooltip("Turn left"));
@@ -79,6 +78,7 @@ public class ProceduresController {
             commandBarController.initializeMovesList();
             if (newValue != null) {
                 loopManager = new LoopManager();
+                commandBarController.setLoopManager(loopManager);
                 addButton.setVisible(false);
                 currentProcedure = newValue;
                 setButtonsVisibility(true);
