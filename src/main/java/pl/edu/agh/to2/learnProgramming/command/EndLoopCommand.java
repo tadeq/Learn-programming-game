@@ -2,13 +2,13 @@ package pl.edu.agh.to2.learnProgramming.command;
 
 import javafx.scene.Node;
 import javafx.scene.image.ImageView;
-import pl.edu.agh.to2.learnProgramming.controllers.LevelController;
+import pl.edu.agh.to2.learnProgramming.controllers.LoopManager;
 import pl.edu.agh.to2.learnProgramming.model.CommandType;
 import pl.edu.agh.to2.learnProgramming.model.Loop;
 
 import java.util.List;
 
-public class EndLoopCommand implements LoopCommand {
+public class EndLoopCommand implements ComplexCommand {
     private int loopCounter;
     private int currCounter;
 
@@ -72,8 +72,8 @@ public class EndLoopCommand implements LoopCommand {
         loops.remove(loopCounter + 1);
     }
 
-    public void onRemove(int index, LevelController levelController, List<Command> movesToExecute) {
-        levelController.getLoopManager().incLoopsOpened();
+    public void onRemove(int index, LoopManager loopManager, List<Command> movesToExecute) {
+        loopManager.incLoopsOpened();
     }
 
     public int changeLoopsOpened(int loopsOpened) {

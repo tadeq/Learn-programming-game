@@ -99,11 +99,13 @@ public class LevelController {
 
     private List<String> steps;
 
+    private boolean levelPassed;
+
     public void setMainScreenController(MainScreenController mainScreenController) {
         this.mainScreenController = mainScreenController;
     }
 
-    public Level getLevel(){
+    public Level getLevel() {
         return level;
     }
 
@@ -113,6 +115,10 @@ public class LevelController {
 
     public LoopManager getLoopManager() {
         return this.loopManager;
+    }
+
+    public boolean wasLevelPassed() {
+        return levelPassed;
     }
 
     @FXML
@@ -242,10 +248,9 @@ public class LevelController {
      * @param commandsToExecute
      * @return true - if moves has been executed successfully and every field has been visited, false - otherwise
      */
-    public boolean checkAndExecuteMoves(List<Command> commandsToExecute) {
-        boolean result = (this.level.executeMoves(commandsToExecute) && this.level.areAllFieldsVisited());
+    public void executeMoves(List<Command> commandsToExecute) {
+        this.levelPassed = (this.level.executeMoves(commandsToExecute) && this.level.areAllFieldsVisited());
         animate(level.getStartingTurtle().getCoordinates().getX(), level.getStartingTurtle().getCoordinates().getY());
-        return result;
     }
 
     private void animate(int startX, int startY) {
@@ -293,7 +298,6 @@ public class LevelController {
             Timeline pause = new Timeline(new KeyFrame(Duration.seconds(0.15)));
 
             s.getChildren().addAll(t, pause);
-
         }
 
         AnimationTimer timer = new AnimationTimer() {
@@ -302,19 +306,15 @@ public class LevelController {
                 turtleImage.setRotate(r.doubleValue());
                 GridPane.setColumnIndex(turtleImage, x.intValue());
                 GridPane.setRowIndex(turtleImage, y.intValue());
-//                level.setPointVisited(x.intValue(),y.intValue());
             }
         };
 
         s.setOnFinished(event -> {
-
             timer.stop();
-            //what to do after animation ends
+            mainScreenController.loadLevel();
         });
         timer.start();
         s.play();
-
-
     }
 
     /**
