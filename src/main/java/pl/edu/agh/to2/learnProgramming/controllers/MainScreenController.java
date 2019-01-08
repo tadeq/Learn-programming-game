@@ -172,7 +172,8 @@ public class MainScreenController {
             alert.setHeaderText("All progress will be deleted");
             alert.showAndWait();
             if (alert.getResult() == ButtonType.OK) {
-                BufferedWriter writer = new BufferedWriter(new FileWriter(this.getClass().getResource("/configs/gamesave.txt").getPath()));
+                System.out.println(this.getClass().getResource("/configs/gamesave").getPath().replace("%20"," "));
+                BufferedWriter writer = new BufferedWriter(new FileWriter(this.getClass().getResource("/configs/gamesave").getPath().replace("%20"," ")));
                 writer.write(1);
                 writer.close();
                 if (levelNumbers.getToggles().size() > 1) {
@@ -194,7 +195,7 @@ public class MainScreenController {
     @FXML
     public void saveClicked() {
         try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter(this.getClass().getResource("/configs/gamesave.txt").getPath()));
+            BufferedWriter writer = new BufferedWriter(new FileWriter(this.getClass().getResource("/configs/gamesave").getPath().replace("%20"," ")));
             writer.write(levelNumbers.getToggles().size());
             writer.close();
         } catch (IOException e) {
@@ -210,7 +211,7 @@ public class MainScreenController {
     @FXML
     public void loadClicked() {
         try {
-            BufferedReader reader = new BufferedReader(new FileReader(this.getClass().getResource("/configs/gamesave.txt").getPath()));
+            BufferedReader reader = new BufferedReader(new FileReader(this.getClass().getResource("/configs/gamesave").getPath().replace("%20"," ")));
             int maxLevel = reader.read();
             reader.close();
             if (maxLevel > 0 && levelNumbers.getToggles().size() < maxLevel) {
