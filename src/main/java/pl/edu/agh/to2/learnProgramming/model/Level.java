@@ -99,8 +99,7 @@ public class Level {
      * then checks if user has used loop(s) and if so, then add every commands required by user times to the list.
      * Executes chosen by user moves (commands) for turtle.
      *
-     * @param movesToExecute  - list of moves (commands) selected by user
-     * @param loopsRepeatList - list of loops' repetitions number
+     * @param movesToExecute - list of moves (commands) selected by user
      * @return true - if moves (commands) executed correctly, false - otherwise
      */
     public boolean executeMoves(List<Command> movesToExecute) {

@@ -241,7 +241,7 @@ public class LevelController {
      * @return true - if moves has been executed successfully and every field has been visited, false - otherwise
      */
     public void executeMoves(List<Command> commandsToExecute) {
-        this.levelPassed = (this.level.executeMoves(commandsToExecute) && this.level.areAllFieldsVisited());
+        this.levelPassed = (this.level.executeMoves(commandsToExecute));
         animate(level.getStartingTurtle().getCoordinates().getX(), level.getStartingTurtle().getCoordinates().getY());
     }
 
@@ -304,6 +304,8 @@ public class LevelController {
 
         s.setOnFinished(event -> {
             timer.stop();
+            if (levelPassed)
+                levelPassed = level.areAllFieldsVisited();
             mainScreenController.loadLevel();
         });
         timer.start();

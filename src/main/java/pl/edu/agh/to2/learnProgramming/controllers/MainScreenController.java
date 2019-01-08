@@ -16,7 +16,7 @@
  * backend:
  * LevelController levelController
  * int currentLevel
- * List<CommandType> movesToExecute
+ * List<CommandType> commandsToExecute
  */
 
 package pl.edu.agh.to2.learnProgramming.controllers;
@@ -92,7 +92,7 @@ public class MainScreenController {
 
 
     /**
-     * Adds command do movesToExecute and sets it on the view.
+     * Adds command do commandsToExecute and sets it on the view.
      *
      * @param command - (Enum) CommandType
      */
@@ -149,7 +149,10 @@ public class MainScreenController {
             else
                 levelNumbers.getToggles().get(currentLevel - 1).setSelected(true);
             alert.show();
-            alert.setOnHidden(event -> levelController.initializeLevel());
+            alert.setOnHidden(event -> {
+                levelController.initializeLevel();
+                commandBarController.clearCommands();
+            });
         } else {
             alert = new Alert(Alert.AlertType.ERROR);
             alert.setHeaderText("Try again");
@@ -162,27 +165,36 @@ public class MainScreenController {
         }
     }
 
-    public void resetSaveClicked() {
+    @FXML
+    public void resetClicked() {
         try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter("./resources/config/gamesave"));
-            writer.write(1);
-            writer.close();
-
-            if (currentLevel > 1) {
-                levelNumbersBox.getChildren().remove(1, levelNumbers.getToggles().size());
-                levelNumbers.getToggles().remove(1, levelNumbers.getToggles().size());
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setHeaderText("All progress will be deleted");
+            alert.showAndWait();
+            if (alert.getResult() == ButtonType.OK) {
+                BufferedWriter writer = new BufferedWriter(new FileWriter(this.getClass().getResource("/configs/gamesave.txt").getPath()));
+                writer.write(1);
+                writer.close();
+                if (currentLevel > 1) {
+                    levelNumbersBox.getChildren().remove(3, levelNumbers.getToggles().size() + 2);
+                    levelNumbers.getToggles().remove(1, levelNumbers.getToggles().size());
+                    currentLevel = 1;
+                    levelNumbers.getToggles().get(0).setSelected(true);
+                    levelController.initializeLevel();
+                    commandBarController.clearCommands();
+                }
             }
-
         } catch (IOException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setHeaderText("Error while saving game.");
+            alert.setHeaderText("Error while resetting save.");
             alert.showAndWait();
         }
     }
 
+    @FXML
     public void saveClicked() {
         try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter("./resources/config/gamesave"));
+            BufferedWriter writer = new BufferedWriter(new FileWriter(this.getClass().getResource("/configs/gamesave.txt").getPath()));
             writer.write(levelNumbers.getToggles().size());
             writer.close();
         } catch (IOException e) {
@@ -190,31 +202,32 @@ public class MainScreenController {
             alert.setHeaderText("Error while saving game.");
             alert.showAndWait();
         }
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setHeaderText("Game saved successfully");
+        alert.showAndWait();
     }
 
-    public void loadLevelsClicked() {
+    @FXML
+    public void loadClicked() {
         try {
-            BufferedReader reader = new BufferedReader(new FileReader("./resources/config/gamesave"));
+            BufferedReader reader = new BufferedReader(new FileReader(this.getClass().getResource("/configs/gamesave.txt").getPath()));
             int maxLevel = reader.read();
             reader.close();
-
-            if (maxLevel > 0 && currentLevel < maxLevel) {
-                for (int i = currentLevel + 1; i < maxLevel; i++) {
-                    ToggleButton button = new ToggleButton(Integer.toString(i));
-                    button.setPrefHeight(26);
-                    button.setPrefWidth(50);
-                    button.setSelected(true);
-                    //button.setOnAction(this::levelChosen);
-                    levelNumbersBox.getChildren().add(button);
-                    levelNumbers.getToggles().add(button);
-                }
+            if (maxLevel > 0 && levelNumbers.getToggles().size() < maxLevel) {
+                for (currentLevel = levelNumbers.getToggles().size() + 1; currentLevel < maxLevel; currentLevel++)
+                    addLevelNumberButton();
+                addLevelNumberButton();
+            } else {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setHeaderText("No more levels passed");
+                alert.showAndWait();
             }
-
+            levelController.initializeLevel();
+            commandBarController.clearCommands();
         } catch (IOException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setHeaderText("Error while reading save file.");
             alert.showAndWait();
         }
     }
-
 }
