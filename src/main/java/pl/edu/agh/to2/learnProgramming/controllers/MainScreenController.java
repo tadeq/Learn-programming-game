@@ -175,7 +175,7 @@ public class MainScreenController {
                 BufferedWriter writer = new BufferedWriter(new FileWriter(this.getClass().getResource("/configs/gamesave.txt").getPath()));
                 writer.write(1);
                 writer.close();
-                if (currentLevel > 1) {
+                if (levelNumbers.getToggles().size() > 1) {
                     levelNumbersBox.getChildren().remove(3, levelNumbers.getToggles().size() + 2);
                     levelNumbers.getToggles().remove(1, levelNumbers.getToggles().size());
                     currentLevel = 1;
