@@ -142,8 +142,10 @@ public class LevelController {
         level = generator.generate(mainScreenController.getCurrentLevel());
 
         ImageView newTurtle = new ImageView("/images/turtle.png");
-        newTurtle.setFitWidth(60);
-        newTurtle.setFitHeight(60);
+        double turtleSize = (levelScreen.getPrefWidth()) / (2 * level.getSize());
+        turtleSize = turtleSize >= 60 ? 60 : turtleSize;
+        newTurtle.setFitWidth(turtleSize);
+        newTurtle.setFitHeight(turtleSize);
         GridPane.setHalignment(newTurtle, HPos.CENTER);
         GridPane.setValignment(newTurtle, VPos.CENTER);
         this.turtleImage = newTurtle;
