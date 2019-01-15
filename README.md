@@ -1,10 +1,30 @@
-## learnProgramming
-Projekt gry edukacyjnej dla dzieci, aby rozwijać logiczne i algorytmiczne podejście do problemów. Gracz przy pomocy żółwia stara się odwiedzić wszystkie pola w danym poziomie, odbywa się to na zasadzie ułożenia listy kolejnych ruchów.
-  
-Póki co poziomy generowane są ręcznie w projekcie, lecz w najbliższym czasie będzie stworzony generator pliku typu json, który będzie zawierał konfiguracje poszczególne poziomy rozgrywki. Nasz przyjaciel żółw, w którego się wcielamy, potrafi poruszać się do przodu oraz obracać w prawo lub lewo. Przewidujemy rozszerzenie ruchu o pętle, które pozwolą na naukę podstawowej pętli oraz podejścia bardziej strukturalnego do programowania ruchów żółwia.
+# LearnProgramming
+Educational game for children to improve their analytical thinking and alhorithmic approach to solving simple problems.
+### Overview
+![gif](https://user-images.githubusercontent.com/33002299/51190587-e0850400-18e2-11e9-9b50-6905355bdb34.gif)
 
-### Grupa osób tworzących projekt:
+The game consists of several levels. On each level player has to prepare the path for turtle using buttons with available commands, so turtle can visit all of the green fields displayed on screen. Their difficulty increases gradually and further levels give the player possibility to use new commands, including complex ones like loops and procedures.
 
-Maciej Moskal  
-Jakub Pajor  
-Michał Zadora
+![screenshot](https://user-images.githubusercontent.com/33002299/51190992-bda71f80-18e3-11e9-8849-224d53cc8779.png)
+
+Player can also swich between passed levels or save his/her progress and load it another time when the game is on again.
+### Available instructions
+
+|Command|Action|
+|---|---|
+|`move forward`|turtle moves by one field forward|
+|`turn right`|turtle rotates to its right side|
+|`turn left`|turtle rotates to its left side|
+|`start loop`|commands between this and `end loop` command will be repeated the given number of times|
+|`end loop`|ends the loop started with `start loop`; each loop has to be closed|
+|`procedure`|opens the procedures menu where player can create or choose one of the procedures to use|
+
+### Technologies
+- Java 10
+- JavaFX
+- Gradle 4.7
+
+### Authors
+[Maciej Moskal](https://github.com/tadeq)  
+[Jakub Pajor](https://github.com/xylini)
+[Michał Zadora](https://github.com/michalzadora)
