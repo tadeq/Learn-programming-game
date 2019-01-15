@@ -54,11 +54,6 @@ public class TurnLeftCommand implements MoveCommand {
     }
 
     @Override
-    public boolean isComplex() {
-        return false;
-    }
-
-    @Override
     public Node getImage() {
         return img;
     }

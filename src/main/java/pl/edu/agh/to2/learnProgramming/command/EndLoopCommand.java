@@ -9,6 +9,7 @@ import java.util.List;
 
 public class EndLoopCommand implements ComplexCommand {
     private int loopCounter;
+
     private int currCounter;
 
     private List<Command> commands;
@@ -45,11 +46,6 @@ public class EndLoopCommand implements ComplexCommand {
 
     public int getCurrCounter() {
         return currCounter;
-    }
-
-    @Override
-    public boolean isComplex() {
-        return true;
     }
 
     @Override

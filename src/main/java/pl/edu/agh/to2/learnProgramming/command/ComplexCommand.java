@@ -15,4 +15,8 @@ public interface ComplexCommand extends Command {
     int getCurrCounter();
 
     int changeLoopsOpened(int loopsOpened);
+
+    default boolean isComplex() {
+        return true;
+    }
 }

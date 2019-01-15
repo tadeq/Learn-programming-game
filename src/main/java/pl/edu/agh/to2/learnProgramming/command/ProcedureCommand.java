@@ -4,38 +4,33 @@ import javafx.scene.Node;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.ImageView;
 import pl.edu.agh.to2.learnProgramming.controllers.LoopManager;
-import pl.edu.agh.to2.learnProgramming.model.Loop;
+import pl.edu.agh.to2.learnProgramming.model.Procedure;
 
 import java.util.List;
 
 public class ProcedureCommand implements ComplexCommand {
-    private String name;
+    private Procedure procedure;
 
     private ImageView img;
 
     private List<Command> levelCommands;
 
-    private List<Command> procedureCommands;
-
-    private List<Loop> loops;
-
     private int loopCounter;
 
-    private int currCounter = 0;
+    private int currCounter;
 
-    public ProcedureCommand(String name, List<Command> procedureCommands, List<Loop> loops) {
-        this.loops = loops;
-        this.name = name;
-        this.procedureCommands = procedureCommands;
+    public ProcedureCommand(Procedure procedure) {
+        this.procedure = procedure;
+        currCounter = 0;
         this.img = new ImageView(CommandType.PROCEDURE.getPath());
         img.setFitHeight(40);
         img.setFitWidth(40);
-        Tooltip.install(img, new Tooltip(name));
+        Tooltip.install(img, new Tooltip(procedure.getName()));
     }
 
     @Override
     public void execute() {
-        for (Command command : procedureCommands) {
+        for (Command command : procedure.getCommands()) {
             command.setLevelCommands(levelCommands);
             command.setLoopCounter(loopCounter);
             if (command.isComplex()) {
@@ -84,11 +79,6 @@ public class ProcedureCommand implements ComplexCommand {
     @Override
     public int changeLoopsOpened(int loopsOpened) {
         return loopsOpened;
-    }
-
-    @Override
-    public boolean isComplex() {
-        return true;
     }
 
     @Override

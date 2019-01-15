@@ -166,7 +166,7 @@ public class ProceduresController {
 
     @FXML
     public void useClicked(ActionEvent actionEvent) {
-        mainScreenController.addCommand(new ProcedureCommand(currentProcedure.getName(), currentProcedure.getCommands(), loops));
+        mainScreenController.addCommand(new ProcedureCommand(currentProcedure));
         ((Stage) useButton.getScene().getWindow()).close();
     }
 

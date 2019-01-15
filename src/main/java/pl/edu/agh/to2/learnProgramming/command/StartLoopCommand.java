@@ -11,6 +11,7 @@ import java.util.List;
 
 public class StartLoopCommand implements ComplexCommand {
     private int loopCounter;
+
     private int currCounter;
 
     private List<Command> commands;
@@ -58,11 +59,6 @@ public class StartLoopCommand implements ComplexCommand {
     @Override
     public Node getImage() {
         return box;
-    }
-
-    @Override
-    public boolean isComplex() {
-        return true;
     }
 
     @Override
