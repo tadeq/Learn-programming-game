@@ -53,7 +53,7 @@ public class CommandBarController {
     /**
      * Adds command do movesToExecute and sets it on the view.
      *
-     * @param command - (Enum) CommandType
+     * @param command - Command
      */
     public void addCommand(Command command) {
         Node img = command.getImage();

@@ -9,7 +9,6 @@ import pl.edu.agh.to2.learnProgramming.command.*;
 import pl.edu.agh.to2.learnProgramming.model.Loop;
 import pl.edu.agh.to2.learnProgramming.model.Procedure;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
@@ -166,23 +165,23 @@ public class ProceduresController {
 
     @FXML
     public void useClicked(ActionEvent actionEvent) {
-        mainScreenController.addCommand(new ProcedureCommand(currentProcedure));
+        mainScreenController.addCommand(new ProcedureCommand(currentProcedure, loops));
         ((Stage) useButton.getScene().getWindow()).close();
     }
 
     @FXML
     public void forwardClicked(ActionEvent actionEvent) {
-        commandBarController.addCommand(new MoveForwardCommand(loops));
+        commandBarController.addCommand(new MoveForwardCommand());
     }
 
     @FXML
     public void rightClicked(ActionEvent actionEvent) {
-        commandBarController.addCommand(new TurnRightCommand(loops));
+        commandBarController.addCommand(new TurnRightCommand());
     }
 
     @FXML
     public void leftClicked(ActionEvent actionEvent) {
-        commandBarController.addCommand(new TurnLeftCommand(loops));
+        commandBarController.addCommand(new TurnLeftCommand());
     }
 
     @FXML

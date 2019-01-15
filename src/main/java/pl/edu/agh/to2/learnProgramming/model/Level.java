@@ -9,6 +9,7 @@
  * List<LevelPoint> fieldCoordinates
  * List<Loop> loops
  * Turtle turtle
+ * Turtle startingTurtle
  * int size
  */
 package pl.edu.agh.to2.learnProgramming.model;
@@ -25,7 +26,7 @@ import java.util.List;
 public class Level {
     private List<CommandType> commandTypes;
     private List<LevelPoint> fieldCoordinates;
-    private List<Loop> loops = new ArrayList<>();
+    private List<Loop> loops;
     private Turtle turtle;
     private Turtle startingTurtle;
     private int size;
@@ -34,6 +35,7 @@ public class Level {
         this.size = size;
         this.commandTypes = commandTypes;
         this.fieldCoordinates = fieldCoordinates;
+        this.loops = new ArrayList<>();
         this.turtle = turtle;
         this.startingTurtle = new Turtle(turtle.getCoordinates().getX(), turtle.getCoordinates().getY(), turtle.getTurtleDirection());
     }
@@ -107,17 +109,19 @@ public class Level {
         int loopCounter = -1;
         int currCounter = 0;
         for (Command command : movesToExecute) {
-            command.setLevelCommands(commands);
-            command.setLoopCounter(loopCounter);
             if (command.isComplex()) {
                 ComplexCommand complexCommand = (ComplexCommand) command;
                 complexCommand.setCurrCounter(currCounter);
+                complexCommand.setLoopCounter(loopCounter);
+                complexCommand.setLevelCommands(commands);
                 complexCommand.execute();
                 loopCounter = complexCommand.getLoopCounter();
                 currCounter = complexCommand.getCurrCounter();
             } else {
-                MoveCommand moveCommand = (MoveCommand) command;
-                moveCommand.prepare();
+                if (loopCounter >= 0) {
+                    this.loops.get(loopCounter).addCommand(command);
+                }
+                commands.add(command);
             }
         }
         setPointVisited(turtle.getCoordinates().getX(), turtle.getCoordinates().getY());

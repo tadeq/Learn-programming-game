@@ -8,7 +8,11 @@ public interface ComplexCommand extends Command {
 
     void onRemove(int index, LoopManager loopManager, List<Command> movesToExecute);
 
+    void setLevelCommands(List<Command> levelCommands);
+
     void setCurrCounter(int currCounter);
+
+    void setLoopCounter(int loopCounter);
 
     int getLoopCounter();
 

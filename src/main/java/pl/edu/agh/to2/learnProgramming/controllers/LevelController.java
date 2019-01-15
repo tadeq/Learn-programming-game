@@ -240,7 +240,6 @@ public class LevelController {
      * and to checks if after the execution every field has been visited
      *
      * @param commandsToExecute
-     * @return true - if moves has been executed successfully and every field has been visited, false - otherwise
      */
     public void executeMoves(List<Command> commandsToExecute) {
         this.levelPassed = (this.level.executeMoves(commandsToExecute));
@@ -316,58 +315,48 @@ public class LevelController {
 
     /**
      * Adds FORWARD command after being chosen by user.
-     *
-     * @param actionEvent
      */
     @FXML
-    public void forwardClicked(ActionEvent actionEvent) {
-        mainScreenController.addCommand(new MoveForwardCommand(this.level.getLoops()));
+    public void forwardClicked() {
+        mainScreenController.addCommand(new MoveForwardCommand());
     }
 
     /**
      * Adds RIGHT command after being chosen by user.
-     *
-     * @param actionEvent
      */
     @FXML
-    public void rightClicked(ActionEvent actionEvent) {
-        mainScreenController.addCommand(new TurnRightCommand(this.level.getLoops()));
+    public void rightClicked() {
+        mainScreenController.addCommand(new TurnRightCommand());
     }
 
     /**
      * Adds LEFT command after being chosen by user.
-     *
-     * @param actionEvent
      */
     @FXML
-    public void leftClicked(ActionEvent actionEvent) {
-        mainScreenController.addCommand(new TurnLeftCommand(this.level.getLoops()));
+    public void leftClicked() {
+        mainScreenController.addCommand(new TurnLeftCommand());
     }
 
     /**
      * Adds and opens LOOP command after being chosen by user.
-     *
-     * @param actionEvent
      */
     @FXML
-    public void startLoopClicked(ActionEvent actionEvent) {
+    public void startLoopClicked() {
         if (loopManager.openLoop())
             mainScreenController.addCommand(new StartLoopCommand(this.level.getLoops(), loopManager.getLoopsRepeatList()));
     }
 
     /**
      * Adds and closes LOOP command after being chosen by user.
-     *
-     * @param actionEvent
      */
     @FXML
-    public void endLoopClicked(ActionEvent actionEvent) {
+    public void endLoopClicked() {
         if (loopManager.closeLoop())
             mainScreenController.addCommand(new EndLoopCommand(this.level.getLoops(), loopManager.getLoopsRepeatList()));
     }
 
     @FXML
-    public void procedureClicked(ActionEvent actionEvent) {
+    public void procedureClicked() {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/procedures.fxml"));
         Parent root = null;
         try {

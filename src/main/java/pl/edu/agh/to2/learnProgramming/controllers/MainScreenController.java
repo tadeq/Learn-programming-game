@@ -8,15 +8,16 @@
  * frontend:
  * BorderPane mainBorderPane
  * Button playButton
- * ScrollPane selectedCommandsPane
  * VBox levelNumbersBox
  * ToggleGroup levelNumbers
+ * ScrollPane selectedCommandsPane
  * HBox commandsBox
  * <p>
  * backend:
- * LevelController levelController
  * int currentLevel
- * List<CommandType> commandsToExecute
+ * LevelController levelController
+ * ObservableList<Procedure> procedures
+ * CommandBarController commandBarController
  */
 
 package pl.edu.agh.to2.learnProgramming.controllers;

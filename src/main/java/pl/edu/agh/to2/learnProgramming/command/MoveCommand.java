@@ -6,8 +6,6 @@ public interface MoveCommand extends Command {
 
     void setTurtle(Turtle turtle);
 
-    void prepare();
-
     default boolean isComplex() {
         return false;
     }

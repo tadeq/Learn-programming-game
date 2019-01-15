@@ -4,6 +4,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.ImageView;
 import pl.edu.agh.to2.learnProgramming.controllers.LoopManager;
+import pl.edu.agh.to2.learnProgramming.model.Loop;
 import pl.edu.agh.to2.learnProgramming.model.Procedure;
 
 import java.util.List;
@@ -15,12 +16,15 @@ public class ProcedureCommand implements ComplexCommand {
 
     private List<Command> levelCommands;
 
+    private List<Loop> loops;
+
     private int loopCounter;
 
     private int currCounter;
 
-    public ProcedureCommand(Procedure procedure) {
+    public ProcedureCommand(Procedure procedure, List<Loop> loops) {
         this.procedure = procedure;
+        this.loops = loops;
         currCounter = 0;
         this.img = new ImageView(CommandType.PROCEDURE.getPath());
         img.setFitHeight(40);
@@ -31,17 +35,19 @@ public class ProcedureCommand implements ComplexCommand {
     @Override
     public void execute() {
         for (Command command : procedure.getCommands()) {
-            command.setLevelCommands(levelCommands);
-            command.setLoopCounter(loopCounter);
             if (command.isComplex()) {
                 ComplexCommand complexCommand = (ComplexCommand) command;
                 complexCommand.setCurrCounter(currCounter);
+                complexCommand.setLoopCounter(loopCounter);
+                complexCommand.setLevelCommands(levelCommands);
                 complexCommand.execute();
                 loopCounter = complexCommand.getLoopCounter();
                 currCounter = complexCommand.getCurrCounter();
             } else {
-                MoveCommand moveCommand = (MoveCommand) command;
-                moveCommand.prepare();
+                if (loopCounter >= 0) {
+                    this.loops.get(loopCounter).addCommand(command);
+                }
+                levelCommands.add(command);
             }
         }
     }

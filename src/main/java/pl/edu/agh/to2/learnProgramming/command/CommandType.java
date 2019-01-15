@@ -11,6 +11,7 @@
  * LEFT
  * STARTLOOP
  * ENDLOOP
+ * PROCEDURE
  */
 package pl.edu.agh.to2.learnProgramming.command;
 
