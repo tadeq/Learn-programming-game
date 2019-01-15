@@ -26,5 +26,5 @@ Player can also swich between passed levels or save his/her progress and load it
 
 ### Authors
 [Maciej Moskal](https://github.com/tadeq)  
-[Jakub Pajor](https://github.com/xylini)
+[Jakub Pajor](https://github.com/xylini)  
 [Michał Zadora](https://github.com/michalzadora)
